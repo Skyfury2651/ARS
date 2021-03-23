@@ -12,8 +12,9 @@ namespace ARS.Models
         public string code { get; set; }
         public string iso_country { get; set; }
         public string municipality { get; set; }
-        public double lattitude { get; set; }z
+        public double lattitude { get; set; }
         public double longtitude { get; set; }
         public int status { get; set; }
+        public virtual ICollection<City> Cities { get; set; }
     }
 }

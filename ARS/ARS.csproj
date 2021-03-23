@@ -181,11 +181,21 @@
     <Compile Include="Migrations\202103221205052_TableAirport.Designer.cs">
       <DependentUpon>202103221205052_TableAirport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103230824373_addMoreModelRelationshipp.cs" />
+    <Compile Include="Migrations\202103230824373_addMoreModelRelationshipp.Designer.cs">
+      <DependentUpon>202103230824373_addMoreModelRelationshipp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Airport.cs" />
+    <Compile Include="Models\City.cs" />
+    <Compile Include="Models\Flight.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Seat.cs" />
+    <Compile Include="Models\Stop.cs" />
+    <Compile Include="Models\Ticket.cs" />
+    <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -268,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103221205052_TableAirport.resx">
       <DependentUpon>202103221205052_TableAirport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103230824373_addMoreModelRelationshipp.resx">
+      <DependentUpon>202103230824373_addMoreModelRelationshipp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
