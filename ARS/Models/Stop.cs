@@ -11,7 +11,7 @@ namespace ARS.Models
         public int flightId { get; set; }
         public int cityId { get; set; }
         public int stopOrder { get; set; }
-        public virtual Airport Airport { get; set; }
+        public virtual Flight Flight { get; set; }
         public virtual City City { get; set; }
     }
 }

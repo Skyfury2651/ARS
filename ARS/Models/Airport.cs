@@ -15,6 +15,6 @@ namespace ARS.Models
         public double lattitude { get; set; }
         public double longtitude { get; set; }
         public int status { get; set; }
-        public virtual ICollection<City> Cities { get; set; }
+        public virtual ICollection<CityAirport> CityAirports { get; set; }
     }
 }
