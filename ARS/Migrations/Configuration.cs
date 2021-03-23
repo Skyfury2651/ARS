@@ -15,11 +15,7 @@ namespace ARS.Migrations
         protected override void Seed(ARS.Models.ApplicationDbContext context)
         {
             this.seedCity(context);
-            context.CityAirports.AddOrUpdate(new Models.CityAirport
-            {
-                AirportId = 1,
-                CityId = 2
-            });
+            this.seedCityAirport(context);
         }
         public void seedCity(ARS.Models.ApplicationDbContext context)
         {
@@ -66,6 +62,44 @@ namespace ARS.Migrations
                 lattitude = 9.930741,
                 longtitude = 76.267348,
             });
+        }
+
+        public void seedCityAirport(ARS.Models.ApplicationDbContext context)
+        {
+            context.CityAirports.AddOrUpdate(new Models.CityAirport
+            {
+                AirportId = 558,
+                CityId = 2
+            }, new Models.CityAirport
+            {
+                AirportId = 559,
+                CityId = 2
+            }, new Models.CityAirport
+            {
+                AirportId = 560,
+                CityId = 2
+            }, new Models.CityAirport
+            {
+                AirportId = 555,
+                CityId = 1
+            }, new Models.CityAirport
+            {
+                AirportId = 556,
+                CityId = 1
+            }, new Models.CityAirport
+            {
+                AirportId = 15,
+                CityId = 5
+            }, new Models.CityAirport
+            {
+                AirportId = 16,
+                CityId = 5
+            }, new Models.CityAirport
+            {
+                AirportId = 17,
+                CityId = 6
+            }
+            );
         }
     }
 }
