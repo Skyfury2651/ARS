@@ -182,6 +182,10 @@
     <Compile Include="Migrations\202103271258353_addAvaiableSeat.Designer.cs">
       <DependentUpon>202103271258353_addAvaiableSeat.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103271344489_FlyTypeChange.cs" />
+    <Compile Include="Migrations\202103271344489_FlyTypeChange.Designer.cs">
+      <DependentUpon>202103271344489_FlyTypeChange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Airport.cs" />
@@ -732,6 +736,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103271258353_addAvaiableSeat.resx">
       <DependentUpon>202103271258353_addAvaiableSeat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103271344489_FlyTypeChange.resx">
+      <DependentUpon>202103271344489_FlyTypeChange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

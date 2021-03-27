@@ -14,9 +14,9 @@ namespace ARS.Migrations
 
         protected override void Seed(ARS.Models.ApplicationDbContext context)
         {
-            this.seedCity(context);
-            this.seedCityAirport(context);
-            this.seedFlightCase1(context);
+            //this.seedCity(context);
+            //this.seedCityAirport(context);
+            //this.seedFlightCase1(context);
         }
         public void seedFlightCase1(ARS.Models.ApplicationDbContext context)
         {
