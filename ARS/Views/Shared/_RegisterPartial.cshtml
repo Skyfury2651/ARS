@@ -1,0 +1,64 @@
+﻿@model ARS.Models.RegisterViewModel
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Create a new account.</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.firstName, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.firstName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.lastName, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.lastName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.userIdentityCode, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.userIdentityCode, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.address, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.address, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.phoneNumber, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.phoneNumber, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.age, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.age, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.sex, new { @class = "control-label" })
+        @Html.DropDownListFor(model => model.sex, new SelectList(
+                new List<SelectListItem>
+                {
+                    new SelectListItem { Selected = false, Text = "Male", Value = "0"},
+                    new SelectListItem { Selected = false, Text = "Female", Value = "1"},
+                }, "Value", "Text"), new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.preferedCreditCardNumber, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.preferedCreditCardNumber, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-default" value="Register" />
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

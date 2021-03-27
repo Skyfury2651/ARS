@@ -103,7 +103,7 @@ namespace ARS.Migrations
                         status = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.id)
-                .ForeignKey("dbo.Flights", t => t.flightId, cascadeDelete: false)
+                .ForeignKey("dbo.Flights", t => t.flightId, cascadeDelete: true)
                 .Index(t => t.flightId);
             
             CreateTable(
@@ -117,7 +117,7 @@ namespace ARS.Migrations
                     })
                 .PrimaryKey(t => t.id)
                 .ForeignKey("dbo.Cities", t => t.cityId, cascadeDelete: true)
-                .ForeignKey("dbo.Flights", t => t.flightId, cascadeDelete: true)
+                .ForeignKey("dbo.Flights", t => t.flightId, cascadeDelete: false)
                 .Index(t => t.flightId)
                 .Index(t => t.cityId);
             
@@ -136,7 +136,7 @@ namespace ARS.Migrations
                     })
                 .PrimaryKey(t => t.id)
                 .ForeignKey("dbo.Flights", t => t.flightId, cascadeDelete: true)
-                .ForeignKey("dbo.Seats", t => t.seatId, cascadeDelete: true)
+                .ForeignKey("dbo.Seats", t => t.seatId, cascadeDelete: false)
                 .ForeignKey("dbo.AspNetUsers", t => t.userId)
                 .Index(t => t.userId)
                 .Index(t => t.flightId)
@@ -149,11 +149,12 @@ namespace ARS.Migrations
                         Id = c.String(nullable: false, maxLength: 128),
                         firstName = c.String(),
                         lastName = c.String(),
+                        userIdentityCode = c.String(),
                         balance = c.Int(nullable: false),
                         address = c.String(),
                         sex = c.Int(nullable: false),
                         age = c.Int(nullable: false),
-                        preferedCreditCardNumber = c.Int(nullable: false),
+                        preferedCreditCardNumber = c.String(),
                         skyMiles = c.Int(nullable: false),
                         status = c.Int(nullable: false),
                         Email = c.String(maxLength: 256),

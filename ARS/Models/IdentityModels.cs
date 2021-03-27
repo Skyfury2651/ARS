@@ -11,11 +11,13 @@ namespace ARS.Models
     {
         public string firstName { get; set; }
         public string lastName { get; set; }
+        public string userIdentityCode { get; set; }
+
         public int balance { get; set; }
         public string address { get; set; }
         public int sex { get; set; }
         public int age { get; set; }
-        public int preferedCreditCardNumber { get; set; }
+        public string preferedCreditCardNumber { get; set; }
         public int skyMiles { get; set; }
         public int status { get; set; }
 

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using ARS.Models
+@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -8,276 +10,221 @@
 
 </head>
 <body>
-    <header class="init">
+    <div class="content-wrapper">
+        <header class="init">
 
-        <!-- subnav -->
-        <div class="container-fluid m-5-hor">
-            <div class="row">
-                <div class="subnav">
-
-                    <div class="col-md-6">
-                        <div class="left">
-                            <div class="social-icons-subnav hidden-sm hidden-xs">
-                                <div>Call Us : +02151 7778 009</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="right">
-                            <div id="sub-icon" class="social-icons-subnav">
-                                <a href="#"><span class="ti-facebook"></span></a>
-                                <a href="#"><span class="ti-dribbble"></span></a>
-                                <a href="#"><span class="ti-twitter"></span></a>
-                                <a href="#"><span class="ti-instagram"></span></a>
-                                <a href="#"><span class="ti-linkedin"></span></a>
-                            </div>
-                            <div class="social-icons-subnav">
-                                <a data-toggle="modal" data-target="#fLogin"><span class="ti-lock"></span> Login</a>
-                            </div>
-                            <div class="social-icons-subnav hidden-sm hidden-xs">
-                                <a data-toggle="modal" data-target="#fsignUp"><span class="ti-user"></span> Sign up</a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- subnav end -->
-        <!-- nav -->
-        <div class="navbar-default-white navbar-fixed-top">
+            <!-- subnav -->
             <div class="container-fluid m-5-hor">
                 <div class="row">
+                    <div class="subnav">
 
-                    <!-- menu mobile display -->
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon icon-bar"></span>
-                        <span class="icon icon-bar"></span>
-                        <span class="icon icon-bar"></span>
-                    </button>
+                        <div class="col-md-6">
+                            <div class="left">
+                                <div class="social-icons-subnav hidden-sm hidden-xs">
+                                    <div>Call Us : +02151 7778 009</div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <!-- logo -->
-                    <a class="navbar-brand white" href="index.html">
-                        <img class="white" alt="logo" src="~/Content/img/logo.png">
-                        <img class="black" alt="logo" src="~/Content/img/logo-white.png" style="display: none;">
-                    </a>
-                    <!-- logo end -->
-                    <!-- mainmenu start -->
-                    <div class="white menu-init" id="main-menu">
-                        <nav id="menu-center">
-                            <ul>
-                                <li>
-                                    <a class="actived" href="#">Home <i class="fa fa-angle-down"></i></a>
-                                    <ul>
-                                        <li><a href="index.html">Main Index</a></li>
-                                        <li><a href="index-1.html">Slider fullscreen</a></li>
-                                        <li><a href="index-2.html">Index New</a></li>
-                                        <li><a href="intro/index.html">Intro</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">About <i class="fa fa-angle-down"></i></a>
-                                    <ul>
-                                        <li><a href="about.html">About Us - 1</a></li>
-                                        <li><a href="about-2.html">About Us - 2</a></li>
-                                        <li><a href="about-3.html">All Ellement</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Gallery <i class="fa fa-angle-down"></i></a> <ul>
-                                        <li><a href="works.html">Gallery Column</a></li>
-                                        <li><a href="works-carousel.html">Gallery Carousel</a></li>
-                                        <li>
-                                            <a href="#">Projects Detail <i class="fa fa-angle-right"></i></a> <ul>
-                                                <li><a href="projects-detail.html">Project Detail 1</a></li>
-                                                <li><a href="projects-detail-2.html">Project Detail 2</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Destination <i class="fa fa-angle-down"></i></a>
-                                    <ul>
-                                        <li><a href="destination.html">Destination</a></li>
-                                        <li><a href="destination-404.html">Destination 404</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Services <i class="fa fa-angle-down"></i></a>
-                                    <ul>
-                                        <li><a href="ecommerce.html">Shop Page</a></li>
-                                        <li><a href="service-1.html">Service 1</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">Blog <i class="fa fa-angle-down"></i></a>
-                                    <ul>
-                                        <li><a href="blog.html">Blog Single</a></li>
-                                        <li><a href="blog-post.html">Blog Post</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="contact.html">Contact</a></li>
-                            </ul>
-                        </nav>
+                        <div class="col-md-6">
+                            <div class="right">
+                                <div id="sub-icon" class="social-icons-subnav">
+                                    <a href="#"><span class="ti-facebook"></span></a>
+                                    <a href="#"><span class="ti-dribbble"></span></a>
+                                    <a href="#"><span class="ti-twitter"></span></a>
+                                    <a href="#"><span class="ti-instagram"></span></a>
+                                    <a href="#"><span class="ti-linkedin"></span></a>
+                                </div>
+                                @if (Request.IsAuthenticated)
+                                {
+                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <div class="social-icons-subnav">
+                                            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                                        </div>
+                                        <div class="social-icons-subnav hidden-sm hidden-xs">
+                                            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="social-icons-subnav">
+                                        <a data-toggle="modal" data-target="#fLogin"><span class="ti-lock"></span> Login</a>
+                                    </div>
+                                    <div class="social-icons-subnav hidden-sm hidden-xs">
+                                        <a data-toggle="modal" data-target="#fsignUp"><span class="ti-user"></span> Sign up</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
                     </div>
-                    <!-- mainmenu end -->
-
                 </div>
             </div>
-            <!-- container -->
-        </div>
-        <!-- nav end -->
-    </header>
-    <div class="container body-content">
+            <!-- subnav end -->
+            <!-- nav -->
+            <div class="navbar-default-white navbar-fixed-top">
+                <div class="container-fluid m-5-hor">
+                    <div class="row">
+
+                        <!-- menu mobile display -->
+                        <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                            <span class="icon icon-bar"></span>
+                            <span class="icon icon-bar"></span>
+                            <span class="icon icon-bar"></span>
+                        </button>
+
+                        <!-- logo -->
+                        <a class="navbar-brand white" href="index.html">
+                            <img class="white" alt="logo" src="~/Content/img/logo.png">
+                            <img class="black" alt="logo" src="~/Content/img/logo-white.png" style="display: none;">
+                        </a>
+                        <!-- logo end -->
+                        <!-- mainmenu start -->
+                        <div class="white menu-init" id="main-menu">
+                            <nav id="menu-center">
+                                <ul>
+                                    <li>
+                                        <a class="actived" href="#">Home <i class="fa fa-angle-down"></i></a>
+                                        <ul>
+                                            <li><a href="index.html">Main Index</a></li>
+                                            <li><a href="index-1.html">Slider fullscreen</a></li>
+                                            <li><a href="index-2.html">Index New</a></li>
+                                            <li><a href="intro/index.html">Intro</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">About <i class="fa fa-angle-down"></i></a>
+                                        <ul>
+                                            <li><a href="about.html">About Us - 1</a></li>
+                                            <li><a href="about-2.html">About Us - 2</a></li>
+                                            <li><a href="about-3.html">All Ellement</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Gallery <i class="fa fa-angle-down"></i></a> <ul>
+                                            <li><a href="works.html">Gallery Column</a></li>
+                                            <li><a href="works-carousel.html">Gallery Carousel</a></li>
+                                            <li>
+                                                <a href="#">Projects Detail <i class="fa fa-angle-right"></i></a> <ul>
+                                                    <li><a href="projects-detail.html">Project Detail 1</a></li>
+                                                    <li><a href="projects-detail-2.html">Project Detail 2</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Destination <i class="fa fa-angle-down"></i></a>
+                                        <ul>
+                                            <li><a href="destination.html">Destination</a></li>
+                                            <li><a href="destination-404.html">Destination 404</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Services <i class="fa fa-angle-down"></i></a>
+                                        <ul>
+                                            <li><a href="ecommerce.html">Shop Page</a></li>
+                                            <li><a href="service-1.html">Service 1</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Blog <i class="fa fa-angle-down"></i></a>
+                                        <ul>
+                                            <li><a href="blog.html">Blog Single</a></li>
+                                            <li><a href="blog-post.html">Blog Post</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <!-- mainmenu end -->
+
+                    </div>
+                </div>
+                <!-- container -->
+            </div>
+            <!-- nav end -->
+        </header>
         @RenderBody()
         <hr />
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
-    </div>
-    <footer class="main text-center">
-        <div class="container-fluid m-5-hor">
-            <div class="row">
+        <footer class="main text-center">
+            <div class="container-fluid m-5-hor">
+                <div class="row">
 
-                <div class="onStep animated fadeInUp" data-animation="fadeInUp" data-time="300">
-                    <div class="col-md-4 text-left">
-                        <span><a href="#">Email: companyname@gmail.com</a></span>
-                        <span>Copyright - 2018 Plesire Travel All Right Reserved</span>
+                    <div class="onStep animated fadeInUp" data-animation="fadeInUp" data-time="300">
+                        <div class="col-md-4 text-left">
+                            <span><a href="#">Email: companyname@gmail.com</a></span>
+                            <span>Copyright - 2018 Plesire Travel All Right Reserved</span>
+                        </div>
+
+                        <div class="col-md-4">
+                            <span class="logo">
+                                <img alt="logo" src="~/Content/img/logo-white.png">
+                            </span>
+                        </div>
+
+                        <div class="col-md-4 text-right">
+                            <span>129 Park street, New York City, NY 10903</span>
+                            <span>Phone: (+6221) 999 999 999</span>
+                        </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <span class="logo">
-                            <img alt="logo" src="~/Content/img/logo-white.png">
-                        </span>
-                    </div>
 
-                    <div class="col-md-4 text-right">
-                        <span>129 Park street, New York City, NY 10903</span>
-                        <span>Phone: (+6221) 999 999 999</span>
-                    </div>
                 </div>
-
-
             </div>
+        </footer>
+        <div id="totop" class="init">
+            <span class="ti-angle-up"></span>
         </div>
-    </footer>
-    <div id="totop" class="init">
-        <span class="ti-angle-up"></span>
-    </div>
 
-    <!-- modal login -->
-    <div id="fLogin" class="modal fade">
-        <div class="modal-dialog modal-login">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Member Log In</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form action="#" method="post">
-                        <div class="form-group">
-                            <label>User Name</label>
-                            <input type="text" class="form-control" required="required">
-                        </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" class="form-control" required="required">
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-primary btn-block btn-lg" value="Log In">
-                        </div>
-                    </form>
-                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <h4>Use a local account to log in.</h4>
-                        <hr />
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                            <div class="col-md-10">
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <div class="checkbox">
-                                    @Html.CheckBoxFor(m => m.RememberMe)
-                                    @Html.LabelFor(m => m.RememberMe)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Log in" class="btn btn-default" />
-                            </div>
-                        </div>
-                        <p>
-                            @Html.ActionLink("Register as a new user", "Register")
-                        </p>
-                    }
-                </div>
-                <div class="modal-footer">
-                    <a href="#">or Sign Up</a>
+        <!-- modal login -->
+        <div id="fLogin" class="modal fade">
+            <div class="modal-dialog modal-login">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Member Log In</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        @{
+                            Html.RenderAction("RenderLogin", "Partial");
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#">or Sign Up</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- modal login end -->
-    <!-- modal registration -->
-    <div id="fsignUp" class="modal fade">
-        <div class="modal-dialog modal-login">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Member Registration</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" name="firstname" class="form-control" required="required">
-                        </div>
-                        <div class="form-group">
-                            <label>Last Name</label>
-                            <input type="text" name="lastname" class="form-control" required="required">
-                        </div>
-                        <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="email" name="email" class="form-control" required="required">
-                        </div>
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" name="username" class="form-control" required="required">
-                        </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" name="password" class="form-control" required="required">
-                        </div>
-                        <div class="form-group">
-                            <label><input type="checkbox" name="terms"> I agree with the <a href="#">Terms and Conditions</a>.</label>
-                        </div>
-                        <div class="form-group"><input type="submit" value="Sign up" class="btn btn-primary btn-block btn-lg"></div>
-                        <div class="clearfix"></div>
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <a href="#">or Log In</a>
+        <!-- modal login end -->
+        <!-- modal registration -->
+        <div id="fsignUp" class="modal fade">
+            <div class="modal-dialog modal-login">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Member Registration</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        @{
+                            Html.RenderAction("RenderRegister", "Partial");
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#">or Log In</a>
+                    </div>
                 </div>
             </div>
         </div>
+        <!-- modal registration end -->
     </div>
-    <!-- modal registration end -->
     @Scripts.Render("~/bundles/custom/js")
     @RenderSection("scripts", required: false)
 </body>
