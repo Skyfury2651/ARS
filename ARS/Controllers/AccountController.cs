@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ARS.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Reflection;
 
 namespace ARS.Controllers
 {
@@ -52,6 +55,25 @@ namespace ARS.Controllers
             }
         }
 
+        [Authorize]
+        public ActionResult UpdateAspNetUser(ApplicationUser user)
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            currentUser.lastName = user.lastName;
+            currentUser.firstName = user.firstName;
+            currentUser.address = user.address;
+            currentUser.userIdentityCode = user.userIdentityCode;
+            currentUser.Email = user.Email;
+            currentUser.PhoneNumber = user.PhoneNumber;
+            currentUser.preferedCreditCardNumber = user.preferedCreditCardNumber;
+            userManager.Update(currentUser);
+            context.SaveChanges();
+           
+            return RedirectToAction("Index", "Manage");
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -70,7 +92,7 @@ namespace ARS.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToLocal(returnUrl);
             }
 
             // This doesn't count login failures towards account lockout
@@ -87,7 +109,7 @@ namespace ARS.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                    return RedirectToLocal(returnUrl);
             }
         }
 
@@ -151,7 +173,7 @@ namespace ARS.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email , firstName = model.firstName,lastName = model.lastName , sex = model.sex , preferedCreditCardNumber = model.preferedCreditCardNumber , skyMiles = 0 , age = model.age , userIdentityCode = model.userIdentityCode , address = model.address,PhoneNumber = model.phoneNumber};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -169,7 +191,7 @@ namespace ARS.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return RedirectToAction("Index", "Home");
         }
 
         //

@@ -170,12 +170,13 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PartialController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202103231010553_InitDatabase.cs" />
-    <Compile Include="Migrations\202103231010553_InitDatabase.Designer.cs">
-      <DependentUpon>202103231010553_InitDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\202103241318453_InitDatabase.cs" />
+    <Compile Include="Migrations\202103241318453_InitDatabase.Designer.cs">
+      <DependentUpon>202103241318453_InitDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -198,6 +199,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom\animated-on3step.css" />
+    <Content Include="Content\custom\app.css" />
     <Content Include="Content\custom\bootstrap.css" />
     <Content Include="Content\custom\bootstrap.min.css" />
     <Content Include="Content\custom\datepicker.min.css" />
@@ -604,6 +606,9 @@
     <Content Include="Content\img\gallery-home\img4.jpg" />
     <Content Include="Content\img\gallery-home\img5.jpg" />
     <Content Include="Content\img\gallery-home\img6.jpg" />
+    <Content Include="Content\img\images-slider\img-slide-1.jpg" />
+    <Content Include="Content\img\images-slider\img-slide-2.jpg" />
+    <Content Include="Content\img\images-slider\img-slide-3.jpg" />
     <Content Include="Content\img\img-fea-1.jpg" />
     <Content Include="Content\img\img-fea-2.jpg" />
     <Content Include="Content\img\img-fea-3.jpg" />
@@ -698,9 +703,11 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_MyLayout.cshtml" />
     <Content Include="Views\Home\View.cshtml" />
+    <Content Include="Views\Shared\_RegisterPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Partial\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -716,8 +723,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202103231010553_InitDatabase.resx">
-      <DependentUpon>202103231010553_InitDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202103241318453_InitDatabase.resx">
+      <DependentUpon>202103241318453_InitDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

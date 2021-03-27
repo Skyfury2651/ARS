@@ -1,87 +1,116 @@
-﻿@model ARS.Models.IndexViewModel
+﻿@model ARS.Models.ApplicationUser
 @{
-    ViewBag.Title = "Manage";
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_MyLayout.cshtml";
 }
 
-<h2>@ViewBag.Title.</h2>
+<div class="body container">
+    <h2>@ViewBag.Title.</h2>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-        <dt>External Logins:</dt>
-        <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Manage", "ManageLogins") ]
-        </dd>
-        @*
-            Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-             
-             See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-             
-             Uncomment the following block after you have set up two-factor authentication
-        *@
-        @*  
-            <dt>Phone Number:</dt>
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div class="container">
+        <h4>Change your profile</h4>
+        <hr />
+        <div>
+            <form action="/Account/UpdateAspNetUser">
+                <div class="form-group">
+                    <label for="key">First Name</label>
+                    <input type="text" class="form-control" required="true" name="firstName" id="key" value="@Model.firstName">
+                </div>
+                <div class="form-group">
+                    <label for="key">Last Name</label>
+                    <input type="text" class="form-control" required="true" name="lastName" id="key" value="@Model.lastName">
+                </div>
+                <div class="form-group">
+                    <label for="key">User Identity Code</label>
+                    <input type="text" class="form-control" required="true" name="userIdentityCode" value="@Model.userIdentityCode" id="key">
+                </div>
+                <div class="form-group">
+                    <label for="key">Address</label>
+                    <input type="text" class="form-control" required="true" name="address" value="@Model.address" id="key">
+                </div>
+                <div class="form-group">
+                    <label for="key">Phone Number</label>
+                    <input type="text" class="form-control" required="true" name="phoneNumber" value="@Model.PhoneNumber" id="key">
+                </div>
+                <div class="form-group">
+                    <label for="key">Email</label>
+                    <input type="text" class="form-control" required="true" name="email" value="@Model.Email" id="key">
+                </div>
+                <div class="form-group">
+                    <label for="key">Prefered Credit Card Number</label>
+                    <input type="text" class="form-control" required="true" name="preferedCreditCardNumber" value="@Model.preferedCreditCardNumber" id="key">
+                </div>
+                <!--<div class="form-group">
+                    <label>Select your trip</label>
+                    <select name="select-trip" required="">
+                        <option value="">Any</option>
+                        <option value="#">City Travel</option>
+                        <option value="#">Cultural Travel</option>
+                        <option value="#">Family Travel</option>
+                        <option value="#">Holiday Travel</option>
+                        <option value="#">Luxury Travel</option>
+                        <option value="#">Wild &amp; Adventure Travel</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Destination</label>
+                    <select name="destination" required="">
+                        <option value="">Any</option>
+                        <option value="#">Asia</option>
+                        <option value="#">Africa</option>
+                        <option value="#">America</option>
+                        <option value="#">Australia</option>
+                        <option value="#">Europe</option>
+                        <option value="#">Rusia</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Duration</label>
+                    <select name="duraion" required="">
+                        <option value="">Any</option>
+                        <option value="#">1 Day Travel</option>
+                        <option value="#">2 Days Travel</option>
+                        <option value="#">3 Days Travel</option>
+                        <option value="#">4 Days Travel</option>
+                        <option value="#">5 Days Travel</option>
+                        <option value="#">1 week Travel</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <div id="filterDate2">-->
+                        <!-- Datepicker as text field -->
+                        <!--<div class="input-group date" data-date-format="dd/mm/yyyy">
+                            <input type="text" class="form-control" placeholder="dd/mm/yyyy" required="">
+                            <div class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+                <input class="btn-frm-search" value="Update" type="submit">
+            </form>
+        </div>
+        @*<dl class="dl-horizontal">
+            <dt>Password:</dt>
             <dd>
-                @(Model.PhoneNumber ?? "None")
-                @if (Model.PhoneNumber != null)
+                @if (Model.HasPassword)
                 {
-                    <br />
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
-                    using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>[<input type="submit" value="Remove" class="btn-link" />]</text>
-                    }
+                    @Html.ActionLink("Change your password", "ChangePassword")
                 }
                 else
                 {
-                    <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+                    @Html.ActionLink("Create", "SetPassword")
                 }
+                ]
             </dd>
-        *@
-        <dt>Two-Factor Authentication:</dt>
-        <dd>
-            <p>
-                There are no two-factor authentication providers configured. See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
-                for details on setting up this ASP.NET application to support two-factor authentication.
-            </p>
-            @*@if (Model.TwoFactor)
-                {
-                    using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Enabled
-                        <input type="submit" value="Disable" class="btn btn-link" />
-                        </text>
-                    }
-                }
-                else
-                {
-                    using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        <text>Disabled
-                        <input type="submit" value="Enable" class="btn btn-link" />
-                        </text>
-                    }
-                }*@
-        </dd>
-    </dl>
+            <dt>External Logins:</dt>
+            <dd>
+                @Model.Logins.Count [
+                @Html.ActionLink("Manage", "ManageLogins") ]
+            </dd>
+        </dl>*@
+    </div>
+
 </div>

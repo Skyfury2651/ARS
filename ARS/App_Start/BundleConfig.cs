@@ -36,7 +36,8 @@ namespace ARS
                       "~/Content/custom/owl.carousel.css",
                       "~/Content/custom/owl.theme.css",
                       "~/Content/custom/on3step-style.css",
-                      "~/Content/custom/queries-on3step.css"
+                      "~/Content/custom/queries-on3step.css",
+                      "~/Content/custom/app.css"
                       ));
             bundles.Add(new ScriptBundle("~/bundles/custom/js").Include(
                 "~/Scripts/custom/pluginson3step.js",
