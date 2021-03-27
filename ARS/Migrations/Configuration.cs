@@ -9,13 +9,17 @@ namespace ARS.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(ARS.Models.ApplicationDbContext context)
         {
-            //this.seedCity(context);
-            //this.seedCityAirport(context);
+            this.seedCity(context);
+            this.seedCityAirport(context);
+        }
+        public void seedFlight()
+        {
+
         }
         public void seedCity(ARS.Models.ApplicationDbContext context)
         {
@@ -61,7 +65,8 @@ namespace ARS.Migrations
                 name = "AnDoCity",
                 lattitude = 9.930741,
                 longtitude = 76.267348,
-            });
+            }
+            );
         }
 
         public void seedCityAirport(ARS.Models.ApplicationDbContext context)
