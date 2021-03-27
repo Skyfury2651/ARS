@@ -11,7 +11,6 @@ namespace ARS.Models
         public string planeCode { get; set; }
         public int fromAirportId { get; set; }
         public int toAirportId { get; set; }
-        public int type { get; set; }
         public DateTime departureDate { get; set; }
         public DateTime arrivalDate { get; set; }
         public double flyTime { get; set; }

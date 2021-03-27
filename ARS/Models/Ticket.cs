@@ -12,6 +12,7 @@ namespace ARS.Models
         public int flightId { get; set; }
         public int seatId { get; set; }
         public int type { get; set; }
+        public int flightType { get; set; }
         public string blockingNumber { get; set; }
         public string confirmNumber { get; set; }
         public string cancelNumber { get; set; }
