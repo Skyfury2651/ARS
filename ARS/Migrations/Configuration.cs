@@ -16,10 +16,21 @@ namespace ARS.Migrations
         {
             this.seedCity(context);
             this.seedCityAirport(context);
+            this.seedFlightCase1(context);
         }
-        public void seedFlight()
+        public void seedFlightCase1(ARS.Models.ApplicationDbContext context)
         {
-
+            context.Flights.AddOrUpdate(x => x.id, new Models.Flight
+            {
+                id = 1,
+                status = 1,
+                haveStop = false,
+                distance = 1000,
+                departureDate = DateTime.Now.AddDays(15),
+                arrivalDate = DateTime.Now.AddDays(16),
+                flyTime = 10,
+                price = 100000,
+            });
         }
         public void seedCity(ARS.Models.ApplicationDbContext context)
         {
