@@ -178,6 +178,10 @@
     <Compile Include="Migrations\202103241318453_InitDatabase.Designer.cs">
       <DependentUpon>202103241318453_InitDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103271258353_addAvaiableSeat.cs" />
+    <Compile Include="Migrations\202103271258353_addAvaiableSeat.Designer.cs">
+      <DependentUpon>202103271258353_addAvaiableSeat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Airport.cs" />
@@ -725,6 +729,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202103241318453_InitDatabase.resx">
       <DependentUpon>202103241318453_InitDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103271258353_addAvaiableSeat.resx">
+      <DependentUpon>202103271258353_addAvaiableSeat.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
