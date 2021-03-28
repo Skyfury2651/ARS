@@ -1,0 +1,60 @@
+﻿@model IList<ARS.Models.Flight>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MyLayout.cshtml";
+}
+
+<div class="body container">
+    <h2>@ViewBag.Title.</h2>
+
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div class="container">
+        <h4>Change your profile</h4>
+        <hr />
+        <div>
+            <table>
+                <thead>
+                    <th></th>
+                    <th>PlaneCode</th>
+                    <th>FromAirport</th>
+                    <th>ToAirport</th>
+                    <th>Distance</th>
+                    <th>Price</th>
+                    <th>SeatAvailable</th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><a href="/Flight/Place/@item.id">Place</a></td>
+                            <td>@item.planeCode</td>
+                            <td>
+                                @foreach (var city in item.FromAirport.CityAirports)
+                                {
+                                    @city.City.name
+                                }
+                            </td>
+                            <td>
+                                @foreach (var city in item.ToAirport.CityAirports)
+                                {
+                                    @city.City.name
+                                }
+                            </td>
+                            <td>
+                                @item.distance
+                            </td>
+                            <td>
+                                @string.Format("{0:C0}", item.price)
+                            </td>
+                            <td>
+                                @item.seatAvaiable
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

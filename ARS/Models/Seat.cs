@@ -14,4 +14,8 @@ namespace ARS.Models
         public int status { get; set; }
         public virtual Flight Flight { get; set; }
     }
+    public enum SeatType 
+    {
+        Bussiness = 1, FirstClass = 2, ClubClass = 3 , Smoking = 4 , NonSmoking = 5
+    }
 }

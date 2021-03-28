@@ -176,15 +176,15 @@
 
             <h2 class="big-heading">Find your adventure with us</h2>
 
-            <form class="form-inline" id="sform">
+            <form class="form-inline" id="sform" action="/Flight">
                 <div class="row">
                     <div class="col-lg-3 col-md-3">
                         <div class="form-group">
                             <label>Type of Flight</label>
-                            <select name="duraion" required="">
-                                <option value = "0">One way</option>
-                                <option value = "1" >Round Trip </option>
-                                
+                            <select name="flightType" required="">
+                                <option value="1">One way</option>
+                                <option value="2">Round Trip </option>
+
                             </select>
                         </div>
                     </div>
@@ -206,15 +206,15 @@
                                             <div class="content" style="display:flex">
                                                 <div class="form-group" style="width:50%">
                                                     <label style="color: black;">Country / region</label>
-                                                    <form id="myForm">
+                                                    <div>
                                                         <select class="form-control" id="citiessDropdownDeparture" name="citiessDropdownDeparture"></select>
-                                                    </form>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group" style="width:50%">
                                                     <label style="color: black;">Airport</label>
-                                                    <form id="myForm">
-                                                        <select class="form-control" id="dropdownStateDeparture" name="dropdownStateDeparture"></select>
-                                                    </form>
+                                                    <div>
+                                                        <select class="form-control" id="dropdownStateDeparture" name="fromAirportId"></select>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <button style="margin-top:15px" type="button" class="btn btn-primary" id="saveDeparture">Save</button>
@@ -241,16 +241,16 @@
                                             <h4 style="color: black;">Please tell us where the airport is located.</h4>
                                             <div class="content" style="display:flex">
                                                 <div class="form-group" style="width:50%">
-                                                    <label  style="color: black;">Country / region</label>
-                                                    <form id="myForm">
+                                                    <label style="color: black;">Country / region</label>
+                                                    <div id="myForm">
                                                         <select class="form-control" id="citiessDropdownArrival" name="citiessDropdownArrival"></select>
-                                                    </form>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group" style="width:50%">
                                                     <label class="labelDropdown" style="color: black;">Airport</label>
-                                                    <form id="myForm">
-                                                        <select class="form-control" id="dropdownStateArrival" name="dropdownStateArrival"></select>
-                                                    </form>
+                                                    <div id="myForm">
+                                                        <select class="form-control" id="dropdownStateArrival" name="toAirportId"></select>
+                                                    </d>
                                                 </div>
                                             </div>
                                             <button style="margin-top:15px" type="button" class="btn btn-primary" id="saveArrival">Save</button>
@@ -263,13 +263,13 @@
                     <div class="col-lg-3 col-md-3">
                         <div class="form-group">
                             <label>Number of passengers</label>
-                            <select name="duraion" required="">
-                                <option value="0">1 </option>
-                                <option value="1">2 </option>
-                                <option value="2">3 </option>
-                                <option value="3">4 </option>
-                                <option value="4">5 </option>
-                                <option value="5">6 </option>
+                            <select name="NumberOfPassager" required="">
+                                <option value="1">1 </option>
+                                <option value="2">2 </option>
+                                <option value="3">3 </option>
+                                <option value="4">4 </option>
+                                <option value="5">5 </option>
+                                <option value="6">6 </option>
                             </select>
                         </div>
                     </div>
@@ -280,8 +280,8 @@
                             <label>Depart</label>
                             <div id="filterDate2">
                                 <!-- Datepicker as text field -->
-                                <div class="input-group date" data-date-format="dd/mm/yyyy">
-                                    <input type="text" class="form-control" placeholder="dd/mm/yyyy" required="">
+                                <div class="input-group" data-date-format="mm/dd/yyyy">
+                                    <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="DepartureDate">
                                     <div class="input-group-addon">
                                         <span class="fa fa-calendar"></span>
                                     </div>
@@ -294,8 +294,8 @@
                             <label>Return</label>
                             <div id="filterDate2">
                                 <!-- Datepicker as text field -->
-                                <div class="input-group date" data-date-format="dd/mm/yyyy">
-                                    <input type="text" class="form-control" placeholder="dd/mm/yyyy" required="">
+                                <div class="input-group" data-date-format="mm/dd/yyyy">
+                                    <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="ReturnDate">
                                     <div class="input-group-addon">
                                         <span class="fa fa-calendar"></span>
                                     </div>
@@ -652,7 +652,12 @@
     </div>
 </section>
 
-<script src="bootstrap/js/bootstrap.min.js"></script>
+@*<script src="bootstrap/js/bootstrap.min.js"></script>*@
+<script>
+    $('.datepicker').datetimepicker({
+        format: 'DD-MM-YYYY HH:mm:ss'
+    });
+</script>
 <script src="https://code.jquery.com/jquery-1.10.0.min.js"></script>
 <script src="https://use.fontawesome.com/eac163b655.js"></script>
 <script>
