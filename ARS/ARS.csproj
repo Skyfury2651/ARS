@@ -168,6 +168,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FlightController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PartialController.cs" />
@@ -644,6 +645,7 @@
     <Content Include="Content\img\team\img1.jpg" />
     <Content Include="Content\img\team\img2.jpg" />
     <Content Include="Content\img\team\img3.jpg" />
+    <Content Include="Content\selecting-seat.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -712,6 +714,8 @@
     <Content Include="Views\Shared\_MyLayout.cshtml" />
     <Content Include="Views\Home\View.cshtml" />
     <Content Include="Views\Shared\_RegisterPartial.cshtml" />
+    <Content Include="Views\Flight\Index.cshtml" />
+    <Content Include="Views\Flight\Place.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
