@@ -16,33 +16,71 @@ namespace ARS.Migrations
         {
             //this.seedCity(context);
             //this.seedCityAirport(context);
-            this.seedFlightCase1(context);
-            this.seedFlightsCase2(context);
-            //this.seedSeat(context);
-            this.seedStops(context);
+            //this.seedFlightCase1(context);
+            //this.seedFlightsCase2(context);
+            this.seedSeat(context);
+            //this.seedStops(context);
         }
         public void seedSeat(ARS.Models.ApplicationDbContext context)
         {
-            for (int i = 7; i < 18; i++)
+            int seatId = 1;
+            int seatStatus = 2;
+            for (int k = 1; k < 4; k++)
             {
-                int classType = 1;
-                if (i > 14)
+                int notAvailable = 0;
+                for (int i = 1; i < 5; i++)
                 {
-                    classType = 4;
-                }
-                for (int j = 1; j < 7; j++)
-                {
-                    string position = j.ToString()  + Convert.ToChar(j + 64);
-                    context.Seats.AddOrUpdate(x => x.id, new Models.Seat
+                    int classType = (int)Models.SeatType.FirstClass;
+                    if (i > 2)
                     {
-                        id = 1 * i,
-                        status = 1,
-                        classType = classType,
-                        position = position,
-                        flightId = 4
-                    });
+                        classType = (int)Models.SeatType.ClubClass;
+                        seatStatus = 0;
+                    }
+                    
+                    for (int j = 1; j < 7; j++)
+                    {
+                        string position = i.ToString() + Convert.ToChar(j + 64);
+                        context.Seats.AddOrUpdate(x => x.id, new Models.Seat
+                        {
+                            id = seatId,
+                            status = seatStatus,
+                            classType = classType,
+                            position = position,
+                            flightId = k
+                        });
+                        seatId += 1;
+                    }
+                }
+                seatStatus = 1;
+                for (int i = 5; i < 19; i++)
+                {
+
+                    int classType = (int)Models.SeatType.NonSmoking;
+                    if (i > 7)
+                    {
+                        classType = (int)Models.SeatType.Bussiness;
+                    }
+                    if (i > 13)
+                    {
+                        classType = (int)Models.SeatType.Smoking;
+                    }
+                    for (int j = 1; j < 7; j++)
+                    {
+                        string position = i.ToString() + Convert.ToChar(j + 64);
+                        context.Seats.AddOrUpdate(x => x.id, new Models.Seat
+                        {
+                            id = seatId,
+                            status = seatStatus,
+                            classType = classType,
+                            position = position,
+                            flightId = k
+                        });
+                        seatId += 1;
+                    }
                 }
             }
+
+
         }
         public void seedFlightCase1(ARS.Models.ApplicationDbContext context)
         {
@@ -59,7 +97,7 @@ namespace ARS.Migrations
                 toAirportId = 555,
                 flyTime = 10,
                 price = 100000,
-                seatAvaiable = 100,
+                seatAvaiable = 60,
             });
             //context.Seats.AddOrUpdate(x => x.id, new Models.Seat
             //{
