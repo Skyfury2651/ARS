@@ -147,11 +147,6 @@
         if ($(this).hasClass(settings.selectedSeatCss)) {
             $('#staticBackdrop').modal('show')
           
-        }
-        if (+($(this).attr('class').split(' ')[3]) !== infomationBooking.typeSeat) {
-            $('#content').text('you cannot choose this seat')
-            $('#staticBackdrop').modal('show');
-           
         }else {
             $(this).toggleClass(settings.selectingSeatCss);
         }
