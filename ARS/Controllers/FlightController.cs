@@ -180,11 +180,13 @@ namespace ARS.Controllers
                 Console.WriteLine(ex.Message);
             }
             var transactionIdList = transactionIds.Split(',').Select(Int32.Parse).ToList();
+            var confirmNumber = Helper.RandomString(5);
             foreach (var item in transactionIdList)
             {
                 var transaction = _db.Transaction.Find(item);
                 transaction.status = (int)TransactionStatus.SUCCESS;
                 transaction.Ticket.status = (int)TicketStatus.ACTIVE;
+                transaction.Ticket.confirmNumber = confirmNumber;
                 transaction.Ticket.Seat.status = (int)SeatStatus.Buyed;
                 _db.SaveChanges();
             }
@@ -192,7 +194,7 @@ namespace ARS.Controllers
 
 
             //on successful payment, show success page to user.  
-            return View();
+            return RedirectToAction("PurchasedTicket", new {  confirmNumber = confirmNumber , transactionIds = transactionIds });
         }
         private PayPal.Api.Payment payment;
         private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)

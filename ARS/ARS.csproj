@@ -205,6 +205,7 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\CityAirport.cs" />
     <Compile Include="Models\Flight.cs" />
+    <Compile Include="Models\Helper.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Seat.cs" />
