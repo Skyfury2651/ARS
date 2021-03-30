@@ -27,5 +27,6 @@ namespace ARS.Models
 
         public virtual Airport FromAirport { get; set; }
         public virtual Airport ToAirport { get; set; }
+        public virtual ICollection<Seat> Seats { get; set; }
     }
 }

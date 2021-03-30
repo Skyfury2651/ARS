@@ -1,4 +1,5 @@
-﻿
+﻿@model ARS.Controllers.FlightPlaceModel
+
 @{
     ViewBag.Title = "Place";
     Layout = "~/Views/Shared/_MyLayout.cshtml";
@@ -39,13 +40,16 @@
     <div id="list">
 
     </div>
+    <form action="/Flight/PaymentWithPayPal/@Model.Flight.id" id="seatOrder">
+        <input id="orderSeat" name="orderSeat"/>
+    </form>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     var economyPosition = 14;
     var infomationBooking = {
-        qualifi: 4,
+        qualifi: 9,
         typeSeat: 'bussiness'
     }
     var settings = {
@@ -83,15 +87,15 @@
                 str.push('<li class="infomation-seat" ><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">CLUB CLASSES</span></div></li>')
             }
             if (i == 4) {
-                settings.typeTicket = 3
+                settings.typeTicket = 5
                 str.push('<li class="infomation-seat" ><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">NON SMOKING CLASSES</span></div></li>')
             }
             if (i == 6) {
-                settings.typeTicket = 3
+                settings.typeTicket = 1
                 str.push('<li class="infomation-seat" ><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">BUSSINESS CLASSES</span></div></li>')
             }
             if (i == economyPosition - 1) {
-                settings.typeTicket = 'bussiness-1'
+                settings.typeTicket = '4'
                 str.push('<li class="infomation-seat"><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">SMOKING CLASSES</span></div></li>')
             }
 
@@ -110,11 +114,12 @@
         }
         $('#place').html(str.join(''));
     };
-    //case I: Show from starting
-    //init();
 
-    //Case II: If already booked
-    var bookedSeats = ['5A', '10B', '17C'];
+   var bookedSeats = [@foreach (var item in Model.bookedSeat)
+   {
+       item.position = "\'" + item.position + "\',";
+       @Html.Raw(item.position)
+   }];
     init(bookedSeats);
 
     $('.' + settings.seatCss).click(function () {
@@ -134,12 +139,11 @@
             str.push($(this).attr('title'));
         });
         let data = str.join(',');
-        console.log(data);
     })
 
 
     $('#btnShowNew').click(function () {
-        var str = [], listItems = {},
+        var str = "", listItems = {},
             listStr = [],
             item, classItem;
         $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
@@ -149,16 +153,10 @@
                 name: classItem,
                 value: item
             }
+            str = str.concat(`${item},`);
             listStr.push(listItems);
-            console.log(listStr)
         });
-        if (listStr.length > infomationBooking.qualifi) {
-            alert('abc')
-        } else {
-            for (x = 0; x < listStr.length; x++) {
-                $("#list").append('<p>' + listStr[x].name + '</p> </br> <span>' + listStr[x].value + '</span>');
-
-            }
-        }
+        $("#orderSeat").val(str);
+        $("#seatOrder").submit();
     })
 </script>

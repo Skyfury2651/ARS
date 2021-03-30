@@ -16,8 +16,17 @@ namespace ARS.Models
         public string blockingNumber { get; set; }
         public string confirmNumber { get; set; }
         public string cancelNumber { get; set; }
+        public int status { get; set; } = 0;// 0 - not Available ; 1 - Available 
         public virtual ApplicationUser User { get; set; }
         public virtual Flight Flight { get; set; }
         public virtual Seat Seat { get; set; }
+    }
+    public enum TicketType
+    {
+        ADULT = 1 , OLD = 2 , KID = 3
+    }
+    public enum TicketStatus
+    {
+        DISABLE = 0, ACTIVE = 1,
     }
 }

@@ -18,4 +18,8 @@ namespace ARS.Models
     {
         Bussiness = 1, FirstClass = 2, ClubClass = 3 , Smoking = 4 , NonSmoking = 5
     }
+    public enum SeatStatus
+    {
+        Available = 1, Block = 0 , Buyed = 2
+    }
 }
