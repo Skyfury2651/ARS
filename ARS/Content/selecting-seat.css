@@ -2,6 +2,9 @@
     padding: 0;
     height: auto;
 }
+body {
+    background-image: url('https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F28%2F2018%2F03%2Fempty-airplane-cabin-SEATSWAP0318.jpg&q=8');
+}
 
 .plane {
     margin: 50px auto;
@@ -24,15 +27,16 @@
     top: 0;
     left: 0;
     height: 500px;
-    width: 97%;
+    width: 100%;
     border-radius: 50%;
-    border-right: 5px solid #d8d8d8;
-    border-left: 5px solid #d8d8d8;
+    border-right: 5px solid black;
+    border-left: 5px solid black;
 }
 
 .cockpit h1 {
     width: 60%;
     margin: 100px auto 35px auto;
+    color:black
 }
 
 #holder {
@@ -86,6 +90,9 @@
 #place .row-4 {
     margin-top: 10px;
 }
+#seatDescription{
+    margin-top:10px !important
+}
 
 #seatDescription li {
     vertical-align: middle;
@@ -93,6 +100,8 @@
     padding-left: 35px;
     height: 35px;
     float: left;
+    color: black;
+    font-weight: 600;
 }
 
 .exit {
@@ -195,4 +204,12 @@
 
 .infomation-seat:hover {
     background: none !important;
+}
+.close {
+    position: absolute !important;
+    right: 18px;
+    top: 18px;
+}
+.modal-header{
+    position:relative !important
 }

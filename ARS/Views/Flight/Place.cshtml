@@ -11,11 +11,11 @@
     <div class="cockpit">
         <h1>Please select a seat</h1>
     </div>
-    <div class="fan" style=" position: relative">
+    @*<div class="fan" style=" position: relative">
         <div class="sub-fan">
 
         </div>
-    </div>
+    </div*@
     <div id="holder">
         <ul id="place">
         </ul>
@@ -35,13 +35,34 @@
     </div>
     <div style="clear:both;width:100%">
         <input type="button" id="btnShowNew" value="Show Selected Seats" />
-        <input type="button" id="btnShow" value="Show All" />
+       
     </div>
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="staticBackdropLabel">Alert</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="content">This seat is already reserved</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div id="list">
 
     </div>
     <form action="/Flight/PaymentWithPayPal/@Model.Flight.id" id="seatOrder">
-        <input id="orderSeat" name="orderSeat"/>
+        <input id="orderSeat" name="orderSeat" />
     </form>
 </div>
 
@@ -50,7 +71,7 @@
     var economyPosition = 14;
     var infomationBooking = {
         qualifi: 9,
-        typeSeat: 'bussiness'
+        typeSeat: 5
     }
     var settings = {
         rows: 18,
@@ -124,8 +145,14 @@
 
     $('.' + settings.seatCss).click(function () {
         if ($(this).hasClass(settings.selectedSeatCss)) {
-            alert('This seat is already reserved');
-        } else {
+            $('#staticBackdrop').modal('show')
+          
+        }
+        if (+($(this).attr('class').split(' ')[3]) !== infomationBooking.typeSeat) {
+            $('#content').text('you cannot choose this seat')
+            $('#staticBackdrop').modal('show');
+           
+        }else {
             $(this).toggleClass(settings.selectingSeatCss);
         }
 

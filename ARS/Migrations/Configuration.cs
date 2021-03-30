@@ -14,12 +14,12 @@ namespace ARS.Migrations
 
         protected override void Seed(ARS.Models.ApplicationDbContext context)
         {
-            //this.seedCity(context);
-            //this.seedCityAirport(context);
-            //this.seedFlightCase1(context);
-            //this.seedFlightsCase2(context);
+            this.seedCity(context);
+            this.seedCityAirport(context);
+            this.seedFlightCase1(context);
+            this.seedFlightsCase2(context);
             this.seedSeat(context);
-            //this.seedStops(context);
+            this.seedStops(context);
         }
         public void seedSeat(ARS.Models.ApplicationDbContext context)
         {
@@ -36,7 +36,7 @@ namespace ARS.Migrations
                         classType = (int)Models.SeatType.ClubClass;
                         seatStatus = 0;
                     }
-                    
+
                     for (int j = 1; j < 7; j++)
                     {
                         string position = i.ToString() + Convert.ToChar(j + 64);

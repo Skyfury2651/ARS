@@ -34,7 +34,7 @@ namespace ARS.Controllers
                .ToList();
             return View(data);
         }
-        public ActionResult Place(int id)
+        public ActionResult Place(int? id)
         {
             Flight flight = _db.Flights.Find(id);
             FlightPlaceModel flightModel = new FlightPlaceModel();

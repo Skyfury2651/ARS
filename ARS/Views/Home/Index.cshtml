@@ -181,10 +181,9 @@
                     <div class="col-lg-3 col-md-3">
                         <div class="form-group">
                             <label>Type of Flight</label>
-                            <select name="flightType" required="">
+                            <select name="flightType" required="" id="flightType">
                                 <option value="1">One way</option>
                                 <option value="2">Round Trip </option>
-
                             </select>
                         </div>
                     </div>
@@ -289,13 +288,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6">
+                    <div class="col-lg-6 col-md-6" id="returnClalendar">
                         <div class="form-group">
                             <label>Return</label>
                             <div id="filterDate2">
                                 <!-- Datepicker as text field -->
                                 <div class="input-group" data-date-format="mm/dd/yyyy">
-                                    <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="ReturnDate">
+                                    <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="returnDate" id="returnDate">
                                     <div class="input-group-addon">
                                         <span class="fa fa-calendar"></span>
                                     </div>
@@ -306,7 +305,6 @@
                 </div>
                 <input class="btn-frm-search" value="FIND NOW" type="submit">
             </form>
-
         </div>
     </div>
 </section>
@@ -653,11 +651,19 @@
 </section>
 
 @*<script src="bootstrap/js/bootstrap.min.js"></script>*@
-<script>
+@*<script>
     $('.datepicker').datetimepicker({
         format: 'DD-MM-YYYY HH:mm:ss'
     });
-</script>
+</script>*@
+<style>
+    .showDropdown{
+        display:block
+    }
+    .hideDropdown{
+        display:none;
+    }
+</style>
 <script src="https://code.jquery.com/jquery-1.10.0.min.js"></script>
 <script src="https://use.fontawesome.com/eac163b655.js"></script>
 <script>
@@ -753,6 +759,22 @@
                 $('#arrival').val(result)
             });
 
+        })
+        var selWay = $('#flightType option:selected').val();
+        if (selWay === "1") {
+            $('#returnClalendar').addClass('hideDropdown');
+            $('#returnDate').removeAttr('required') 
+        }
+        $('#flightType').change(function () {
+            var selWay = $('#flightType option:selected').val();
+            if (selWay === "1") {
+                $('#returnClalendar').addClass('hideDropdown');
+                $('#returnDate').removeAttr('required') 
+                
+            } else {
+                $('#returnClalendar').removeClass('hideDropdown')
+                $('#returnClalendar').addClass('showDropdown')
+            }
         })
     });
 </script>
