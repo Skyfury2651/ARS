@@ -212,11 +212,12 @@ namespace ARS.Migrations
                 fromAirportId = 558,
                 toAirportId = 16,
                 distance = 5003,
-                departureDate = DateTime.Parse("10/04/2021"),
-                arrivalDate = DateTime.Parse("11/04/2021"),
+                departureDate = DateTime.ParseExact("10/04/2021", "dd/MM/yyyy", null),
+                arrivalDate = DateTime.ParseExact("11/04/2021", "dd/MM/yyyy", null),
                 flyTime = 11,
                 price = 100,
                 planeCode = "HK-01",
+                seatAvaiable = 100,
             },
 
             new Models.Flight
@@ -232,6 +233,7 @@ namespace ARS.Migrations
                 flyTime = 11,
                 price = 150,
                 planeCode = "HK-02",
+                seatAvaiable = 100,
             }
             );
         }
