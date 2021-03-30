@@ -11,6 +11,11 @@ using System.Web.Mvc;
 
 namespace ARS.Controllers
 {
+    public class FlightSearchListModel
+    {
+        public List<Flight> departureFlights;
+        public List<Flight> returnFlights;
+    }
     public class FlightController : Controller
     {
         public ApplicationDbContext _db;
@@ -22,18 +27,34 @@ namespace ARS.Controllers
         // GET: Flight
         public ActionResult Index(FlightSearchModel flight)
         {
+            var Year = flight.ReturnDate.Year;
             var request = flight;
+            var result = new FlightSearchListModel();
+            
             //_db.Flights.Where(x => x.departureDate in);
             var AddDepartureDate = flight.DepartureDate.AddDays(3);
             var MinusDepartureDate = flight.DepartureDate.AddDays(-3);
-            var data = _db.Flights.Where(p => p.departureDate < AddDepartureDate)
+            var dataDeparture = _db.Flights.Where(p => p.departureDate < AddDepartureDate)
                 .Where(p => p.departureDate > MinusDepartureDate)
                 .Where(p => p.toAirportId == flight.toAirportId)
                 .Where(p => p.fromAirportId == flight.fromAirportId)
-                .Where(p => p.seatAvaiable >= flight.NumberOfPassager)
-               .ToList();
-            return View(data);
+                .Where(p => p.seatAvaiable >= flight.NumberOfPassager);
+            result.departureFlights = dataDeparture.ToList();
+            if (Year != 1 && flight.flightType == 2)
+            {
+                var AddReturnDate = flight.ReturnDate.AddDays(3);
+                var MinusReturnDate = flight.ReturnDate.AddDays(-3);
+                var dataReturn = _db.Flights.Where(p => p.departureDate > MinusDepartureDate)
+                    .Where(p => p.departureDate < AddReturnDate)
+               .Where(p => p.toAirportId == flight.toAirportId)
+               .Where(p => p.fromAirportId == flight.fromAirportId)
+               .Where(p => p.seatAvaiable >= flight.NumberOfPassager);
+                result.returnFlights = dataReturn.ToList();
+            }
+
+            return View(result);
         }
+
         public ActionResult Place(int? id)
         {
             Flight flight = _db.Flights.Find(id);
@@ -98,7 +119,7 @@ namespace ARS.Controllers
                         flightType = flightType,
                         type = (int)TicketType.ADULT,
                         status = (int)TicketStatus.DISABLE,
-                        flightId = flight.id
+                        flightId = item.Flight.id
                     });
 
                     var transaction = _db.Transaction.Add(new Models.Transaction
@@ -185,6 +206,7 @@ namespace ARS.Controllers
             {
                 var transaction = _db.Transaction.Find(item);
                 transaction.status = (int)TransactionStatus.SUCCESS;
+                transaction.updatedAt = DateTime.Now;
                 transaction.Ticket.status = (int)TicketStatus.ACTIVE;
                 transaction.Ticket.confirmNumber = confirmNumber;
                 transaction.Ticket.Seat.status = (int)SeatStatus.Buyed;
