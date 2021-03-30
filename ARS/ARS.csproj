@@ -191,6 +191,14 @@
     <Compile Include="Migrations\202103271344489_FlyTypeChange.Designer.cs">
       <DependentUpon>202103271344489_FlyTypeChange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103301229113_AddStatus.cs" />
+    <Compile Include="Migrations\202103301229113_AddStatus.Designer.cs">
+      <DependentUpon>202103301229113_AddStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103301240076_RemoveFlightIdAtTransaction.cs" />
+    <Compile Include="Migrations\202103301240076_RemoveFlightIdAtTransaction.Designer.cs">
+      <DependentUpon>202103301240076_RemoveFlightIdAtTransaction.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Airport.cs" />
@@ -747,6 +755,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103271344489_FlyTypeChange.resx">
       <DependentUpon>202103271344489_FlyTypeChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103301229113_AddStatus.resx">
+      <DependentUpon>202103301229113_AddStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103301240076_RemoveFlightIdAtTransaction.resx">
+      <DependentUpon>202103301240076_RemoveFlightIdAtTransaction.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,6 @@ namespace ARS.Models
     }
     public enum SeatStatus
     {
-        Available = 0, Block = 1 , Buyed = 2
+        Available = 1, Block = 0 , Buyed = 2
     }
 }
