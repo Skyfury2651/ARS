@@ -172,141 +172,142 @@
 <!-- section search -->
 <section class="frm-search">
     <div class="container-fluid m-5-hor m-5-hor-dev">
-        <div class="row">
+        <div>
+                <h2 class="big-heading">Find your adventure with us</h2>
 
-            <h2 class="big-heading">Find your adventure with us</h2>
-
-            <form class="form-inline" id="sform" action="/Flight">
-                <div class="row">
-                    <div class="col-lg-3 col-md-3">
-                        <div class="form-group">
-                            <label>Type of Flight</label>
-                            <select name="flightType" required="" id="flightType">
-                                <option value="1">One way</option>
-                                <option value="2">Round Trip </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                        <div class="form-group" style="position:relative">
-                            <div>
-                                <label>Select your trip</label>
-                                <input type="text" class="form-control" id="departure" disabled="true"> <i id="showDeparture" class="fas fa-plane-departure"></i>
+                <form class="form-inline" id="sform" action="/Flight">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3">
+                            <div class="form-group">
+                                <label>Type of Flight</label>
+                                <select name="flightType" required="" id="flightType">
+                                    <option value="1">One way</option>
+                                    <option value="2">Round Trip </option>
+                                </select>
                             </div>
-                            <div class="modal fade" id="ModalPopUpDeparture" role="dialog">
-                                <div class="modal-dialog err-pop" style="">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 style="color: black;">Airport lookup</h1>
-                                            <button id="DivClose" type="button" class="close" style="position: absolute; top: 20px; right: 20px;" data-dismiss="modal">&times;</button>
-                                        </div>
-                                        <div class="modal-body" style="height: 30vh;width:100%">
-                                            <h4 style="color: black;">Please tell us where the airport is located.</h4>
-                                            <div class="content" style="display:flex">
-                                                <div class="form-group" style="width:50%">
-                                                    <label style="color: black;">Country / region</label>
-                                                    <div>
-                                                        <select class="form-control" id="citiessDropdownDeparture" name="citiessDropdownDeparture"></select>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                            <div class="form-group" style="position:relative">
+                                <div>
+                                    <label>Select your trip</label>
+                                    <input type="text" class="form-control" id="departure" disabled="true"> <i id="showDeparture" class="fas fa-plane-departure"></i>
+                                </div>
+                                <div class="modal fade" id="ModalPopUpDeparture" role="dialog">
+                                    <div class="modal-dialog err-pop" style="">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 style="color: black;">Airport lookup</h1>
+                                                <button id="DivClose" type="button" class="close" style="position: absolute; top: 20px; right: 20px;" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body" style="height: 30vh;width:100%">
+                                                <h4 style="color: black;">Please tell us where the airport is located.</h4>
+                                                <div class="content" style="display:flex">
+                                                    <div class="form-group" style="width:50%">
+                                                        <label style="color: black;">Country / region</label>
+                                                        <div>
+                                                            <select class="form-control" id="citiessDropdownDeparture" name="citiessDropdownDeparture"></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" style="width:50%">
+                                                        <label style="color: black;">Airport</label>
+                                                        <div>
+                                                            <select class="form-control" id="dropdownStateDeparture" name="fromAirportId"></select>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group" style="width:50%">
-                                                    <label style="color: black;">Airport</label>
-                                                    <div>
-                                                        <select class="form-control" id="dropdownStateDeparture" name="fromAirportId"></select>
+                                                <button style="margin-top:15px" type="button" class="btn btn-primary" id="saveDeparture">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3">
+                            <div class="form-group" style="position:relative">
+                                <div>
+                                    <label>Select your arrival</label>
+                                    <input type="text" class="form-control" id="arrival" disabled="true"> <i id="showArrival" class="fas fa-plane-arrival"></i>
+                                </div>
+                                <div class="modal fade" id="ModalPopUpArrival" role="dialog">
+                                    <div class="modal-dialog err-pop" style="">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 style="color: black;">Airport lookup</h1>
+                                                <button id="DivClose" type="button" class="close" style="position: absolute; top: 20px; right: 20px;" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body" style="height: 30vh;width:100%">
+                                                <h4 style="color: black;">Please tell us where the airport is located.</h4>
+                                                <div class="content" style="display:flex">
+                                                    <div class="form-group" style="width:50%">
+                                                        <label style="color: black;">Country / region</label>
+                                                        <div id="myForm">
+                                                            <select class="form-control" id="citiessDropdownArrival" name="citiessDropdownArrival"></select>
+                                                        </div>
                                                     </div>
+                                                    <div class="form-group" style="width:50%">
+                                                        <label class="labelDropdown" style="color: black;">Airport</label>
+                                                        <div id="myForm">
+                                                            <select class="form-control" id="dropdownStateArrival" name="toAirportId"></select>
+                                                            </d>
+                                                        </div>
+                                                    </div>
+                                                    <button style="margin-top:15px" type="button" class="btn btn-primary" id="saveArrival">Save</button>
                                                 </div>
                                             </div>
-                                            <button style="margin-top:15px" type="button" class="btn btn-primary" id="saveDeparture">Save</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-3">
-                        <div class="form-group" style="position:relative">
-                            <div>
-                                <label>Select your arrival</label>
-                                <input type="text" class="form-control" id="arrival" disabled="true"> <i id="showArrival" class="fas fa-plane-arrival"></i>
+                        <div class="col-lg-3 col-md-3">
+                            <div class="form-group">
+                                <label>Number of passengers</label>
+                                <select name="NumberOfPassager" required="">
+                                    <option value="1">1 </option>
+                                    <option value="2">2 </option>
+                                    <option value="3">3 </option>
+                                    <option value="4">4 </option>
+                                    <option value="5">5 </option>
+                                    <option value="6">6 </option>
+                                </select>
                             </div>
-                            <div class="modal fade" id="ModalPopUpArrival" role="dialog">
-                                <div class="modal-dialog err-pop" style="">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 style="color: black;">Airport lookup</h1>
-                                            <button id="DivClose" type="button" class="close" style="position: absolute; top: 20px; right: 20px;" data-dismiss="modal">&times;</button>
-                                        </div>
-                                        <div class="modal-body" style="height: 30vh;width:100%">
-                                            <h4 style="color: black;">Please tell us where the airport is located.</h4>
-                                            <div class="content" style="display:flex">
-                                                <div class="form-group" style="width:50%">
-                                                    <label style="color: black;">Country / region</label>
-                                                    <div id="myForm">
-                                                        <select class="form-control" id="citiessDropdownArrival" name="citiessDropdownArrival"></select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group" style="width:50%">
-                                                    <label class="labelDropdown" style="color: black;">Airport</label>
-                                                    <div id="myForm">
-                                                        <select class="form-control" id="dropdownStateArrival" name="toAirportId"></select>
-                                                    </d>
-                                                </div>
-                                            </div>
-                                            <button style="margin-top:15px" type="button" class="btn btn-primary" id="saveArrival">Save</button>
-                                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label>Depart</label>
+                                <div id="filterDate1">
+                                    <!-- Datepicker as text field -->
+                                    <div class="input-group" data-date-format="mm/dd/yyyy">
+                                        <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="departureDate" id="departureDate">
+                                        @*<div class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6" id="returnClalendar">
+                            <div class="form-group">
+                                <label>Return</label>
+                                <div id="filterDate2">
+                                    <!-- Datepicker as text field -->
+                                    <div class="input-group" data-date-format="mm/dd/yyyy">
+                                        <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="returnDate" id="returnDate">
+                                        @*<div class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </div>*@
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-3">
-                        <div class="form-group">
-                            <label>Number of passengers</label>
-                            <select name="NumberOfPassager" required="">
-                                <option value="1">1 </option>
-                                <option value="2">2 </option>
-                                <option value="3">3 </option>
-                                <option value="4">4 </option>
-                                <option value="5">5 </option>
-                                <option value="6">6 </option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="form-group">
-                            <label>Depart</label>
-                            <div id="filterDate2">
-                                <!-- Datepicker as text field -->
-                                <div class="input-group" data-date-format="mm/dd/yyyy">
-                                    <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="DepartureDate">
-                                    <div class="input-group-addon">
-                                        <span class="fa fa-calendar"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6" id="returnClalendar">
-                        <div class="form-group">
-                            <label>Return</label>
-                            <div id="filterDate2">
-                                <!-- Datepicker as text field -->
-                                <div class="input-group" data-date-format="mm/dd/yyyy">
-                                    <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="returnDate" id="returnDate">
-                                    <div class="input-group-addon">
-                                        <span class="fa fa-calendar"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <input class="btn-frm-search" value="FIND NOW" type="submit">
-            </form>
+
+                    <input class="btn-frm-search" value="FIND NOW" type="submit">
+                </form>
+            </div>
         </div>
-    </div>
 </section>
 <!-- section search end -->
 <!--  top rated -->
@@ -652,16 +653,17 @@
 
 @*<script src="bootstrap/js/bootstrap.min.js"></script>*@
 @*<script>
-    $('.datepicker').datetimepicker({
-        format: 'DD-MM-YYYY HH:mm:ss'
-    });
-</script>*@
+        $('.datepicker').datetimepicker({
+            format: 'DD-MM-YYYY HH:mm:ss'
+        });
+    </script>*@
 <style>
-    .showDropdown{
-        display:block
+    .showDropdown {
+        display: block
     }
-    .hideDropdown{
-        display:none;
+
+    .hideDropdown {
+        display: none;
     }
 </style>
 <script src="https://code.jquery.com/jquery-1.10.0.min.js"></script>
@@ -763,19 +765,26 @@
         var selWay = $('#flightType option:selected').val();
         if (selWay === "1") {
             $('#returnClalendar').addClass('hideDropdown');
-            $('#returnDate').removeAttr('required') 
+            $('#returnDate').removeAttr('required')
         }
         $('#flightType').change(function () {
             var selWay = $('#flightType option:selected').val();
             if (selWay === "1") {
                 $('#returnClalendar').addClass('hideDropdown');
-                $('#returnDate').removeAttr('required') 
-                
+                $('#returnDate').removeAttr('required')
+
             } else {
                 $('#returnClalendar').removeClass('hideDropdown')
                 $('#returnClalendar').addClass('showDropdown')
+                $("#filterDate1").on('click', function () {
+                    $("#departureDate").change(function () {
+                        var date = $("#departureDate").val();
+                        $("#returnDate").attr('min', date)
+                    })
+
+                })
             }
-        })
+        });
     });
 </script>
 
