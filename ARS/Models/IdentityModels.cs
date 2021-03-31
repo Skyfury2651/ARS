@@ -44,6 +44,7 @@ namespace ARS.Models
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Transaction> Transaction { get; set; }
         public virtual DbSet<CityAirport> CityAirports { get; set; }
+        public virtual DbSet<TicketSeat> TicketSeats { get; set; }
 
         public static ApplicationDbContext Create()
         {

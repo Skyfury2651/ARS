@@ -11,7 +11,7 @@
 
     <p class="text-success">@ViewBag.StatusMessage</p>
     <div class="container">
-       <h5>@Model.departureFlights.First().departureDate.ToString("D")</h5>
+       @*<h5>@Model.departureFlights.First().departureDate.ToString("D")</h5>*@
         <hr />
         <div id="flightResultsContainer">
             <div class="row">
@@ -141,5 +141,8 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<script>
+    console.log(localStorage.getItem("orderSeat"));
+</script>

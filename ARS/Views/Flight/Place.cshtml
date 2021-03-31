@@ -12,10 +12,10 @@
         <h1>Please select a seat</h1>
     </div>
     @*<div class="fan" style=" position: relative">
-        <div class="sub-fan">
+            <div class="sub-fan">
 
-        </div>
-    </div*@
+            </div>
+        </div*@
     <div id="holder">
         <ul id="place">
         </ul>
@@ -35,7 +35,7 @@
     </div>
     <div style="clear:both;width:100%">
         <input type="button" id="btnShowNew" value="Show Selected Seats" />
-       
+
     </div>
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
@@ -51,7 +51,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                   
+
                 </div>
             </div>
         </div>
@@ -180,5 +180,7 @@
         });
         $("#orderSeat").val(str);
         $("#seatOrder").submit();
+        //localStorage.setItem("orderSeat", str);
+        //console.log(localStorage.getItem("orderSeat"));
     })
 </script>

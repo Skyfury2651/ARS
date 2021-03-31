@@ -44,10 +44,10 @@ namespace ARS.Controllers
             {
                 var AddReturnDate = flight.ReturnDate.AddDays(3);
                 var MinusReturnDate = flight.ReturnDate.AddDays(-3);
-                var dataReturn = _db.Flights.Where(p => p.departureDate > MinusDepartureDate)
+                var dataReturn = _db.Flights.Where(p => p.departureDate > MinusReturnDate)
                     .Where(p => p.departureDate < AddReturnDate)
-               .Where(p => p.toAirportId == flight.toAirportId)
-               .Where(p => p.fromAirportId == flight.fromAirportId)
+               .Where(p => p.toAirportId == flight.fromAirportId)
+               .Where(p => p.fromAirportId == flight.toAirportId)
                .Where(p => p.seatAvaiable >= flight.NumberOfPassager);
                 result.returnFlights = dataReturn.ToList();
             }
@@ -66,7 +66,7 @@ namespace ARS.Controllers
 
             return View(flightModel);
         }
-        public ActionResult PaymentWithPaypal(int id, string orderSeat, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
+        public ActionResult PaymentWithPaypal(int id, string orderSeat, string orderSeatReturn = null , int returnId = 0,int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
         {
             string currentUserId = User.Identity.GetUserId();
 
@@ -118,8 +118,12 @@ namespace ARS.Controllers
                         seatId = item.id,
                         flightType = flightType,
                         type = (int)TicketType.ADULT,
-                        status = (int)TicketStatus.DISABLE,
-                        flightId = item.Flight.id
+                        status = (int)TicketStatus.DISABLE
+                    });
+                    var ticketFlight = _db.TicketSeats.Add(new TicketSeat
+                    {
+                        SeatId = item.id,
+                        TicketId = ticket.id
                     });
 
                     var transaction = _db.Transaction.Add(new Models.Transaction
@@ -144,6 +148,8 @@ namespace ARS.Controllers
                 }
                 var Testtransaction = transactionIds;
             }
+
+            
             ////getting the apiContext  
             APIContext apiContext = PaypalConfiguration.GetAPIContext();
             try

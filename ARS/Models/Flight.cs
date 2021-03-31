@@ -24,7 +24,6 @@ namespace ARS.Models
         public int seatAvaiableClub { get; set; } = 0;
         public int seatAvaiableSmoking { get; set; } = 0;
         public int seatAvaiableNonSmoking { get; set; } = 0;
-
         public virtual Airport FromAirport { get; set; }
         public virtual Airport ToAirport { get; set; }
         public virtual ICollection<Seat> Seats { get; set; }

@@ -205,6 +205,14 @@
     <Compile Include="Migrations\202103301240076_RemoveFlightIdAtTransaction.Designer.cs">
       <DependentUpon>202103301240076_RemoveFlightIdAtTransaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103310545331_ChangeRelationFlightTicket.cs" />
+    <Compile Include="Migrations\202103310545331_ChangeRelationFlightTicket.Designer.cs">
+      <DependentUpon>202103310545331_ChangeRelationFlightTicket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202103311103289_ChangeTableData.cs" />
+    <Compile Include="Migrations\202103311103289_ChangeTableData.Designer.cs">
+      <DependentUpon>202103311103289_ChangeTableData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Airport.cs" />
@@ -217,6 +225,7 @@
     <Compile Include="Models\Seat.cs" />
     <Compile Include="Models\Stop.cs" />
     <Compile Include="Models\Ticket.cs" />
+    <Compile Include="Models\TicketSeat.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -768,6 +777,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103301240076_RemoveFlightIdAtTransaction.resx">
       <DependentUpon>202103301240076_RemoveFlightIdAtTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103310545331_ChangeRelationFlightTicket.resx">
+      <DependentUpon>202103310545331_ChangeRelationFlightTicket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103311103289_ChangeTableData.resx">
+      <DependentUpon>202103311103289_ChangeTableData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
