@@ -12,7 +12,7 @@
     <p class="text-success">@ViewBag.StatusMessage</p>
     <div class="container">
         @*<h4>Depart @Model.First().FromAirport.CityAirports.First().City.name, @Model.First().FromAirport.CityAirports.First().City.country to @Model.First().ToAirport.CityAirports.First().City.name, @Model.First().ToAirport.CityAirports.First().City.country</h4>*@
-        <h5>@Model.First().departureDate.ToString("D")</h5>
+        @*<h5>@Model.First().departureDate.ToString("D")</h5>*@
         <hr />
         <div id="flightResultsContainer">
             <ul class="search-result">
@@ -71,48 +71,78 @@
                     </li>
                 }
             </ul>
+            <button type="button" id="flightSeat">Pick Seat</button>
+            <input type="text" name="valueDeparture" id="valueDeparture" />
+
             @*<table>
-                    <thead>
-                        <th></th>
-                        <th>PlaneCode</th>
-                        <th>FromAirport</th>
-                        <th>ToAirport</th>
-                        <th>Distance</th>
-                        <th>Price</th>
-                        <th>SeatAvailable</th>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td><a href="/Flight/Place/@item.id">Seats</a></td>
-                                <td>@item.planeCode</td>
-                                <td>
-                                    @foreach (var city in item.FromAirport.CityAirports)
-                                    {
-                                        @city.City.name
-                                    }
-                                </td>
-                                <td>
-                                    @foreach (var city in item.ToAirport.CityAirports)
-                                    {
-                                        @city.City.name
-                                    }
-                                </td>
-                                <td>
-                                    @item.distance
-                                </td>
-                                <td>
-                                    @string.Format("{0:C0}", item.price)
-                                </td>
-                                <td>
-                                    @item.seatAvaiable
-                                </td>
-                            </tr>
+            <thead>
+                <th></th>
+                <th>PlaneCode</th>
+                <th>FromAirport</th>
+                <th>ToAirport</th>
+                <th>Distance</th>
+                <th>Price</th>
+                <th>SeatAvailable</th>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><a href="/Flight/Place/@item.id">Seats</a></td>
+                        <td>@item.planeCode</td>
+                        <td>
+                            @foreach (var city in item.FromAirport.CityAirports)
+                            {
+                                @city.City.name
+                            }
+                        </td>
+                        <td>
+                            @foreach (var city in item.ToAirport.CityAirports)
+                            {
+                                @city.City.name
+                            }
+                        </td>
+                        <td>
+                            @item.distance
+                        </td>
+                        <td>
+                            @string.Format("{0:C0}", item.price)
+                        </td>
+                        <td>
+                            @item.seatAvaiable
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>*@
+        </div>
+    </div>
+    <div class="modal fade" id="ModalPopUpArrival" role="dialog">
+        <div class="modal-dialog err-pop" style="">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 style="color: black;">Booking Seat</h1>
+                    <button id="DivClose" type="button" class="close" style="position: absolute; top: 20px; right: 20px;" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="height: auto;width:100%">
+                    <h4 style="color: black;">Please choose seat</h4>
+                    <div class="content" style="display:flex">
+                        @{
+                            Html.RenderAction("PopUpSeat", "Flight", new { id = 1} );
                         }
-                    </tbody>
-                </table>*@
+                    </div>
+                   
+                </div>
+            </div>
         </div>
     </div>
 
 </div>
+<script src="https://code.jquery.com/jquery-1.10.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#flightSeat').click(function () {
+            $('#ModalPopUpArrival').modal('show')
+        })
+    })
+</script>

@@ -43,7 +43,18 @@ namespace ARS.Controllers
             var bookedSeats = _db.Seats.Where(x => x.flightId == id && x.status != 1).ToList();
             flightModel.bookedSeat = bookedSeats;
 
-            return View(flightModel);
+            return View( flightModel);
+        }
+        public PartialViewResult PopupSeat(int? id)
+        {
+            Flight flight = _db.Flights.Find(id);
+            FlightPlaceModel flightModel = new FlightPlaceModel();
+            flightModel.Flight = flight;
+
+            var bookedSeats = _db.Seats.Where(x => x.flightId == id && x.status != 1).ToList();
+            flightModel.bookedSeat = bookedSeats;
+
+            return PartialView("PopupSeat", flightModel);
         }
         public ActionResult PaymentWithPaypal(int id, string orderSeat, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
         {
