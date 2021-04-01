@@ -40,22 +40,30 @@ namespace ARS.Controllers
             FlightPlaceModel flightModel = new FlightPlaceModel();
             flightModel.Flight = flight;
 
-            var bookedSeats = _db.Seats.Where(x => x.flightId == id && x.status != 1).ToList();
-            flightModel.bookedSeat = bookedSeats;
+            var bookedSeats = _db.Seats.Where(x => x.flightId == id && x.status != 1).Select(x => new
+               {
+                   classType = x.classType,
+                   flightId = x.flightId,
+                   Id = x.id,
+                   position = x.position,
+                   status = x.status
+            }).ToList();
 
-            return View( flightModel);
+            //flightModel.bookedSeat = bookedSeats;
+
+            return Json(bookedSeats, JsonRequestBehavior.AllowGet);
         }
-        public PartialViewResult PopupSeat(int? id)
-        {
-            Flight flight = _db.Flights.Find(id);
-            FlightPlaceModel flightModel = new FlightPlaceModel();
-            flightModel.Flight = flight;
+        //public PartialViewResult PopupSeat(int? id)
+        //{
+        //    Flight flight = _db.Flights.Find(id);
+        //    FlightPlaceModel flightModel = new FlightPlaceModel();
+        //    flightModel.Flight = flight;
 
-            var bookedSeats = _db.Seats.Where(x => x.flightId == id && x.status != 1).ToList();
-            flightModel.bookedSeat = bookedSeats;
+        //    var bookedSeats = _db.Seats.Where(x => x.flightId == id && x.status != 1).ToList();
+        //    flightModel.bookedSeat = bookedSeats;
 
-            return PartialView("PopupSeat", flightModel);
-        }
+        //    return PartialView("PopupSeat", flightModel);
+        //}
         public ActionResult PaymentWithPaypal(int id, string orderSeat, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
         {
             string currentUserId = User.Identity.GetUserId();
