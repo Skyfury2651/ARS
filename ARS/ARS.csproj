@@ -182,36 +182,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PartialController.cs" />
+    <Compile Include="Controllers\TicketController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202103241318453_InitDatabase.cs" />
-    <Compile Include="Migrations\202103241318453_InitDatabase.Designer.cs">
-      <DependentUpon>202103241318453_InitDatabase.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103271258353_addAvaiableSeat.cs" />
-    <Compile Include="Migrations\202103271258353_addAvaiableSeat.Designer.cs">
-      <DependentUpon>202103271258353_addAvaiableSeat.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103271344489_FlyTypeChange.cs" />
-    <Compile Include="Migrations\202103271344489_FlyTypeChange.Designer.cs">
-      <DependentUpon>202103271344489_FlyTypeChange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103301229113_AddStatus.cs" />
-    <Compile Include="Migrations\202103301229113_AddStatus.Designer.cs">
-      <DependentUpon>202103301229113_AddStatus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103301240076_RemoveFlightIdAtTransaction.cs" />
-    <Compile Include="Migrations\202103301240076_RemoveFlightIdAtTransaction.Designer.cs">
-      <DependentUpon>202103301240076_RemoveFlightIdAtTransaction.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103310545331_ChangeRelationFlightTicket.cs" />
-    <Compile Include="Migrations\202103310545331_ChangeRelationFlightTicket.Designer.cs">
-      <DependentUpon>202103310545331_ChangeRelationFlightTicket.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202103311103289_ChangeTableData.cs" />
-    <Compile Include="Migrations\202103311103289_ChangeTableData.Designer.cs">
-      <DependentUpon>202103311103289_ChangeTableData.cs</DependentUpon>
+    <Compile Include="Migrations\202104021142154_Reinit.cs" />
+    <Compile Include="Migrations\202104021142154_Reinit.Designer.cs">
+      <DependentUpon>202104021142154_Reinit.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -225,7 +202,6 @@
     <Compile Include="Models\Seat.cs" />
     <Compile Include="Models\Stop.cs" />
     <Compile Include="Models\Ticket.cs" />
-    <Compile Include="Models\TicketSeat.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -747,7 +723,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Empty\" />
     <Folder Include="Views\Partial\" />
+    <Folder Include="Views\Ticket\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -763,30 +741,12 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202103241318453_InitDatabase.resx">
-      <DependentUpon>202103241318453_InitDatabase.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103271258353_addAvaiableSeat.resx">
-      <DependentUpon>202103271258353_addAvaiableSeat.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103271344489_FlyTypeChange.resx">
-      <DependentUpon>202103271344489_FlyTypeChange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103301229113_AddStatus.resx">
-      <DependentUpon>202103301229113_AddStatus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103301240076_RemoveFlightIdAtTransaction.resx">
-      <DependentUpon>202103301240076_RemoveFlightIdAtTransaction.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103310545331_ChangeRelationFlightTicket.resx">
-      <DependentUpon>202103310545331_ChangeRelationFlightTicket.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202103311103289_ChangeTableData.resx">
-      <DependentUpon>202103311103289_ChangeTableData.cs</DependentUpon>
-    </EmbeddedResource>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
+    <EmbeddedResource Include="Migrations\202104021142154_Reinit.resx">
+      <DependentUpon>202104021142154_Reinit.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

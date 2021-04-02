@@ -29,8 +29,13 @@ namespace ARS
                 + " WHERE updatedAt < DATEADD(MINUTE, 15, createdAt) AND status != 1 AND status != 2").ToListAsync();
             foreach (var item in ExpiredTransactionList)
             {
-                item.Ticket.Seat.status = (int) SeatStatus.Available;
-                item.Ticket.status = (int)TicketStatus.DISABLE;
+                foreach (var ticket in item.Tickets)
+                {
+                    ticket.Seat.status = (int)SeatStatus.Available;
+                    ticket.Seat.Flight.seatAvaiable = ticket.Seat.Flight.seatAvaiable + 1;
+                    ticket.status = (int)TicketStatus.DISABLE;
+                    ticket.User.skyMiles = (int)Math.Round(ticket.User.skyMiles - ticket.Seat.Flight.distance);
+                }
                 item.status = (int)TransactionStatus.CANCEL;
                 await _db.SaveChangesAsync();
             }

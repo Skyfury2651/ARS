@@ -7,18 +7,18 @@ namespace ARS.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ChangeRelationFlightTicket : IMigrationMetadata
+    public sealed partial class Reinit : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ChangeRelationFlightTicket));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Reinit));
         
         string IMigrationMetadata.Id
         {
-            get { return "202103310545331_ChangeRelationFlightTicket"; }
+            get { return "202104021142154_Reinit"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return Resources.GetString("Source"); }
+            get { return null; }
         }
         
         string IMigrationMetadata.Target

@@ -12,9 +12,6 @@ namespace ARS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
-            var ExpiredTransactionList = db.Transaction.SqlQuery("SELECT TOP (1000) [id] ,[ticketId] ,[price],[type],[createdAt],[updatedAt],[status], DATEADD(MINUTE, 30, createdAt) as expiredAt"
-            + " FROM [aspnet-ARS-20210315112621].[dbo].[Transactions]"
-                + " WHERE updatedAt < DATEADD(SECOND, 15, createdAt) AND status != 1").ToList();
             return View();
         }
         public ActionResult CitiesJsonDeparture()
