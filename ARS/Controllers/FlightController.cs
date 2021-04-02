@@ -29,30 +29,30 @@ namespace ARS.Controllers
         // GET: Flight
         public ActionResult Index(FlightSearchModel flight)
         {
-            //var Year = flight.ReturnDate.Year;
+            var Year = flight.ReturnDate.Year;
             var request = flight;
             var result = new FlightSearchListModel();
 
-            ////_db.Flights.Where(x => x.departureDate in);
-            //var AddDepartureDate = flight.DepartureDate.AddDays(3);
-            //var MinusDepartureDate = flight.DepartureDate.AddDays(-3);
-            //var dataDeparture = _db.Flights.Where(p => p.departureDate < AddDepartureDate)
-            //    .Where(p => p.departureDate > MinusDepartureDate)
-            //    .Where(p => p.toAirportId == flight.toAirportId)
-            //    .Where(p => p.fromAirportId == flight.fromAirportId)
-            //    .Where(p => p.seatAvaiable >= flight.NumberOfPassager);
-            //result.departureFlights = dataDeparture.ToList();
-            //if (Year != 1 && flight.flightType == 2)
-            //{
-            //    var AddReturnDate = flight.ReturnDate.AddDays(3);
-            //    var MinusReturnDate = flight.ReturnDate.AddDays(-3);
-            //    var dataReturn = _db.Flights.Where(p => p.departureDate > MinusReturnDate)
-            //        .Where(p => p.departureDate < AddReturnDate)
-            //   .Where(p => p.toAirportId == flight.fromAirportId)
-            //   .Where(p => p.fromAirportId == flight.toAirportId)
-            //   .Where(p => p.seatAvaiable >= flight.NumberOfPassager);
-            //    result.returnFlights = dataReturn.ToList();
-            //}
+            //_db.Flights.Where(x => x.departureDate in);
+            var AddDepartureDate = flight.DepartureDate.AddDays(3);
+            var MinusDepartureDate = flight.DepartureDate.AddDays(-3);
+            var dataDeparture = _db.Flights.Where(p => p.departureDate < AddDepartureDate)
+                .Where(p => p.departureDate > MinusDepartureDate)
+                .Where(p => p.toAirportId == flight.toAirportId)
+                .Where(p => p.fromAirportId == flight.fromAirportId)
+                .Where(p => p.seatAvaiable >= flight.NumberOfPassager);
+            result.departureFlights = dataDeparture.ToList();
+            if (Year != 1 && flight.flightType == 2)
+            {
+                var AddReturnDate = flight.ReturnDate.AddDays(3);
+                var MinusReturnDate = flight.ReturnDate.AddDays(-3);
+                var dataReturn = _db.Flights.Where(p => p.departureDate > MinusReturnDate)
+                    .Where(p => p.departureDate < AddReturnDate)
+               .Where(p => p.toAirportId == flight.fromAirportId)
+               .Where(p => p.fromAirportId == flight.toAirportId)
+               .Where(p => p.seatAvaiable >= flight.NumberOfPassager);
+                result.returnFlights = dataReturn.ToList();
+            }
 
             return View(result);
         }
@@ -63,10 +63,18 @@ namespace ARS.Controllers
             FlightPlaceModel flightModel = new FlightPlaceModel();
             flightModel.Flight = flight;
 
-            var bookedSeats = _db.Seats.Where(x => x.flightId == id && x.status != 1).ToList();
-            flightModel.bookedSeat = bookedSeats;
+            var bookedSeats = _db.Seats.Where(x => x.flightId == id && x.status != 1).Select(x => new
+            {
+                classType = x.classType,
+                flightId = x.flightId,
+                Id = x.id,
+                position = x.position,
+                status = x.status
+            }).ToList();
 
-            return View(flightModel);
+            //flightModel.bookedSeat = bookedSeats;
+
+            return Json(bookedSeats, JsonRequestBehavior.AllowGet);
         }
         [Authorize]
         public ActionResult PaymentWithPaypal(int id, string orderSeat, string orderSeatReturn = null, int returnId = 0, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
