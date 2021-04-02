@@ -650,6 +650,7 @@
     <Content Include="Content\img\team\img2.jpg" />
     <Content Include="Content\img\team\img3.jpg" />
     <Content Include="Content\selecting-seat.css" />
+    <Content Include="Content\ticket-view.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -720,6 +721,7 @@
     <Content Include="Views\Shared\_RegisterPartial.cshtml" />
     <Content Include="Views\Flight\Index.cshtml" />
     <Content Include="Views\Flight\Place.cshtml" />
+    <Content Include="Views\Flight\PopupSeat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
