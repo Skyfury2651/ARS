@@ -729,6 +729,7 @@
     <Content Include="Views\Shared\_RegisterPartial.cshtml" />
     <Content Include="Views\Flight\Index.cshtml" />
     <Content Include="Views\Flight\Place.cshtml" />
+    <Content Include="Views\Flight\PopupSeat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

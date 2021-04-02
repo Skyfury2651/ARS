@@ -742,7 +742,7 @@
                         $.each(data, function (index, value) {
                             console.log(value.NearBy, value.NearBy == true)
                             if (value.NearBy === 'true') {
-                                $('.labelDropdown').text = "abc"
+                                $('.labelDropdown').html("abc")
                             }
                             $('#dropdownStateArrival').append('<option value="' + value.Id + '">' + value.Name + '</option>');
                         });
