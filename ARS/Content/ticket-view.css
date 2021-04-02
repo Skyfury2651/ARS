@@ -1,0 +1,76 @@
+﻿ul {
+    list-style: none;
+}
+
+.flight-results-container {
+    display: flex;
+}
+
+.tripInfo {
+    display: flex;
+}
+
+.vertical-line {
+    display: inline-block;
+    border-left: 1px solid #ccc;
+    margin: 0 10px;
+    height: 220px;
+}
+
+.search-result {
+    padding-inline-start: unset;
+}
+
+.flight-time {
+    font-size: 1.92857rem;
+    line-height: 36px;
+    font-weight: 400;
+}
+
+.flight-details {
+    display: flex;
+}
+
+.flight-infos {
+    display: grid;
+}
+
+.stop {
+    border-bottom: 1px solid #ccc;
+}
+
+.select-seats {
+    border: 1px solid #d0dae0;
+    border-radius: 3px;
+    background: linear-gradient(180deg,rgba(208,218,224,.3) 0,hsla(0,0%,100%,.3) 20%,hsla(0,0%,100%,.3));
+    cursor: pointer;
+    padding: 2px;
+    position: relative;
+    height: auto;
+    width: min-content;
+}
+
+.tooltip1 {
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    width: fit-content;
+}
+
+    .tooltip1 .tooltiptext {
+        visibility: hidden;
+        width: 250px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        left: 150%;
+        top: -20%;
+    }
+
+    .tooltip1:hover .tooltiptext {
+        visibility: visible;
+    }

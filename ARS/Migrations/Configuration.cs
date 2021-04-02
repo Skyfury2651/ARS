@@ -115,48 +115,56 @@ namespace ARS.Migrations
                 name = "DaNang",
                 lattitude = 21.028693,
                 longtitude = 105.841616,
+                country = "Viet Nam",
             }, new Models.City
             {
                 id = 2,
                 name = "Ha Noi",
                 lattitude = 21.028693,
                 longtitude = 105.841616,
+                country = "Viet Nam",
             }, new Models.City
             {
                 id = 3,
                 name = "HoChiMinh",
                 lattitude = 21.028693,
                 longtitude = 105.841616,
+                country = "Viet Nam",
             }, new Models.City
             {
                 id = 4,
                 name = "DuongDong",
                 lattitude = 9.930741,
                 longtitude = 76.267348,
+                country = "India",
             }, new Models.City
             {
                 id = 5,
                 name = "Kochi",
                 lattitude = 9.930740,
                 longtitude = 76.267348,
+                country = "India",
             }, new Models.City
             {
                 id = 6,
                 name = "Calicut",
                 lattitude = 9.930739,
                 longtitude = 76.267348,
+                country = "India",
             }, new Models.City
             {
                 id = 7,
                 name = "AnDoCity",
                 lattitude = 9.930741,
                 longtitude = 76.267348,
+                country = "India",
             }, new Models.City
             {
                 id = 8,
                 name = "Changi",
                 lattitude = 1.3450,
                 longtitude = 103.9832,
+                country = "Singapore",
             }
             );
         }
