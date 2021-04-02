@@ -5,6 +5,7 @@
     Layout = "~/Views/Shared/_MyLayout.cshtml";
 }
 
+
 <div class="body container">
     @*<h2>@Model.FirstOrDefault().FromAirport.CityAirports.First().City.name</h2>*@
     <h2>@ViewBag.Title</h2>
@@ -68,11 +69,13 @@
                             </div>
                             <div class="col-lg-6"></div>
                         </div>
+
+
                     </li>
+
                 }
             </ul>
-            <button type="button" id="flightSeat">Pick Seat</button>
-            <input type="text" name="valueDeparture" id="valueDeparture" hidden="true" />
+
 
             @*<table>
                     <thead>
@@ -116,8 +119,19 @@
                     </tbody>
                 </table>*@
         </div>
+        <div id="eDeparture">
+            <button type="button" value="2" id="valueDeparture">Pick Seat</button>
+            <input type="text" name="valueDeparture" id="valueDepartureString" hidden="true" />
+        </div>
+        <div id="Arrival">
+            <button type="button" value="1" id="valueArrival">Pick Seat</button>
+            <input type="text" name="valueArrival" id="valueArrivalString" hidden="true" />
+        </div>
+
+
+
     </div>
-    <div class="modal fade" id="ModalPopUpArrival" role="dialog">
+    <div class="modal fade" id="ModalPopUpDeparture" role="dialog">
         <div class="modal-dialog err-pop" style="">
             <div class="modal-content">
                 <div class="modal-header">
@@ -185,19 +199,153 @@
             </div>
         </div>
     </div>
-
 </div>
+
+    <button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
+    <input type="text" name="valueSeat" id="valuePucharse" hidden="true" />
+    <input type="text" name="valueSeat" id="valuePucharse2" hidden="true" />
+
+<style>
+    .show{
+        display:block;
+    }
+    .hidden {
+        display: none;
+    }
+</style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        $('#flightSeat').click(function () {
-            $('#ModalPopUpArrival').modal('show')
+        var param_string = window.location.href;
+        var url = new URL(param_string);
+        var c = url.searchParams.get('returnDate');
+        var fligthType = url.searchParams.get('flightType')
+        if (c !== "") {
+            $('#Arrival').addClass('show');
+            $('#valueArrival').click(function () {
+                $('#ModalPopUpDeparture').modal('show')
+                var bookedSeats = [];
+                var bookedSeatsdata = [];
+                $.ajax({
+                    type: "GET",
+                    url: "/Flight/Place",
+                    datatype: "Json",
+                    data: { id: $("#valueArrival").val() },
+                    success: function (data) {
+                        console.log(data)
+                        for (var i = 0; i < data.length; i++) {
+                            var position = data[i].position;
+                            bookedSeats.push(position)
+                        }
+                        var economyPosition = 14;
+                        var infomationBooking = {
+                            qualifi: 9,
+                            typeSeat: 5
+                        }
+                        var settings = {
+                            rows: 18,
+                            cols: 6,
+                            rowCssPrefix: 'row-',
+                            colCssPrefix: 'col-',
+                            seatWidth: 50,
+                            seatHeight: 50,
+                            seatCss: 'seat',
+                            selectedSeatCss: 'selectedSeat',
+                            selectingSeatCss: 'selectingSeat',
+                            typeTicket: '',
+                            qualifi: 4
+                        };
+
+                        var init = function (reservedSeat) {
+                            var str = [],
+                                seatNo, className;
+                            //Bussiness = 1, FirstClass = 2, ClubClass = 3, Smoking = 4, NonSmoking = 5
+                            // 10               10              30             40           50
+
+                            // First class 12 - 2 rows
+                            // ClubClass = 12 - 2 rows next
+                            // NonSmoking = 24 - 4 rows next
+                            // Bussiness = 36 - 6 rows next
+                            // Smoking = 24 - 4 rows next
+                            for (i = 0; i < settings.rows; i++) {
+                                if (i == 0) {
+                                    settings.typeTicket = 2
+                                    str.push('<li class="infomation-seat" ><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">FIRST Class</span></div></li>')
+                                }
+                                if (i == 2) {
+                                    settings.typeTicket = 3
+                                    str.push('<li class="infomation-seat" ><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">CLUB CLASSES</span></div></li>')
+                                }
+                                if (i == 4) {
+                                    settings.typeTicket = 5
+                                    str.push('<li class="infomation-seat" ><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">NON SMOKING CLASSES</span></div></li>')
+                                }
+                                if (i == 6) {
+                                    settings.typeTicket = 1
+                                    str.push('<li class="infomation-seat" ><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">BUSSINESS CLASSES</span></div></li>')
+                                }
+                                if (i == economyPosition - 1) {
+                                    settings.typeTicket = '4'
+                                    str.push('<li class="infomation-seat"><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">SMOKING CLASSES</span></div></li>')
+                                }
+
+                                for (j = 0; j < settings.cols; j++) {
+                                    seatNo = (i + 1 + String.fromCharCode(65 + j));
+                                    className = settings.seatCss + ' ' + settings.rowCssPrefix + i.toString() + ' ' + settings.colCssPrefix + j.toString() + ' ' + settings.typeTicket;
+                                    if ($.isArray(reservedSeat) && $.inArray(seatNo, reservedSeat) != -1) {
+                                        className += ' ' + settings.selectedSeatCss;
+                                    }
+                                    str.push('<li class="' + className + '"' +
+                                        'style="top:' + (i * settings.seatHeight).toString() + 'px;left:' + (j * settings.seatWidth).toString() + 'px">' +
+                                        '<a title="' + seatNo + '"name="' + settings.typeTicket + '">' + seatNo + '</a>' +
+                                        '</li>');
+
+                                }
+                            }
+                            $('#place').html(str.join(''));
+                        };
+                        init(bookedSeats);
+                        $('.' + settings.seatCss).click(function () {
+                            if ($(this).hasClass(settings.selectedSeatCss)) {
+                                $('#staticBackdrop').modal('show')
+
+                            } else {
+                                $(this).toggleClass(settings.selectingSeatCss);
+                            }
+                            $('#list').empty();
+                        });
+                        $('#orderSeat').click(function (event) {
+                            var str = [], str2 = [],
+                                item, classItem;
+                            $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
+                                item = $(this).attr('title');
+                                classItem = $(this).attr('name')
+                                str.push(item);
+                                
+                            });
+                            var querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val() ;
+                            $('#valueSeat').val(querystring)
+                            $('#ModalPopUpDeparture').modal('hide')
+                            $('#ModalPopUpDeparture').on('hidden.bs.modal', function (e) {
+                                var sel2 = $('#valueSeat').val();
+                                $('#valuePucharse2').val(sel2);
+                            });
+                        });
+                    }
+                });
+            })
+        } else {
+            $('#Arrival').addClass('hidden');
+        }
+        $('#valueDeparture').click(function () {
+            $('#ModalPopUpDeparture').modal('show')
             var bookedSeats = [];
             var bookedSeatsdata = [];
             $.ajax({
                 type: "GET",
-                url: "/Flight/Place/2",
+                url: "/Flight/Place",
                 datatype: "Json",
+                data: { id: $("#valueDeparture").val() },
                 success: function (data) {
                     console.log(data)
                     for (var i = 0; i < data.length; i++) {
@@ -281,27 +429,30 @@
                         }
                         $('#list').empty();
                     });
-                    $('#orderSeat').click(function () {
+                    $('#orderSeat').click(function (event) {
                         var str = [], str2 = [],
                             item, classItem;
                         $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
                             item = $(this).attr('title');
                             classItem = $(this).attr('name')
                             str.push(item);
-                            str2.push(classItem)
+                           
                         });
-                        var querystring = '&seatCode=' + str.join() + '&type=' + str2.join();
+                        var querystring = '&OrderSeat=' + str.join() + '&id=' + $("#valueDeparture").val()
                         $('#valueSeat').val(querystring)
-                        $('#ModalPopUpArrival').modal('hide')
-                        $('#ModalPopUpArrival').on('hidden.bs.modal', function (e) {
+                        $('#ModalPopUpDeparture').modal('hide')
+                        $('#ModalPopUpDeparture').on('hidden.bs.modal', function (e) {
                             var sel = $('#valueSeat').val();
-                            $('#valueDeparture').html(sel)
+                            $('#valuePucharse').val(sel);
                         });
                     });
                 }
             });
-
-  
         })
+        $('#purcharseButton').click(function () {
+            var abc = 'flightType=' + fligthType + $('#valuePucharse').val()+ $('#valuePucharse').val()
+            console.log(abc)
+        })
+        
     })
 </script>
