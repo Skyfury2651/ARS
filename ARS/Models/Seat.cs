@@ -13,6 +13,7 @@ namespace ARS.Models
         public int classType { get; set; }
         public int status { get; set; }
         public virtual Flight Flight { get; set; }
+        public virtual List<Ticket> Ticket { get; set; }
     }
     public enum SeatType 
     {

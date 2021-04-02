@@ -7,13 +7,13 @@ namespace ARS.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddStatus : IMigrationMetadata
+    public sealed partial class Reinit : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddStatus));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Reinit));
         
         string IMigrationMetadata.Id
         {
-            get { return "202103301229113_AddStatus"; }
+            get { return "202104021142154_Reinit"; }
         }
         
         string IMigrationMetadata.Source

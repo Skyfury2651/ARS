@@ -8,13 +8,12 @@ namespace ARS.Models
     public class Transaction
     {
         public int id { get; set; }
-        public int ticketId { get; set; }
         public double price { get; set; }
         public int type { get; set; }
         public int status { get; set; } = 0; // 0 - pending ; 1 - success ; 2 - cancel
         public DateTime createdAt { get; set; }
         public DateTime updatedAt { get; set; }
-        public virtual Ticket Ticket { get; set; }
+        public virtual List<Ticket> Tickets { get; set; }
     }
     public enum TransactionStatus
     {
