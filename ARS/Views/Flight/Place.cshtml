@@ -35,7 +35,6 @@
     </div>
     <div style="clear:both;width:100%">
         <input type="button" id="btnShowNew" value="Show Selected Seats" />
-
     </div>
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
@@ -62,7 +61,7 @@
 
     </div>
     <form action="/Flight/PaymentWithPayPal/@Model.Flight.id" id="seatOrder">
-        <input id="orderSeat" name="orderSeat" />
+        <input id="orderSeat" name="orderSeat"  hidden="true"/>
     </form>
 </div>
 
