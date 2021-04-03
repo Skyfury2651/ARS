@@ -191,11 +191,16 @@
     <Compile Include="Migrations\202104021142154_Reinit.Designer.cs">
       <DependentUpon>202104021142154_Reinit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202104030910012_changeBalanceType.cs" />
+    <Compile Include="Migrations\202104030910012_changeBalanceType.Designer.cs">
+      <DependentUpon>202104030910012_changeBalanceType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Airport.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\CityAirport.cs" />
+    <Compile Include="Models\CustomAuthorize.cs" />
     <Compile Include="Models\Flight.cs" />
     <Compile Include="Models\Helper.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -753,6 +758,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202104021142154_Reinit.resx">
       <DependentUpon>202104021142154_Reinit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202104030910012_changeBalanceType.resx">
+      <DependentUpon>202104030910012_changeBalanceType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
