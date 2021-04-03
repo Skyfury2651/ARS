@@ -66,7 +66,7 @@
                                             Duration: @item.flyTime hours
                                         </span>
                                         <div class="select-seats" id="Departure">
-                                            <button type="button" value="@item.id" id="valueDeparture">Seats</button>
+                                            <button type="button" data-flight="@item.id" class="valueDeparture">Seats</button>
                                             <input type="text" name="valueDeparture" id="valueDepartureString" hidden="true" />
                                         </div>
                                     </div>
@@ -129,7 +129,7 @@
                                                 Duration: @item.flyTime hours
                                             </span>
                                             <div class="select-seats" id="Arrival">
-                                                <button type="button" value="@item.id" id="valueArrival">Seats</button>
+                                                <button type="button" data-flight="@item.id" class="valueArrival">Seats</button>
                                                 <input type="text" name="valueArrival" id="valueArrivalString" hidden="true" />
                                             </div>
                                         </div>
@@ -141,15 +141,6 @@
                 </div>
             }
         </div>
-        @*<div id="eDeparture">
-            
-        </div>
-        <div id="Arrival">
-            
-        </div>*@
-
-
-
     </div>
 
     <div class="modal fade" id="ModalPopUpDeparture" role="dialog">
@@ -222,14 +213,21 @@
     </div>
 </div>
 
-    <button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
-    <input type="text" name="valueSeat" id="valuePucharse" hidden="true" />
-    <input type="text" name="valueSeat" id="valuePucharse2" hidden="true" />
+<button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
+
+<form action="/" method="post" id="purchaseForm">
+    <input id="idFlight" type="hidden"  />
+    <input id="orderSeats" type="hidden" name="orderSeat" />
+    <input id="orderSeatsReturn" type="hidden" name="orderSeatReturn" />
+    <input id="returnId" type="hidden" name="returnId" />
+    <input id="fligthType" type="hidden" name="flightType" />
+</form>
 
 <style>
-    .show{
-        display:block;
+    .show {
+        display: block;
     }
+
     .hidden {
         display: none;
     }
@@ -240,20 +238,37 @@
         var param_string = window.location.href;
         var url = new URL(param_string);
         var c = url.searchParams.get('returnDate');
-        var fligthType = url.searchParams.get('flightType')
+        var fligthType = url.searchParams.get('flightType');
+        $('#fligthType').val(fligthType);
+        const enumFlightType = { departure: 0, arrival: 1 };
+        let seatType = "";
+        var settings = {
+            rows: 18,
+            cols: 6,
+            rowCssPrefix: 'row-',
+            colCssPrefix: 'col-',
+            seatWidth: 50,
+            seatHeight: 50,
+            seatCss: 'seat',
+            selectedSeatCss: 'selectedSeat',
+            selectingSeatCss: 'selectingSeat',
+            typeTicket: '',
+            qualifi: 4
+        };
         if (c !== "") {
             $('#Arrival').addClass('show');
-            $('#valueArrival').click(function () {
-                $('#ModalPopUpDeparture').modal('show')
+            $('.valueArrival').click(function (event) {
+                seatType = enumFlightType.arrival;
+                var flightReturnId = $(this).data('flight');
+                $('#ModalPopUpDeparture').modal('show');
                 var bookedSeats = [];
                 var bookedSeatsdata = [];
                 $.ajax({
                     type: "GET",
                     url: "/Flight/Place",
                     datatype: "Json",
-                    data: { id: $("#valueArrival").val() },
+                    data: { id: flightReturnId },
                     success: function (data) {
-                        console.log(data)
                         for (var i = 0; i < data.length; i++) {
                             var position = data[i].position;
                             bookedSeats.push(position)
@@ -263,31 +278,10 @@
                             qualifi: 9,
                             typeSeat: 5
                         }
-                        var settings = {
-                            rows: 18,
-                            cols: 6,
-                            rowCssPrefix: 'row-',
-                            colCssPrefix: 'col-',
-                            seatWidth: 50,
-                            seatHeight: 50,
-                            seatCss: 'seat',
-                            selectedSeatCss: 'selectedSeat',
-                            selectingSeatCss: 'selectingSeat',
-                            typeTicket: '',
-                            qualifi: 4
-                        };
 
                         var init = function (reservedSeat) {
                             var str = [],
                                 seatNo, className;
-                            //Bussiness = 1, FirstClass = 2, ClubClass = 3, Smoking = 4, NonSmoking = 5
-                            // 10               10              30             40           50
-
-                            // First class 12 - 2 rows
-                            // ClubClass = 12 - 2 rows next
-                            // NonSmoking = 24 - 4 rows next
-                            // Bussiness = 36 - 6 rows next
-                            // Smoking = 24 - 4 rows next
                             for (i = 0; i < settings.rows; i++) {
                                 if (i == 0) {
                                     settings.typeTicket = 2
@@ -335,30 +329,19 @@
                             }
                             $('#list').empty();
                         });
-                        $('#orderSeat').click(function (event) {
-                            var str = [], str2 = [],
-                                item, classItem;
-                            $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
-                                item = $(this).attr('title');
-                                classItem = $(this).attr('name')
-                                str.push(item);
-                                
-                            });
-                            var querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val() ;
-                            $('#valueSeat').val(querystring)
-                            $('#ModalPopUpDeparture').modal('hide')
-                            $('#ModalPopUpDeparture').on('hidden.bs.modal', function (e) {
-                                var sel2 = $('#valueSeat').val();
-                                $('#valuePucharse2').val(sel2);
-                            });
-                        });
+
                     }
+                });
+                $('#orderSeat').click(function (event2) {
+                    $('#returnId').val(flightReturnId);
                 });
             })
         } else {
             $('#Arrival').addClass('hidden');
         }
-        $('#valueDeparture').click(function () {
+        $('.valueDeparture').click(function (event) {
+            seatType = enumFlightType.departure;
+            $('#idFlight').val($(this).data("flight"));
             $('#ModalPopUpDeparture').modal('show')
             var bookedSeats = [];
             var bookedSeatsdata = [];
@@ -366,7 +349,7 @@
                 type: "GET",
                 url: "/Flight/Place",
                 datatype: "Json",
-                data: { id: $("#valueDeparture").val() },
+                data: { id: $(this).data("flight") },
                 success: function (data) {
                     console.log(data)
                     for (var i = 0; i < data.length; i++) {
@@ -378,31 +361,10 @@
                         qualifi: 9,
                         typeSeat: 5
                     }
-                    var settings = {
-                        rows: 18,
-                        cols: 6,
-                        rowCssPrefix: 'row-',
-                        colCssPrefix: 'col-',
-                        seatWidth: 50,
-                        seatHeight: 50,
-                        seatCss: 'seat',
-                        selectedSeatCss: 'selectedSeat',
-                        selectingSeatCss: 'selectingSeat',
-                        typeTicket: '',
-                        qualifi: 4
-                    };
 
                     var init = function (reservedSeat) {
-                        var str = [],
+                        let str = [],
                             seatNo, className;
-                        //Bussiness = 1, FirstClass = 2, ClubClass = 3, Smoking = 4, NonSmoking = 5
-                        // 10               10              30             40           50
-
-                        // First class 12 - 2 rows
-                        // ClubClass = 12 - 2 rows next
-                        // NonSmoking = 24 - 4 rows next
-                        // Bussiness = 36 - 6 rows next
-                        // Smoking = 24 - 4 rows next
                         for (i = 0; i < settings.rows; i++) {
                             if (i == 0) {
                                 settings.typeTicket = 2
@@ -450,30 +412,35 @@
                         }
                         $('#list').empty();
                     });
-                    $('#orderSeat').click(function (event) {
-                        var str = [], str2 = [],
-                            item, classItem;
-                        $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
-                            item = $(this).attr('title');
-                            classItem = $(this).attr('name')
-                            str.push(item);
-                           
-                        });
-                        var querystring = '&OrderSeat=' + str.join() + '&id=' + $("#valueDeparture").val()
-                        $('#valueSeat').val(querystring)
-                        $('#ModalPopUpDeparture').modal('hide')
-                        $('#ModalPopUpDeparture').on('hidden.bs.modal', function (e) {
-                            var sel = $('#valueSeat').val();
-                            $('#valuePucharse').val(sel);
-                        });
-                    });
+                    
                 }
             });
         })
+        $('#orderSeat').click(function (event) {
+            var str = [], str2 = [],
+                item, classItem;
+            $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
+                item = $(this).attr('title');
+                classItem = $(this).attr('name')
+                str.push(item)
+            });
+
+            let querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val();
+            $('#valueSeat').val(querystring)
+            $('#ModalPopUpDeparture').modal('hide')
+            let sel2 = $('#valueSeat').val();
+            $('#valuePucharse2').val(sel2);
+
+            if (seatType == enumFlightType.departure) {
+                $('#orderSeats').val(str.toString());
+            } else {
+                $('#orderSeatsReturn').val(str.toString());
+            }
+        });
         $('#purcharseButton').click(function () {
-            var abc = 'flightType=' + fligthType + $('#valuePucharse').val()+ $('#valuePucharse').val()
-            console.log(abc)
+            $('#purchaseForm').attr('action', '/Flight/PaymentWithPaypal/' + $('#idFlight').val());
+            $('#purchaseForm').submit();
         })
-        
+
     })
 </script>
