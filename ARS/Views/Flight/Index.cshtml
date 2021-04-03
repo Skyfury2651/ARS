@@ -12,78 +12,32 @@
 
     <p class="text-success">@ViewBag.StatusMessage</p>
     <div class="container">
-        @foreach (var data in Model.departureFlights)
-        {
-            <h4>Depart @data.FromAirport.CityAirports.First().City.name, @data.FromAirport.CityAirports.First().City.country to @data.ToAirport.CityAirports.First().City.name, @data.ToAirport.CityAirports.First().City.country</h4>
-            <h5>Depart on @data.departureDate.ToString("D") and return on @data.departureDate.ToString("D")</h5>}
-        <hr />
-        <div class="flight-results-container">
+        <div class="row">
             <div class="col-md-6">
-                <ul class="search-result">
-                    @foreach (var item in Model.departureFlights)
-                    {
-                        <li class="">
-                            <div class="row flight-details">
-                                <div class="col-md-4 flight-infos">
-                                    <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
-                                    <span class="flight-time">
-                                        @item.departureDate.ToString("t")
-                                    </span>
-                                </div>
-                                <div class="col-md-3 arrow">
-                                    <span aria-hidden="true" class="ti-arrow-right" />
-                                </div>
-                                <div class="col-md-4 flight-infos">
-                                    <span class="airport-code">@item.ToAirport.CityAirports.First().Airport.code</span>
-                                    <span class="flight-time">
-                                        @item.arrivalDate.ToString("t")
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="flight-infos">
-                                        @if (item.haveStop)
-                                        {
-                                            <div class="tooltip1">
-                                                Stop: @item.Stops.Count()
-                                                <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
-                                            </div>
-                                            <span>
-                                                First route: @item.FromAirport.CityAirports.First().Airport.code
-                                                <span aria-hidden="true" class="ti-control-play"></span>
-
-                                                @item.Stops.First().City.CityAirports.First().Airport.code
-                                            </span>
-                                            <span>
-                                                Second route: @item.Stops.First().City.CityAirports.First().Airport.code
-                                                <span aria-hidden="true" class="ti-control-play"></span>
-                                                @item.ToAirport.CityAirports.First().Airport.code
-                                            </span>
-                                        }
-                                        <span class="flight-number">Plane code: @item.planeCode</span>
-                                        <span class="flight-duration">
-                                            Duration: @item.flyTime hours
-                                        </span>
-                                        <div class="select-seats" id="Departure">
-                                            <button type="button" data-flight="@item.id" class="valueDeparture">Seats</button>
-                                            <input type="text" name="valueDeparture" id="valueDepartureString" hidden="true" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    }
-                </ul>
+                <h4>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name, @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</h4>
+                <h5>Depart on @Model.departureFlights.First().departureDate.ToString("D") and return on @Model.departureFlights.First().departureDate.ToString("D")</h5>
             </div>
-
-            <span class="vertical-line"></span>
-
-            @if (Model.returnFlights != null)
-            {
+            <div class="col-md-6">
+                <div>
+                    <div id="departInfo" class="hide">
+                        Your Depart Seat is : <span id="departSeat"></span> Flight : <span id="departFlight"></span>
+                    </div>
+                    <br />
+                    <div id="returnInfo" class="hide">
+                        Your Return Seat is : <span id="returnSeat"></span> Flight : <span id="returnFlight"></span>
+                    </div>
+                </div>
+                <div style="float:right;padding:0 10%;">
+                    <button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
+                    <button class="btn btn-primary" id="reservateButton" type="submit" style="margin-top:10px">Reservate</button>
+                </div>
+            </div>
+        </div>
+        <hr />
+            <div class="flight-results-container">
                 <div class="col-md-6">
                     <ul class="search-result">
-                        @foreach (var item in Model.returnFlights)
+                        @foreach (var item in Model.departureFlights)
                         {
                             <li class="">
                                 <div class="row flight-details">
@@ -128,9 +82,9 @@
                                             <span class="flight-duration">
                                                 Duration: @item.flyTime hours
                                             </span>
-                                            <div class="select-seats" id="Arrival">
-                                                <button type="button" data-flight="@item.id" class="valueArrival">Seats</button>
-                                                <input type="text" name="valueArrival" id="valueArrivalString" hidden="true" />
+                                            <div id="Departure">
+                                                <button type="button" data-flight="@item.id" class="valueDeparture btn btn-content">Seats</button>
+                                                <input type="text" name="valueDeparture" id="valueDepartureString" hidden="true" />
                                             </div>
                                         </div>
                                     </div>
@@ -139,9 +93,72 @@
                         }
                     </ul>
                 </div>
-            }
+
+                <span class="vertical-line"></span>
+
+                @if (Model.returnFlights != null)
+                {
+                    <div class="col-md-6">
+                        <ul class="search-result">
+                            @foreach (var item in Model.returnFlights)
+                            {
+                                <li class="">
+                                    <div class="row flight-details">
+                                        <div class="col-md-4 flight-infos">
+                                            <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
+                                            <span class="flight-time">
+                                                @item.departureDate.ToString("t")
+                                            </span>
+                                        </div>
+                                        <div class="col-md-3 arrow">
+                                            <span aria-hidden="true" class="ti-arrow-right" />
+                                        </div>
+                                        <div class="col-md-4 flight-infos">
+                                            <span class="airport-code">@item.ToAirport.CityAirports.First().Airport.code</span>
+                                            <span class="flight-time">
+                                                @item.arrivalDate.ToString("t")
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="flight-infos">
+                                                @if (item.haveStop)
+                                                {
+                                                    <div class="tooltip1">
+                                                        Stop: @item.Stops.Count()
+                                                        <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
+                                                    </div>
+                                                    <span>
+                                                        First route: @item.FromAirport.CityAirports.First().Airport.code
+                                                        <span aria-hidden="true" class="ti-control-play"></span>
+
+                                                        @item.Stops.First().City.CityAirports.First().Airport.code
+                                                    </span>
+                                                    <span>
+                                                        Second route: @item.Stops.First().City.CityAirports.First().Airport.code
+                                                        <span aria-hidden="true" class="ti-control-play"></span>
+                                                        @item.ToAirport.CityAirports.First().Airport.code
+                                                    </span>
+                                                }
+                                                <span class="flight-number">Plane code: @item.planeCode</span>
+                                                <span class="flight-duration">
+                                                    Duration: @item.flyTime hours
+                                                </span>
+                                                <div id="Arrival">
+                                                    <button type="button" data-flight="@item.id" class="valueArrival btn-content">Select</button>
+                                                    <input type="text" name="valueArrival" id="valueArrivalString" hidden="true" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
 
     <div class="modal fade" id="ModalPopUpDeparture" role="dialog">
         <div class="modal-dialog err-pop" style="">
@@ -201,7 +218,7 @@
                                 <div id="list">
 
                                 </div>
-                                <button class="btn btn-primary" id="orderSeat" type="button" style="margin-top:10px">Submit</button>
+                                <button class="btn btn-success" id="orderSeat" type="button" style="margin-top:10px">Select</button>
                             </form>
                             <input type="text" name="valueSeat" id="valueSeat" hidden="true" />
                         </div>
@@ -213,7 +230,7 @@
     </div>
 </div>
 
-<button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
+
 
 <form action="/" method="post" id="purchaseForm">
     <input id="idFlight" type="hidden"  />
@@ -334,6 +351,10 @@
                 });
                 $('#orderSeat').click(function (event2) {
                     $('#returnId').val(flightReturnId);
+                    if ($('#returnId').val() != "") {
+                        $('#returnFlight').text($('#returnId').val());
+                        $('#returnInfo').removeClass("hide");
+                    }
                 });
             })
         } else {
@@ -435,6 +456,20 @@
                 $('#orderSeats').val(str.toString());
             } else {
                 $('#orderSeatsReturn').val(str.toString());
+            }
+
+            console.log($('#orderSeats').val());
+            if ($('#orderSeats').val() != "") {
+                $('#departSeat').text($('#orderSeats').val());
+                $('#departInfo').removeClass("hide");
+            }
+            if ($('#idFlight').val() != "") {
+                $('#departFlight').text($('#idFlight').val());
+                $('#departInfo').removeClass("hide");
+            }
+            if ($('#orderSeatsReturn').val() != "") {
+                $('#returnSeat').text($('#orderSeatsReturn').val());
+                $('#returnInfo').removeClass("hide");
             }
         });
         $('#purcharseButton').click(function () {
