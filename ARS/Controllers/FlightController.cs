@@ -32,6 +32,10 @@ namespace ARS.Controllers
             var Year = flight.ReturnDate.Year;
             var request = flight;
             var result = new FlightSearchListModel();
+            if (flight.DepartureDate.Year == 1)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
             //_db.Flights.Where(x => x.departureDate in);
             var AddDepartureDate = flight.DepartureDate.AddDays(3);

@@ -12,78 +12,34 @@
 
     <p class="text-success">@ViewBag.StatusMessage</p>
     <div class="container">
-        <h4>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name , @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</h4>
-        <h5>Depart on @Model.departureFlights.First().departureDate.ToString("D") and return on @Model.departureFlights.First().departureDate.ToString("D")</h5>
-        <hr />
-        <div class="flight-results-container">
+        <div class="row">
             <div class="col-md-6">
-                <ul class="search-result">
-                    @foreach (var item in Model.departureFlights)
-                    {
-                        <li class="horizontal-line">
-                            <div class="row flight-details">
-                                <div class="col-md-4 flight-infos">
-                                    <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
-                                    <span class="flight-time">
-                                        @item.departureDate.ToString("t")
-                                    </span>
-                                </div>
-                                <div class="col-md-3 arrow">
-                                    <span aria-hidden="true" class="ti-arrow-right" />
-                                </div>
-                                <div class="col-md-4 flight-infos">
-                                    <span class="airport-code">@item.ToAirport.CityAirports.First().Airport.code</span>
-                                    <span class="flight-time">
-                                        @item.arrivalDate.ToString("t")
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="flight-infos">
-                                        @if (item.haveStop)
-                                        {
-                                            <div class="tooltip1">
-                                                Stop: @item.Stops.Count()
-                                                <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
-                                            </div>
-                                            <span>
-                                                First route: @item.FromAirport.CityAirports.First().Airport.code
-                                                <span aria-hidden="true" class="ti-control-play"></span>
-
-                                                @item.Stops.First().City.CityAirports.First().Airport.code
-                                            </span>
-                                            <span>
-                                                Second route: @item.Stops.First().City.CityAirports.First().Airport.code
-                                                <span aria-hidden="true" class="ti-control-play"></span>
-                                                @item.ToAirport.CityAirports.First().Airport.code
-                                            </span>
-                                        }
-                                        <span class="flight-number">Plane code: @item.planeCode</span>
-                                        <span class="flight-duration">
-                                            Duration: @item.flyTime hours
-                                        </span>
-                                        <div class="select-seats" id="Departure">
-                                            <a value="@item.id" id="valueDeparture">Seats</a>
-                                            <input type="text" name="valueDeparture" id="valueDepartureString" hidden="true" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    }
-                </ul>
+                <h4>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name, @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</h4>
+                <h5>Depart on @Model.departureFlights.First().departureDate.ToString("D") and return on @Model.departureFlights.First().departureDate.ToString("D")</h5>
             </div>
-
-            <span class="vertical-line"></span>
-
-            @if (Model.returnFlights != null)
-            {
+            <div class="col-md-6">
+                <div>
+                    <div id="departInfo" class="hide">
+                        Your Depart Seat is : <span id="departSeat"></span> Flight : <span id="departFlight"></span>
+                    </div>
+                    <br />
+                    <div id="returnInfo" class="hide">
+                        Your Return Seat is : <span id="returnSeat"></span> Flight : <span id="returnFlight"></span>
+                    </div>
+                </div>
+                <div style="float:right;padding:0 10%;">
+                    <button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
+                    <button class="btn btn-primary" id="reservateButton" type="submit" style="margin-top:10px">Reservate</button>
+                </div>
+            </div>
+        </div>
+        <hr />
+            <div class="flight-results-container">
                 <div class="col-md-6">
                     <ul class="search-result">
-                        @foreach (var item in Model.returnFlights)
+                        @foreach (var item in Model.departureFlights)
                         {
-                            <li class="horizontal-line">
+                            <li class="">
                                 <div class="row flight-details">
                                     <div class="col-md-4 flight-infos">
                                         <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
@@ -126,9 +82,9 @@
                                             <span class="flight-duration">
                                                 Duration: @item.flyTime hours
                                             </span>
-                                            <div class="select-seats" id="Arrival">
-                                                <a value="@item.id" id="valueArrival">Seats</a>
-                                                <input type="text" name="valueArrival" id="valueArrivalString" hidden="true" />
+                                            <div id="Departure">
+                                                <button type="button" data-flight="@item.id" class="valueDeparture btn btn-content">Seats</button>
+                                                <input type="text" name="valueDeparture" id="valueDepartureString" hidden="true" />
                                             </div>
                                         </div>
                                     </div>
@@ -137,9 +93,72 @@
                         }
                     </ul>
                 </div>
-            }
+
+                <span class="vertical-line"></span>
+
+                @if (Model.returnFlights != null)
+                {
+                    <div class="col-md-6">
+                        <ul class="search-result">
+                            @foreach (var item in Model.returnFlights)
+                            {
+                                <li class="">
+                                    <div class="row flight-details">
+                                        <div class="col-md-4 flight-infos">
+                                            <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
+                                            <span class="flight-time">
+                                                @item.departureDate.ToString("t")
+                                            </span>
+                                        </div>
+                                        <div class="col-md-3 arrow">
+                                            <span aria-hidden="true" class="ti-arrow-right" />
+                                        </div>
+                                        <div class="col-md-4 flight-infos">
+                                            <span class="airport-code">@item.ToAirport.CityAirports.First().Airport.code</span>
+                                            <span class="flight-time">
+                                                @item.arrivalDate.ToString("t")
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="flight-infos">
+                                                @if (item.haveStop)
+                                                {
+                                                    <div class="tooltip1">
+                                                        Stop: @item.Stops.Count()
+                                                        <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
+                                                    </div>
+                                                    <span>
+                                                        First route: @item.FromAirport.CityAirports.First().Airport.code
+                                                        <span aria-hidden="true" class="ti-control-play"></span>
+
+                                                        @item.Stops.First().City.CityAirports.First().Airport.code
+                                                    </span>
+                                                    <span>
+                                                        Second route: @item.Stops.First().City.CityAirports.First().Airport.code
+                                                        <span aria-hidden="true" class="ti-control-play"></span>
+                                                        @item.ToAirport.CityAirports.First().Airport.code
+                                                    </span>
+                                                }
+                                                <span class="flight-number">Plane code: @item.planeCode</span>
+                                                <span class="flight-duration">
+                                                    Duration: @item.flyTime hours
+                                                </span>
+                                                <div id="Arrival">
+                                                    <button type="button" data-flight="@item.id" class="valueArrival btn-content">Select</button>
+                                                    <input type="text" name="valueArrival" id="valueArrivalString" hidden="true" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
         </div>
-    </div>
 
     <div class="modal fade" id="ModalPopUpDeparture" role="dialog">
         <div class="modal-dialog err-pop" style="">
@@ -199,7 +218,7 @@
                                 <div id="list">
 
                                 </div>
-                                <button class="btn btn-primary" id="orderSeat" type="button" style="margin-top:10px">Submit</button>
+                                <button class="btn btn-success" id="orderSeat" type="button" style="margin-top:10px">Select</button>
                             </form>
                             <input type="text" name="valueSeat" id="valueSeat" hidden="true" />
                         </div>
@@ -211,9 +230,15 @@
     </div>
 </div>
 
-<button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
-<input type="text" name="valueSeat" id="valuePucharse" hidden="true" />
-<input type="text" name="valueSeat" id="valuePucharse2" hidden="true" />
+
+
+<form action="/" method="post" id="purchaseForm">
+    <input id="idFlight" type="hidden"  />
+    <input id="orderSeats" type="hidden" name="orderSeat" />
+    <input id="orderSeatsReturn" type="hidden" name="orderSeatReturn" />
+    <input id="returnId" type="hidden" name="returnId" />
+    <input id="fligthType" type="hidden" name="flightType" />
+</form>
 
 <style>
     .show {
@@ -230,20 +255,37 @@
         var param_string = window.location.href;
         var url = new URL(param_string);
         var c = url.searchParams.get('returnDate');
-        var fligthType = url.searchParams.get('flightType')
+        var fligthType = url.searchParams.get('flightType');
+        $('#fligthType').val(fligthType);
+        const enumFlightType = { departure: 0, arrival: 1 };
+        let seatType = "";
+        var settings = {
+            rows: 18,
+            cols: 6,
+            rowCssPrefix: 'row-',
+            colCssPrefix: 'col-',
+            seatWidth: 50,
+            seatHeight: 50,
+            seatCss: 'seat',
+            selectedSeatCss: 'selectedSeat',
+            selectingSeatCss: 'selectingSeat',
+            typeTicket: '',
+            qualifi: 4
+        };
         if (c !== "") {
             $('#Arrival').addClass('show');
-            $('#valueArrival').click(function () {
-                $('#ModalPopUpDeparture').modal('show')
+            $('.valueArrival').click(function (event) {
+                seatType = enumFlightType.arrival;
+                var flightReturnId = $(this).data('flight');
+                $('#ModalPopUpDeparture').modal('show');
                 var bookedSeats = [];
                 var bookedSeatsdata = [];
                 $.ajax({
                     type: "GET",
                     url: "/Flight/Place",
                     datatype: "Json",
-                    data: { id: $("#valueArrival").val() },
+                    data: { id: flightReturnId },
                     success: function (data) {
-                        console.log(data)
                         for (var i = 0; i < data.length; i++) {
                             var position = data[i].position;
                             bookedSeats.push(position)
@@ -253,31 +295,10 @@
                             qualifi: 9,
                             typeSeat: 5
                         }
-                        var settings = {
-                            rows: 18,
-                            cols: 6,
-                            rowCssPrefix: 'row-',
-                            colCssPrefix: 'col-',
-                            seatWidth: 50,
-                            seatHeight: 50,
-                            seatCss: 'seat',
-                            selectedSeatCss: 'selectedSeat',
-                            selectingSeatCss: 'selectingSeat',
-                            typeTicket: '',
-                            qualifi: 4
-                        };
 
                         var init = function (reservedSeat) {
                             var str = [],
                                 seatNo, className;
-                            //Bussiness = 1, FirstClass = 2, ClubClass = 3, Smoking = 4, NonSmoking = 5
-                            // 10               10              30             40           50
-
-                            // First class 12 - 2 rows
-                            // ClubClass = 12 - 2 rows next
-                            // NonSmoking = 24 - 4 rows next
-                            // Bussiness = 36 - 6 rows next
-                            // Smoking = 24 - 4 rows next
                             for (i = 0; i < settings.rows; i++) {
                                 if (i == 0) {
                                     settings.typeTicket = 2
@@ -325,30 +346,23 @@
                             }
                             $('#list').empty();
                         });
-                        $('#orderSeat').click(function (event) {
-                            var str = [], str2 = [],
-                                item, classItem;
-                            $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
-                                item = $(this).attr('title');
-                                classItem = $(this).attr('name')
-                                str.push(item);
 
-                            });
-                            var querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val();
-                            $('#valueSeat').val(querystring)
-                            $('#ModalPopUpDeparture').modal('hide')
-                            $('#ModalPopUpDeparture').on('hidden.bs.modal', function (e) {
-                                var sel2 = $('#valueSeat').val();
-                                $('#valuePucharse2').val(sel2);
-                            });
-                        });
+                    }
+                });
+                $('#orderSeat').click(function (event2) {
+                    $('#returnId').val(flightReturnId);
+                    if ($('#returnId').val() != "") {
+                        $('#returnFlight').text($('#returnId').val());
+                        $('#returnInfo').removeClass("hide");
                     }
                 });
             })
         } else {
             $('#Arrival').addClass('hidden');
         }
-        $('#valueDeparture').click(function () {
+        $('.valueDeparture').click(function (event) {
+            seatType = enumFlightType.departure;
+            $('#idFlight').val($(this).data("flight"));
             $('#ModalPopUpDeparture').modal('show')
             var bookedSeats = [];
             var bookedSeatsdata = [];
@@ -356,7 +370,7 @@
                 type: "GET",
                 url: "/Flight/Place",
                 datatype: "Json",
-                data: { id: $("#valueDeparture").val() },
+                data: { id: $(this).data("flight") },
                 success: function (data) {
                     console.log(data)
                     for (var i = 0; i < data.length; i++) {
@@ -368,31 +382,10 @@
                         qualifi: 9,
                         typeSeat: 5
                     }
-                    var settings = {
-                        rows: 18,
-                        cols: 6,
-                        rowCssPrefix: 'row-',
-                        colCssPrefix: 'col-',
-                        seatWidth: 50,
-                        seatHeight: 50,
-                        seatCss: 'seat',
-                        selectedSeatCss: 'selectedSeat',
-                        selectingSeatCss: 'selectingSeat',
-                        typeTicket: '',
-                        qualifi: 4
-                    };
 
                     var init = function (reservedSeat) {
-                        var str = [],
+                        let str = [],
                             seatNo, className;
-                        //Bussiness = 1, FirstClass = 2, ClubClass = 3, Smoking = 4, NonSmoking = 5
-                        // 10               10              30             40           50
-
-                        // First class 12 - 2 rows
-                        // ClubClass = 12 - 2 rows next
-                        // NonSmoking = 24 - 4 rows next
-                        // Bussiness = 36 - 6 rows next
-                        // Smoking = 24 - 4 rows next
                         for (i = 0; i < settings.rows; i++) {
                             if (i == 0) {
                                 settings.typeTicket = 2
@@ -440,29 +433,48 @@
                         }
                         $('#list').empty();
                     });
-                    $('#orderSeat').click(function (event) {
-                        var str = [], str2 = [],
-                            item, classItem;
-                        $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
-                            item = $(this).attr('title');
-                            classItem = $(this).attr('name')
-                            str.push(item);
-
-                        });
-                        var querystring = '&OrderSeat=' + str.join() + '&id=' + $("#valueDeparture").val()
-                        $('#valueSeat').val(querystring)
-                        $('#ModalPopUpDeparture').modal('hide')
-                        $('#ModalPopUpDeparture').on('hidden.bs.modal', function (e) {
-                            var sel = $('#valueSeat').val();
-                            $('#valuePucharse').val(sel);
-                        });
-                    });
+                    
                 }
             });
         })
+        $('#orderSeat').click(function (event) {
+            var str = [], str2 = [],
+                item, classItem;
+            $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
+                item = $(this).attr('title');
+                classItem = $(this).attr('name')
+                str.push(item)
+            });
+
+            let querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val();
+            $('#valueSeat').val(querystring)
+            $('#ModalPopUpDeparture').modal('hide')
+            let sel2 = $('#valueSeat').val();
+            $('#valuePucharse2').val(sel2);
+
+            if (seatType == enumFlightType.departure) {
+                $('#orderSeats').val(str.toString());
+            } else {
+                $('#orderSeatsReturn').val(str.toString());
+            }
+
+            console.log($('#orderSeats').val());
+            if ($('#orderSeats').val() != "") {
+                $('#departSeat').text($('#orderSeats').val());
+                $('#departInfo').removeClass("hide");
+            }
+            if ($('#idFlight').val() != "") {
+                $('#departFlight').text($('#idFlight').val());
+                $('#departInfo').removeClass("hide");
+            }
+            if ($('#orderSeatsReturn').val() != "") {
+                $('#returnSeat').text($('#orderSeatsReturn').val());
+                $('#returnInfo').removeClass("hide");
+            }
+        });
         $('#purcharseButton').click(function () {
-            var abc = 'flightType=' + fligthType + $('#valuePucharse').val() + $('#valuePucharse').val()
-            console.log(abc)
+            $('#purchaseForm').attr('action', '/Flight/PaymentWithPaypal/' + $('#idFlight').val());
+            $('#purchaseForm').submit();
         })
 
     })
