@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ARS.Models.Transaction>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Transactions List</h2>
+
+
+<table class="table">
+    <tr>
+        <th scope="col">
+            @Html.DisplayNameFor(model => model.id)
+        </th>
+        <th scope="col">
+            @Html.DisplayNameFor(model => model.price)
+        </th>
+        <th scope="col">
+            @Html.DisplayNameFor(model => model.type)
+        </th>
+        <th scope="col">
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th scope="col">
+            @Html.DisplayNameFor(model => model.createdAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updatedAt)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.createdAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.updatedAt)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+
+</table>

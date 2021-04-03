@@ -7,22 +7,20 @@
 
 <link href="~/Content/ticket-view.css" rel="stylesheet" />
 
-<div class="body container background-view">
+<div class="body container background">
     <h2>@ViewBag.Title</h2>
 
     <p class="text-success">@ViewBag.StatusMessage</p>
     <div class="container">
-        @foreach (var data in Model.departureFlights)
-        {
-            <h4>Depart @data.FromAirport.CityAirports.First().City.name, @data.FromAirport.CityAirports.First().City.country to @data.ToAirport.CityAirports.First().City.name, @data.ToAirport.CityAirports.First().City.country</h4>
-            <h5>Depart on @data.departureDate.ToString("D") and return on @data.departureDate.ToString("D")</h5>}
+        <h4>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name , @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</h4>
+        <h5>Depart on @Model.departureFlights.First().departureDate.ToString("D") and return on @Model.departureFlights.First().departureDate.ToString("D")</h5>
         <hr />
         <div class="flight-results-container">
             <div class="col-md-6">
                 <ul class="search-result">
                     @foreach (var item in Model.departureFlights)
                     {
-                        <li class="">
+                        <li class="horizontal-line">
                             <div class="row flight-details">
                                 <div class="col-md-4 flight-infos">
                                     <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
@@ -66,7 +64,7 @@
                                             Duration: @item.flyTime hours
                                         </span>
                                         <div class="select-seats" id="Departure">
-                                            <button type="button" value="@item.id" id="valueDeparture">Seats</button>
+                                            <a value="@item.id" id="valueDeparture">Seats</a>
                                             <input type="text" name="valueDeparture" id="valueDepartureString" hidden="true" />
                                         </div>
                                     </div>
@@ -85,7 +83,7 @@
                     <ul class="search-result">
                         @foreach (var item in Model.returnFlights)
                         {
-                            <li class="">
+                            <li class="horizontal-line">
                                 <div class="row flight-details">
                                     <div class="col-md-4 flight-infos">
                                         <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
@@ -129,7 +127,7 @@
                                                 Duration: @item.flyTime hours
                                             </span>
                                             <div class="select-seats" id="Arrival">
-                                                <button type="button" value="@item.id" id="valueArrival">Seats</button>
+                                                <a value="@item.id" id="valueArrival">Seats</a>
                                                 <input type="text" name="valueArrival" id="valueArrivalString" hidden="true" />
                                             </div>
                                         </div>
@@ -141,15 +139,6 @@
                 </div>
             }
         </div>
-        @*<div id="eDeparture">
-            
-        </div>
-        <div id="Arrival">
-            
-        </div>*@
-
-
-
     </div>
 
     <div class="modal fade" id="ModalPopUpDeparture" role="dialog">
@@ -222,14 +211,15 @@
     </div>
 </div>
 
-    <button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
-    <input type="text" name="valueSeat" id="valuePucharse" hidden="true" />
-    <input type="text" name="valueSeat" id="valuePucharse2" hidden="true" />
+<button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
+<input type="text" name="valueSeat" id="valuePucharse" hidden="true" />
+<input type="text" name="valueSeat" id="valuePucharse2" hidden="true" />
 
 <style>
-    .show{
-        display:block;
+    .show {
+        display: block;
     }
+
     .hidden {
         display: none;
     }
@@ -342,9 +332,9 @@
                                 item = $(this).attr('title');
                                 classItem = $(this).attr('name')
                                 str.push(item);
-                                
+
                             });
-                            var querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val() ;
+                            var querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val();
                             $('#valueSeat').val(querystring)
                             $('#ModalPopUpDeparture').modal('hide')
                             $('#ModalPopUpDeparture').on('hidden.bs.modal', function (e) {
@@ -457,7 +447,7 @@
                             item = $(this).attr('title');
                             classItem = $(this).attr('name')
                             str.push(item);
-                           
+
                         });
                         var querystring = '&OrderSeat=' + str.join() + '&id=' + $("#valueDeparture").val()
                         $('#valueSeat').val(querystring)
@@ -471,9 +461,9 @@
             });
         })
         $('#purcharseButton').click(function () {
-            var abc = 'flightType=' + fligthType + $('#valuePucharse').val()+ $('#valuePucharse').val()
+            var abc = 'flightType=' + fligthType + $('#valuePucharse').val() + $('#valuePucharse').val()
             console.log(abc)
         })
-        
+
     })
 </script>
