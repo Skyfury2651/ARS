@@ -10,7 +10,6 @@ namespace ARS.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(ARS.Models.ApplicationDbContext context)
@@ -22,6 +21,7 @@ namespace ARS.Migrations
             this.seedSeat(context);
             this.seedStops(context);
         }
+
         public void seedSeat(ARS.Models.ApplicationDbContext context)
         {
             int seatId = 1;
@@ -80,8 +80,6 @@ namespace ARS.Migrations
                     }
                 }
             }
-
-
         }
         public void seedFlightCase1(ARS.Models.ApplicationDbContext context)
         {
@@ -242,6 +240,38 @@ namespace ARS.Migrations
                 flyTime = 11,
                 price = 150,
                 planeCode = "HK-02",
+                seatAvaiable = 100,
+            },
+
+            new Models.Flight
+            {
+                id = 4,
+                status = 1,
+                haveStop = false,
+                fromAirportId = 558,
+                toAirportId = 16,
+                distance = 5003,
+                departureDate = DateTime.ParseExact("10/04/2021", "dd/MM/yyyy", null),
+                arrivalDate = DateTime.ParseExact("11/04/2021", "dd/MM/yyyy", null),
+                flyTime = 11,
+                price = 90,
+                planeCode = "HK-03",
+                seatAvaiable = 100,
+            },
+
+            new Models.Flight
+            {
+                id = 5,
+                status = 1,
+                haveStop = false,
+                fromAirportId = 16,
+                toAirportId = 558,
+                distance = 5003,
+                departureDate = DateTime.ParseExact("20/04/2021", "dd/MM/yyyy", null),
+                arrivalDate = DateTime.ParseExact("21/04/2021", "dd/MM/yyyy", null),
+                flyTime = 11,
+                price = 90,
+                planeCode = "HK-04",
                 seatAvaiable = 100,
             }
             );

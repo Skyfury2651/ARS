@@ -1,4 +1,11 @@
-﻿ul {
+﻿.body.container.background {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+ul {
     list-style: none;
 }
 
@@ -14,7 +21,13 @@
     display: inline-block;
     border-left: 1px solid #ccc;
     margin: 0 10px;
-    height: 220px;
+    height: auto;
+}
+
+.horizontal-line {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    height: 240px;
 }
 
 .search-result {

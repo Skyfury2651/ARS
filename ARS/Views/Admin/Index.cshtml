@@ -1,0 +1,84 @@
+﻿@model IEnumerable<ARS.Models.Transaction>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<link href="~/Content/admin-view.css" rel="stylesheet" />
+
+<h2>Transactions List</h2>
+
+
+<table id="example" class="display">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Price</th>
+            <th scope="col">Type</th>
+            <th scope="col">Status</th>
+            <th scope="col">Created Date</th>
+            <th scope="col">Updated Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.id)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.price)
+                </td>
+                <td>
+                    @if (item.type == 0)
+                    {
+                        <span>Paypal</span>
+                    }
+                    else if (item.type == 1)
+                    {
+                        <span>Visa</span>
+                    }
+                    else if (item.type == 2)
+                    {
+                        <span>Local Banking</span>
+                    }
+                    else
+                    {
+                        <span>Google Pay</span>
+                    }
+                </td>
+                <td>
+                    @if (item.type == 0)
+                    {
+                        <span>Pending</span>
+                    }
+                    else if (item.type == 1)
+                    {
+                        <span>Success</span>
+                    }
+                    else
+                    {
+                        <span>Cancel</span>
+                    }
+                </td>
+                <td>
+                    @Convert.ToDateTime(@item.createdAt).ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Convert.ToDateTime(@item.updatedAt).ToString("dd/MM/yyyy")
+                </td>
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+
