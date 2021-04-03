@@ -80,6 +80,149 @@ namespace ARS.Controllers
 
             return Json(bookedSeats, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult MakeReservation(int id, string orderSeat, string orderSeatReturn = null, int returnId = 0, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
+        {
+            string currentUserId = User.Identity.GetUserId();
+            Models.Transaction transaction = null;
+            var flight = _db.Flights.Find(id);
+            var seats = orderSeat.Split(',');
+            var blockingNumber = Helper.RandomString(5);
+            List<Seat> seatList = new List<Seat> { };
+            double totalPrice = 0;
+            for (int i = 0; i < seats.Length; i++)
+            {
+                string position = seats[i];
+                var seat = _db.Seats.Where(x => x.position == position & x.flightId == id).FirstOrDefault();
+
+                if (seat != null)
+                {
+                    seatList.Add(seat);
+                }
+            }
+            // check have transaction in request or not
+            if (string.IsNullOrEmpty(transactionIds))
+            {
+                transaction = _db.Transaction.Add(new Models.Transaction
+                {
+                    status = (int)TransactionStatus.PENDING,
+                    createdAt = DateTime.Now,
+                    updatedAt = DateTime.Now,
+                    type = (int)TransactionType.PAYPAL
+                });
+                // start loop Departure
+                foreach (var item in seatList)
+                {
+                    item.status = (int)SeatStatus.Block;
+                    double price = 0;
+                    switch (item.classType)
+                    {
+                        case 1:
+                            price += (flight.price * 90 / 100);
+                            break;
+                        case 2:
+                            price += (flight.price * 90 / 100);
+                            break;
+                        case 3:
+                            price += (flight.price * 90 / 100);
+                            break;
+                        case 4:
+                            price += (flight.price * 90 / 100);
+                            break;
+                        case 5:
+                            price += (flight.price * 90 / 100);
+                            break;
+                        default:
+                            break;
+                    }
+                    totalPrice += price;
+
+                    var ticket = _db.Tickets.Add(new Ticket
+                    {
+                        userId = currentUserId,
+                        seatId = item.id,
+                        transactionId = transaction.id,
+                        blockingNumber = blockingNumber,
+                        flightType = flightType,
+                        type = (int)TicketType.ADULT,
+                        status = (int)TicketStatus.DISABLE
+                    });
+
+                    flight.seatAvaiable = flight.seatAvaiable - 1;
+                    _db.SaveChanges();
+                }
+                //// end loop seatList Departure
+                if (flightType == 2)
+                {
+                    var seatListReturn = new List<Seat> { };
+                    for (int i = 0; i < seats.Length; i++)
+                    {
+                        var returnSeats = orderSeatReturn.Split(',');
+                        string returnPosition = returnSeats[i];
+                        var seat = _db.Seats.Where(x => x.position == returnPosition & x.flightId == returnId).FirstOrDefault();
+
+                        if (seat != null)
+                        {
+                            seatListReturn.Add(seat);
+                        }
+                    }
+                    var flightReturn = _db.Flights.Find(returnId);
+                    for (int i = 0; i < seatListReturn.Count; i++)
+                    {
+                        seatListReturn[i].status = (int)SeatStatus.Block;
+                        double price = 0;
+                        switch (seatListReturn[i].classType)
+                        {
+                            case 1:
+                                price += (flightReturn.price * 90 / 100);
+                                break;
+                            case 2:
+                                price += (flightReturn.price * 90 / 100);
+                                break;
+                            case 3:
+                                price += (flightReturn.price * 90 / 100);
+                                break;
+                            case 4:
+                                price += (flightReturn.price * 90 / 100);
+                                break;
+                            case 5:
+                                price += (flightReturn.price * 90 / 100);
+                                break;
+                            default:
+                                break;
+                        }
+                        totalPrice += price;
+
+                        var ticket = _db.Tickets.Add(new Ticket
+                        {
+                            userId = currentUserId,
+                            seatId = seatListReturn[i].id,
+                            transactionId = transaction.id,
+                            blockingNumber = blockingNumber,
+                            flightType = flightType,
+                            type = (int)TicketType.ADULT,
+                            status = (int)TicketStatus.DISABLE
+                        });
+
+
+                        flightReturn.seatAvaiable = flightReturn.seatAvaiable - 1;
+                        _db.SaveChanges();
+                    }
+                    transaction.price = totalPrice;
+                }
+
+                if (string.IsNullOrEmpty(transactionIds))
+                {
+                    transactionIds += (transaction.id).ToString();
+                }
+                else
+                {
+                    transactionIds += "," + (transaction.id).ToString();
+                }
+            }
+
+            return View(blockingNumber);
+        }
+
         [Authorize]
         public ActionResult PaymentWithPaypal(int id, string orderSeat, string orderSeatReturn = null, int returnId = 0, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
         {
@@ -206,6 +349,7 @@ namespace ARS.Controllers
                         flightReturn.seatAvaiable = flightReturn.seatAvaiable - 1;
                         _db.SaveChanges();
                     }
+                    transaction.price = totalPrice;
                 }
 
                 if (string.IsNullOrEmpty(transactionIds))
@@ -290,6 +434,7 @@ namespace ARS.Controllers
                     ticket.confirmNumber = confirmNumber;
                     ticket.Seat.status = (int)SeatStatus.Buyed;
                     currentUser.skyMiles = (int)Math.Round(currentUser.skyMiles + ticket.Seat.Flight.distance);
+                    userManager.Update(currentUser);
                 }
 
                 _db.SaveChanges();

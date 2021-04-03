@@ -24,9 +24,9 @@ namespace ARS
         public async System.Threading.Tasks.Task ScheduleSeatAsync()
         {
             ApplicationDbContext _db = new ApplicationDbContext();
-            var ExpiredTransactionList = await _db.Transaction.SqlQuery("SELECT TOP (1000) [id] ,[ticketId] ,[price],[type],[createdAt],[updatedAt],[status], DATEADD(MINUTE, 30, createdAt) as expiredAt"
+            var ExpiredTransactionList = await _db.Transaction.SqlQuery("SELECT TOP (1000) [id] ,[price],[type],[createdAt],[updatedAt],[status], DATEADD(MINUTE, 15, [updatedAt]) as expiredAt"
             + " FROM [aspnet-ARS-20210315112621].[dbo].[Transactions]"
-                + " WHERE updatedAt < DATEADD(MINUTE, 15, createdAt) AND status != 1 AND status != 2").ToListAsync();
+                + " WHERE GETDATE() < DATEADD(MINUTE, 15, [updatedAt]) AND status = 0").ToListAsync();
             foreach (var item in ExpiredTransactionList)
             {
                 foreach (var ticket in item.Tickets)
