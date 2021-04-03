@@ -1,4 +1,6 @@
 ﻿using ARS.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using PayPal.Api;
 using System;
 using System.Collections.Generic;
@@ -20,27 +22,63 @@ namespace ARS.Controllers
         {
             return View();
         }
+
+        [CustomAuthorize]
         public ActionResult CancelTicket(int id, int type, string confirmNumber = null, string blockingNumber = null)
         {
             if (confirmNumber != null && blockingNumber != null)
             {
+                var ticket = _db.Tickets.Find(id);
+                var transaction = ticket.Trasaction;
+                var cancelNumber = Helper.RandomString(5);
+                ApplicationDbContext context = new ApplicationDbContext();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                ticket.status = (int)TicketStatus.DISABLE;
+                ticket.cancelNumber = cancelNumber;
+                double returnPrice = 0;
+                if (ticket.Seat.status == (int) SeatStatus.Block)
+                {
+                    transaction.price = transaction.price - ticket.Seat.Flight.price;
+                }
+                else
+                {
+                    returnPrice = ticket.Seat.Flight.price;
+                    if ((DateTime.Now - transaction.updatedAt).TotalDays < 14)
+                    {
+                        returnPrice = returnPrice * 50 / 100;
+                    }
+                    else
+                    {
+                        returnPrice = returnPrice * 80 / 100;
+                    }
+                    transaction.price = transaction.price - returnPrice;
+                }
+                transaction.updatedAt = DateTime.Now;
+                currentUser.skyMiles = (int)Math.Round(currentUser.skyMiles - ticket.Seat.Flight.distance);
+                currentUser.balance += returnPrice;
+                userManager.Update(currentUser);
+                _db.SaveChanges();
 
                 return Json(new { code = 200 });
             }
             return Json(new { code = 422 });
         }
+
+
         public ActionResult ConfirmTicket(int id, string confirmNumber)
         {
-            //var ticket = _db.Tickets.Find(id);
-            //if (ticket.confirmNumber == confirmNumber)
-            //{
-            //    string orderSeats = "";
-            //    foreach (var seat in ticket.TicketSeat)
-            //    {
-            //        orderSeats += seat.Seat.position + ',';
-            //    }
-            //    return RedirectToAction("PaymentWithPaypal", "Flight", new { id = id, orderSeats = orderSeats });
-            //}
+            var transaction = _db.Transaction.Find(id);
+            if (transaction.Tickets.First().confirmNumber == confirmNumber)
+            {
+                string orderSeats = "";
+
+                foreach (var item in transaction.Tickets)
+                {
+                    orderSeats += item.Seat.position + ',';
+                }
+                return RedirectToAction("PaymentWithPaypal", "Flight", new { id = id, orderSeats = orderSeats });
+            }
 
             return Json(new { code = 422 });
         }
@@ -49,10 +87,16 @@ namespace ARS.Controllers
         {
             return View();
         }
-
-        public ActionResult ViewTicketStatus()
+        // View TicketStatus
+        public ActionResult TicketList()
         {
-            return View();
+            var tickets = _db.Tickets.ToList();
+            return View(tickets);
+        }
+        public ActionResult ViewTicketStatus(int id)
+        {
+            var ticket = _db.Tickets.Find(id);
+            return View(ticket);
         }
         private PayPal.Api.Payment payment;
         private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)

@@ -13,7 +13,7 @@ namespace ARS.Models
         public string lastName { get; set; }
         public string userIdentityCode { get; set; }
 
-        public int balance { get; set; }
+        public double balance { get; set; }
         public string address { get; set; }
         public int sex { get; set; }
         public int age { get; set; }
