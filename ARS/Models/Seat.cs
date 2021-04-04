@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -21,6 +22,11 @@ namespace ARS.Models
     }
     public enum SeatStatus
     {
-        Available = 1, Block = 0 , Buyed = 2
+        [Display(Description = "Available")]
+        Available = 1,
+        [Display(Description = "Blocked")]
+        Block = 0 ,
+        [Display(Description = "Paid")]
+        Buyed = 2
     }
 }

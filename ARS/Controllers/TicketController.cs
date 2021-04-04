@@ -37,7 +37,7 @@ namespace ARS.Controllers
                 ticket.status = (int)TicketStatus.DISABLE;
                 ticket.cancelNumber = cancelNumber;
                 double returnPrice = 0;
-                if (ticket.Seat.status == (int) SeatStatus.Block)
+                if (ticket.Seat.status == (int)SeatStatus.Block)
                 {
                     transaction.price = transaction.price - ticket.Seat.Flight.price;
                 }
@@ -83,21 +83,66 @@ namespace ARS.Controllers
             return Json(new { code = 422 });
         }
 
-        public ActionResult RescheduleTicket()
-        {
-            return View();
-        }
-        // View TicketStatus
+        [CustomAuthorize]
         public ActionResult TicketList()
         {
-            var tickets = _db.Tickets.ToList();
+            var userId = User.Identity.GetUserId();
+            var tickets = _db.Tickets.Where(x => x.userId == userId).ToList();
             return View(tickets);
         }
+
+        public ActionResult RescheduleTicketCheck(int id, string confirmNumber)
+        {
+            var ticket = _db.Tickets.Find(id);
+            var numberSeat = ticket.Trasaction.Tickets.Count();
+            var fromCity = ticket.Trasaction.Tickets.First().Seat.Flight.FromAirport.CityAirports.First().City.name;
+            var toCity = ticket.Trasaction.Tickets.First().Seat.Flight.ToAirport.CityAirports.First().City.name;
+
+            var fromAirportId = ticket.Trasaction.Tickets.First().Seat.Flight.fromAirportId;
+            var toAirportId = ticket.Trasaction.Tickets.First().Seat.Flight.toAirportId;
+            var toAirport = ticket.Trasaction.Tickets.First().Seat.Flight.ToAirport;
+            var fromAirport = ticket.Trasaction.Tickets.First().Seat.Flight.ToAirport;
+            var oldTransaction = ticket.transactionId;
+            if (ticket.flightType == 2)
+            {
+                numberSeat = numberSeat / 2;
+            }
+            if (ticket.confirmNumber == confirmNumber && ticket.Trasaction.status == (int)TransactionStatus.SUCCESS)
+            {
+                return Json(new { 
+                    status = "Success", 
+                    flightType = ticket.flightType ,
+                    fromCity = fromCity,
+                    toCity = toCity,
+                    NumberOfPassager = numberSeat,
+                    fromAirportId = fromAirportId,
+                    toAirportId = toAirportId,
+                    oldTransaction = oldTransaction
+                });
+            }
+
+            return Json(new { status = "Fail" });
+        }
+
+        public ActionResult RescheduleTicket(int id, int flightId, string orderSeat, string orderSeatReturn = null, int returnId = 0, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
+        {
+            var transaction = _db.Transaction.Find(id);
+            transaction.status = (int)TransactionStatus.CANCEL;
+            foreach (var ticket in transaction.Tickets)
+            {
+                ticket.status = (int)TicketStatus.DISABLE;
+                ticket.Seat.status = (int)SeatStatus.Available;
+            }
+
+            return RedirectToAction("PaymentWithPaypal", "Flight", new { id = flightId, orderSeat = orderSeat, orderSeatReturn = orderSeatReturn, returnId = returnId, flightType = flightType, type = type });
+        }
+
         public ActionResult ViewTicketStatus(int id)
         {
             var ticket = _db.Tickets.Find(id);
             return View(ticket);
         }
+
         private PayPal.Api.Payment payment;
         private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)
         {
