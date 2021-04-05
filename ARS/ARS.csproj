@@ -657,7 +657,8 @@
     <Content Include="Content\img\team\img2.jpg" />
     <Content Include="Content\img\team\img3.jpg" />
     <Content Include="Content\selecting-seat.css" />
-    <Content Include="Content\ticket-view.css" />
+    <Content Include="Content\flight-choice.css" />
+    <Content Include="Content\ticket-detail.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -732,12 +733,12 @@
     <Content Include="Views\Admin\Details.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Ticket\TicketDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Empty\" />
+    <Folder Include="Views\App_LocalResources\" />
     <Folder Include="Views\Partial\" />
-    <Folder Include="Views\Ticket\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

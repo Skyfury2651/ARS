@@ -28,7 +28,7 @@ namespace ARS.Migrations
             int seatStatus = 2;
             for (int k = 1; k < 4; k++)
             {
-                int notAvailable = 0;
+                //int notAvailable = 0;
                 for (int i = 1; i < 5; i++)
                 {
                     int classType = (int)Models.SeatType.FirstClass;

@@ -7,6 +7,11 @@
 
 ul {
     list-style: none;
+    padding-inline-start: unset;
+}
+
+.header-info {
+    padding: 20px 20px 0px 20px;
 }
 
 .flight-results-container {
@@ -15,6 +20,14 @@ ul {
 
 .tripInfo {
     display: flex;
+}
+
+.header-li {
+    padding-bottom: 20px;
+    display: flex; 
+    justify-content: center; 
+    text-align: center; 
+    align-items: center;
 }
 
 .vertical-line {
@@ -27,11 +40,7 @@ ul {
 .horizontal-line {
     border-bottom: 1px solid #ccc;
     padding: 10px;
-    height: 240px;
-}
-
-.search-result {
-    padding-inline-start: unset;
+    height: 280px;
 }
 
 .flight-time {
@@ -50,17 +59,6 @@ ul {
 
 .stop {
     border-bottom: 1px solid #ccc;
-}
-
-.select-seats {
-    border: 1px solid #d0dae0;
-    border-radius: 3px;
-    background: linear-gradient(180deg,rgba(208,218,224,.3) 0,hsla(0,0%,100%,.3) 20%,hsla(0,0%,100%,.3));
-    cursor: pointer;
-    padding: 2px;
-    position: relative;
-    height: auto;
-    width: min-content;
 }
 
 .tooltip1 {
@@ -93,4 +91,9 @@ ul {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
+}
+
+.btn-action {
+    float: right;
+    padding: 0 13%;
 }

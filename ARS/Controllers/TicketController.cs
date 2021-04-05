@@ -88,12 +88,12 @@ namespace ARS.Controllers
             return View();
         }
         // View TicketStatus
-        public ActionResult TicketList()
+        public ActionResult TicketsList()
         {
             var tickets = _db.Tickets.ToList();
             return View(tickets);
         }
-        public ActionResult ViewTicketStatus(int id)
+        public ActionResult TicketDetail(int id)
         {
             var ticket = _db.Tickets.Find(id);
             return View(ticket);
