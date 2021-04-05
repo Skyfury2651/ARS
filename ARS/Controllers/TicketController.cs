@@ -142,7 +142,11 @@ namespace ARS.Controllers
             var ticket = _db.Tickets.Find(id);
             return View(ticket);
         }
-
+        public ActionResult TicketDetail(int id)
+        {
+            var ticket = _db.Tickets.Find(id);
+            return View(ticket);
+        }
         private PayPal.Api.Payment payment;
         private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)
         {

@@ -658,7 +658,8 @@
     <Content Include="Content\img\team\img2.jpg" />
     <Content Include="Content\img\team\img3.jpg" />
     <Content Include="Content\selecting-seat.css" />
-    <Content Include="Content\ticket-view.css" />
+    <Content Include="Content\flight-choice.css" />
+    <Content Include="Content\ticket-detail.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -691,6 +692,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Views\MailDelay.html" />
+    <Content Include="Views\SendMail.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -736,10 +738,11 @@
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Ticket\TicketList.cshtml" />
     <Content Include="Views\MailTemplate.html" />
+    <Content Include="Views\Ticket\TicketDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Empty\" />
+    <Folder Include="Views\App_LocalResources\" />
     <Folder Include="Views\Partial\" />
   </ItemGroup>
   <ItemGroup>

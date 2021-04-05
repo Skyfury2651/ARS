@@ -21,7 +21,7 @@ namespace ARS.Controllers
         {
             // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");  
             string body = string.Empty;
-            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate.html")))
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/SendMail.html")))
             {
                 body = reader.ReadToEnd();
             }
