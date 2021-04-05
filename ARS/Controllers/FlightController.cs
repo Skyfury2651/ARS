@@ -231,7 +231,7 @@ namespace ARS.Controllers
             body = body.Replace("{number}", blockingNumber);
             body = body.Replace("{UserName}", currentUser.lastName + currentUser.firstName);
             bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, "Your blocking number is ", body, true);
-
+            
             return View(blockingNumber);
         }
 
