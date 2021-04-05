@@ -27,6 +27,8 @@ namespace ARS.Models
         [Display(Description = "Blocked")]
         Block = 0 ,
         [Display(Description = "Paid")]
-        Buyed = 2
+        Buyed = 2,
+        [Display(Description = "Reservation")]
+        Reservation = 3 
     }
 }

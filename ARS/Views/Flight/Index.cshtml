@@ -483,6 +483,11 @@
             }
             $('#purchaseForm').submit();
         })
-
+        $('#reservateButton').click(function () {
+            $('#purchaseForm').attr('action', '/Flight/MakeReservation/' + $('#idFlight').val());
+            var param_string = window.location.href;
+            var url = new URL(param_string);
+            $('#purchaseForm').submit();
+        })
     })
 </script>

@@ -1,6 +1,9 @@
 ﻿using ARS.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +16,21 @@ namespace ARS.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+        public ActionResult Test()
+        {
+            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");  
+            string body = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate.html")))
+            {
+                body = reader.ReadToEnd();
+            }
+            body = body.Replace("{typeNumber}", "confirm");
+            body = body.Replace("{number}", "aadgsew");
+            body = body.Replace("{UserName}", "MyUser");
+            bool IsSendEmail = SendEmail.EmailSend("skyfury2651@gmail.com", "Your confirm number", body, true);
+
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult CitiesJsonDeparture()
         {
@@ -63,13 +81,13 @@ namespace ARS.Controllers
                     cityIds.Add(item.id);
                 }
 
-                 states = db.CityAirports.Where(data => cityIds.Contains(data.CityId)).Select(x => new
-                 {
-                     Id = x.AirportId,
-                     Name = x.Airport.name,
-                     CityName = x.City.name,
-                     NearBy = true
-                 }).ToList();
+                states = db.CityAirports.Where(data => cityIds.Contains(data.CityId)).Select(x => new
+                {
+                    Id = x.AirportId,
+                    Name = x.Airport.name,
+                    CityName = x.City.name,
+                    NearBy = true
+                }).ToList();
             }
 
             return Json(states, JsonRequestBehavior.AllowGet);

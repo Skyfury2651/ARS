@@ -6,6 +6,7 @@ using PayPal.Api;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -112,7 +113,7 @@ namespace ARS.Controllers
                 // start loop Departure
                 foreach (var item in seatList)
                 {
-                    item.status = (int)SeatStatus.Block;
+                    item.status = (int)SeatStatus.Reservation;
                     double price = 0;
                     switch (item.classType)
                     {
@@ -219,6 +220,17 @@ namespace ARS.Controllers
                     transactionIds += "," + (transaction.id).ToString();
                 }
             }
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            string body = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate.html")))
+            {
+                body = reader.ReadToEnd();
+            }
+            body = body.Replace("{typeNumber}", "confirm");
+            body = body.Replace("{number}", blockingNumber);
+            body = body.Replace("{UserName}", currentUser.lastName + currentUser.firstName);
+            bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, "Your blocking number is ", body, true);
 
             return View(blockingNumber);
         }
@@ -229,7 +241,6 @@ namespace ARS.Controllers
             try
             {
                 //add transaction
-                var dbContextTransaction = _db.Database.BeginTransaction();
                 string currentUserId = User.Identity.GetUserId();
                 Models.Transaction transaction = null;
                 var flight = _db.Flights.Find(id);
@@ -239,6 +250,14 @@ namespace ARS.Controllers
                     var oldTransactionItem = _db.Transaction.Find(id);
                     oldTransactionItem.status = (int)TransactionStatus.CANCEL;
                     _db.SaveChanges();
+                    var userManager2 = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    var currentUser2 = userManager2.FindById(User.Identity.GetUserId());
+
+                    foreach (var ticket in oldTransactionItem.Tickets)
+                    {
+                        currentUser2.skyMiles = (int)Math.Round(currentUser2.skyMiles - ticket.Seat.Flight.distance);
+                    }
+
                     foreach (var oldTicket in oldTransactionItem.Tickets)
                     {
                         oldTicket.status = (int)TicketStatus.DISABLE;
@@ -376,7 +395,6 @@ namespace ARS.Controllers
                         transactionIds += "," + (transaction.id).ToString();
                     }
                     //add transaction
-                    dbContextTransaction.Commit();
                 }
                 ////getting the apiContext  
                 APIContext apiContext = PaypalConfiguration.GetAPIContext();
@@ -455,8 +473,16 @@ namespace ARS.Controllers
 
                     _db.SaveChanges();
                 }
-                //add transaction
-                dbContextTransaction.Commit();
+                //sending Email
+                string body = string.Empty;
+                using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate.html")))
+                {
+                    body = reader.ReadToEnd();
+                }
+                body = body.Replace("{typeNumber}", "confirm");
+                body = body.Replace("{number}", confirmNumber);
+                body = body.Replace("{UserName}", currentUser.lastName + currentUser.firstName);
+                bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, "Your confirm number", body, true);
 
                 //on successful payment, show success page to user.  
                 return RedirectToAction("PurchasedTicket", new { confirmNumber = confirmNumber, transactionIds = transactionIds });
