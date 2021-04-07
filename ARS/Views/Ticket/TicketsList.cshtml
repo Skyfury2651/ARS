@@ -158,8 +158,11 @@
         }
     </td>
     <td>
-        <button data-transaction-id="@item.Trasaction.id" data-ticket-id="@item.id" class="btn btn-primary check-ticket">Reschedule</button>
-        <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-primary cancel-ticket">Cancel</button>
+        @if (item.status == 1)
+        {
+            <button data-transaction-id="@item.Trasaction.id" data-ticket-id="@item.id" class="btn btn-primary check-ticket">Reschedule</button>
+            <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-primary cancel-ticket">Cancel</button>
+        }
     </td>
 </tr>
     }

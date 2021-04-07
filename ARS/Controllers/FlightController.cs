@@ -76,8 +76,7 @@ namespace ARS.Controllers
                 position = x.position,
                 status = x.status
             }).ToList();
-            DateTime date1 = new DateTime(2009, 8, 1, 0, 0, 0);
-            DateTime date2 = new DateTime(2009, 8, 1, 12, 0, 0);
+
             int result = DateTime.Compare(DateTime.Now.AddDays(14), flight.departureDate);
             string relationship;
             var allowReservation = false ;

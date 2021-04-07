@@ -362,7 +362,11 @@
                 datatype: "Json",
                 data: { id: $(this).data("flight") },
                 success: function (data) {
-                    console.log(data)
+                    if (data.allowReservation == false) {
+                        $('#reservateButton').addClass("hide");
+                    } else {
+                        $('#reservateButton').removeClass("hide");
+                    }
                     for (var i = 0; i < data.bookedSeats.length; i++) {
                         var position = data.bookedSeats[i].position;
                         bookedSeats.push(position)
