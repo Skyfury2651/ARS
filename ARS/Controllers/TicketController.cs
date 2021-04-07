@@ -10,6 +10,13 @@ using System.Web.Mvc;
 
 namespace ARS.Controllers
 {
+    public class ActionTicket
+    {
+        public Models.Transaction Transaction;
+        public List<Ticket> Tickets;
+    }
+
+
     public class TicketController : Controller
     {
         private ApplicationDbContext _db;
@@ -109,9 +116,10 @@ namespace ARS.Controllers
             }
             if (ticket.confirmNumber == confirmNumber && ticket.Trasaction.status == (int)TransactionStatus.SUCCESS)
             {
-                return Json(new { 
-                    status = "Success", 
-                    flightType = ticket.flightType ,
+                return Json(new
+                {
+                    status = "Success",
+                    flightType = ticket.flightType,
                     fromCity = fromCity,
                     toCity = toCity,
                     NumberOfPassager = numberSeat,
@@ -139,8 +147,15 @@ namespace ARS.Controllers
         public ActionResult TicketDetail(int id)
         {
             var ticket = _db.Tickets.Find(id);
-            return View(ticket);
+            var transaction = ticket.Trasaction;
+            var actionTicket = new ActionTicket();
+            actionTicket.Transaction = transaction;
+            List<Ticket> tickets = new List<Ticket> { };
+            tickets.Add(ticket);
+            actionTicket.Tickets = tickets;
+            return View(actionTicket);
         }
+
         private PayPal.Api.Payment payment;
         private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)
         {
@@ -214,5 +229,6 @@ namespace ARS.Controllers
             // Create a payment using a APIContext  
             return this.payment.Create(apiContext);
         }
+
     }
 }
