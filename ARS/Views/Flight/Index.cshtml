@@ -54,23 +54,23 @@
                                 <div class="col-md-12">
                                     <div class="flight-infos">
                                         @*@if (item.haveStop)
-                                        {
-                                            <div class="tooltip1">
-                                                Stop: @item.Stops.Count()
-                                                <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
-                                            </div>
-                                            <span>
-                                                First route: @item.FromAirport.CityAirports.First().Airport.code
-                                                <span aria-hidden="true" class="ti-control-play"></span>
+                                            {
+                                                <div class="tooltip1">
+                                                    Stop: @item.Stops.Count()
+                                                    <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
+                                                </div>
+                                                <span>
+                                                    First route: @item.FromAirport.CityAirports.First().Airport.code
+                                                    <span aria-hidden="true" class="ti-control-play"></span>
 
-                                                @item.Stops.First().City.CityAirports.First().Airport.code
-                                            </span>
-                                            <span>
-                                                Second route: @item.Stops.First().City.CityAirports.First().Airport.code
-                                                <span aria-hidden="true" class="ti-control-play"></span>
-                                                @item.ToAirport.CityAirports.First().Airport.code
-                                            </span>
-                                        }*@
+                                                    @item.Stops.First().City.CityAirports.First().Airport.code
+                                                </span>
+                                                <span>
+                                                    Second route: @item.Stops.First().City.CityAirports.First().Airport.code
+                                                    <span aria-hidden="true" class="ti-control-play"></span>
+                                                    @item.ToAirport.CityAirports.First().Airport.code
+                                                </span>
+                                            }*@
                                         <span class="flight-number">Plane code: @item.planeCode</span>
                                         <span class="flight-duration">
                                             Duration: @item.flyTime hours
@@ -281,8 +281,8 @@
                     datatype: "Json",
                     data: { id: flightReturnId },
                     success: function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            var position = data[i].position;
+                        for (var i = 0; i < data.bookedSeats.length; i++) {
+                            var position = data.bookedSeats[i].position;
                             bookedSeats.push(position)
                         }
                         var economyPosition = 14;
@@ -363,8 +363,8 @@
                 data: { id: $(this).data("flight") },
                 success: function (data) {
                     console.log(data)
-                    for (var i = 0; i < data.length; i++) {
-                        var position = data[i].position;
+                    for (var i = 0; i < data.bookedSeats.length; i++) {
+                        var position = data.bookedSeats[i].position;
                         bookedSeats.push(position)
                     }
                     var economyPosition = 14;
