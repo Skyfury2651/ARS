@@ -84,7 +84,7 @@ namespace ARS.Controllers
         }
 
         [CustomAuthorize]
-        public ActionResult TicketList()
+        public ActionResult TicketsList()
         {
             var userId = User.Identity.GetUserId();
             var tickets = _db.Tickets.Where(x => x.userId == userId).ToList();
@@ -137,7 +137,7 @@ namespace ARS.Controllers
             return RedirectToAction("PaymentWithPaypal", "Flight", new { id = flightId, orderSeat = orderSeat, orderSeatReturn = orderSeatReturn, returnId = returnId, flightType = flightType, type = type });
         }
 
-        public ActionResult ViewTicketStatus(int id)
+        public ActionResult TicketDetail(int id)
         {
             var ticket = _db.Tickets.Find(id);
             return View(ticket);

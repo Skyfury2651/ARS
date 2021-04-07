@@ -5,41 +5,34 @@
     Layout = "~/Views/Shared/_MyLayout.cshtml";
 }
 
-<link href="~/Content/ticket-view.css" rel="stylesheet" />
+<link href="~/Content/flight-choice.css" rel="stylesheet" />
 
 <div class="body container background">
-    <h2>@ViewBag.Title</h2>
-
-    <p class="text-success">@ViewBag.StatusMessage</p>
     <div class="container">
-        <div class="row">
+        <div class="row header-info">
+            <h4><strong>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name, @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</strong></h4>
+            <h5><strong>Depart on @Model.departureFlights.First().departureDate.ToString("D") and return on @Model.departureFlights.First().departureDate.ToString("D")</strong></h5>
             <div class="col-md-6">
-                <h4>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name, @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</h4>
-                <h5>Depart on @Model.departureFlights.First().departureDate.ToString("D") and return on @Model.departureFlights.First().departureDate.ToString("D")</h5>
+                <div id="departInfo" class="hide">
+                    Your Depart Seat is : <span id="departSeat"></span> Flight : <span id="departFlight"></span>
+                </div>
+                <div id="returnInfo" class="hide">
+                    Your Return Seat is : <span id="returnSeat"></span> Flight : <span id="returnFlight"></span>
+                </div>
             </div>
-            <div class="col-md-6">
-                <div>
-                    <div id="departInfo" class="hide">
-                        Your Depart Seat is : <span id="departSeat"></span> Flight : <span id="departFlight"></span>
-                    </div>
-                    <br />
-                    <div id="returnInfo" class="hide">
-                        Your Return Seat is : <span id="returnSeat"></span> Flight : <span id="returnFlight"></span>
-                    </div>
-                </div>
-                <div style="float:right;padding:0 10%;">
-                    <button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
-                    <button class="btn btn-primary" id="reservateButton" type="submit" style="margin-top:10px">Reservate</button>
-                </div>
+            <div class="col-md-6 btn-action">
+                <button class="btn btn-content" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
+                <button class="btn btn-content" id="reservateButton" type="submit" style="margin-top:10px">Reservate</button>
             </div>
         </div>
         <hr />
         <div class="flight-results-container">
             <div class="col-md-6">
                 <ul class="search-result">
+                    <li class="header-li"><h3><strong>Departure Flights</strong></h3></li>
                     @foreach (var item in Model.departureFlights)
                     {
-                        <li class="">
+                        <li class="horizontal-line">
                             <div class="row flight-details">
                                 <div class="col-md-4 flight-infos">
                                     <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
@@ -60,31 +53,31 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="flight-infos">
-                                        @*@if (item.haveStop)
-                                            {
-                                                <div class="tooltip1">
-                                                    Stop: @item.Stops.Count()
-                                                    <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
-                                                </div>
-                                                <span>
-                                                    First route: @item.FromAirport.CityAirports.First().Airport.code
-                                                    <span aria-hidden="true" class="ti-control-play"></span>
+                                        @if (item.haveStop)
+                                        {
+                                            <div class="tooltip1">
+                                                Stop: @item.Stops.Count()
+                                                <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
+                                            </div>
+                                            <span>
+                                                First route: @item.FromAirport.CityAirports.First().Airport.code
+                                                <span aria-hidden="true" class="ti-control-play"></span>
 
-                                                    @item.Stops.First().City.CityAirports.First().Airport.code
-                                                </span>
-                                                <span>
-                                                    Second route: @item.Stops.First().City.CityAirports.First().Airport.code
-                                                    <span aria-hidden="true" class="ti-control-play"></span>
-                                                    @item.ToAirport.CityAirports.First().Airport.code
-                                                </span>
-                                            }*@
+                                                @item.Stops.First().City.CityAirports.First().Airport.code
+                                            </span>
+                                            <span>
+                                                Second route: @item.Stops.First().City.CityAirports.First().Airport.code
+                                                <span aria-hidden="true" class="ti-control-play"></span>
+                                                @item.ToAirport.CityAirports.First().Airport.code
+                                            </span>
+                                        }
                                         <span class="flight-number">Plane code: @item.planeCode</span>
                                         <span class="flight-duration">
                                             Duration: @item.flyTime hours
                                         </span>
                                         <div id="Departure">
                                             <button type="button" data-flight="@item.id" class="valueDeparture btn btn-content">Seats</button>
-                                            <input type="text" name="valueDeparture" id="valueDepartureString" hidden="true" />
+                                            <input type="text" name="valueDeparture" id="valueDepartureString" hidden />
                                         </div>
                                     </div>
                                 </div>
@@ -100,9 +93,10 @@
             {
                 <div class="col-md-6">
                     <ul class="search-result">
+                        <li class="header-li"><h3><strong>Return Flights</strong></h3></li>
                         @foreach (var item in Model.returnFlights)
                         {
-                            <li class="">
+                            <li class="horizontal-line">
                                 <div class="row flight-details">
                                     <div class="col-md-4 flight-infos">
                                         <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
@@ -146,8 +140,8 @@
                                                 Duration: @item.flyTime hours
                                             </span>
                                             <div id="Arrival">
-                                                <button type="button" data-flight="@item.id" class="valueArrival btn-content">Select</button>
-                                                <input type="text" name="valueArrival" id="valueArrivalString" hidden="true" />
+                                                <button type="button" data-flight="@item.id" class="valueArrival btn-content">Seats</button>
+                                                <input type="text" name="valueArrival" id="valueArrivalString" hidden />
                                             </div>
                                         </div>
                                     </div>
@@ -220,7 +214,7 @@
                                 </div>
                                 <button class="btn btn-success" id="orderSeat" type="button" style="margin-top:10px">Select</button>
                             </form>
-                            <input type="text" name="valueSeat" id="valueSeat" hidden="true" />
+                            <input type="text" name="valueSeat" id="valueSeat" hidden />
                         </div>
                     </div>
 
@@ -238,7 +232,7 @@
     <input id="orderSeatsReturn" type="hidden" name="orderSeatReturn" />
     <input id="returnId" type="hidden" name="returnId" />
     <input id="fligthType" type="hidden" name="flightType" />
-    <input id="old-transaction" type="hidden" name="oldTransaction" />  
+    <input id="old-transaction" type="hidden" name="oldTransaction" />
 </form>
 
 <style>
@@ -296,7 +290,6 @@
                             qualifi: 9,
                             typeSeat: 5
                         }
-
                         var init = function (reservedSeat) {
                             var str = [],
                                 seatNo, className;
@@ -321,7 +314,6 @@
                                     settings.typeTicket = '4'
                                     str.push('<li class="infomation-seat"><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">SMOKING CLASSES</span></div></li>')
                                 }
-
                                 for (j = 0; j < settings.cols; j++) {
                                     seatNo = (i + 1 + String.fromCharCode(65 + j));
                                     className = settings.seatCss + ' ' + settings.rowCssPrefix + i.toString() + ' ' + settings.colCssPrefix + j.toString() + ' ' + settings.typeTicket;
@@ -332,7 +324,6 @@
                                         'style="top:' + (i * settings.seatHeight).toString() + 'px;left:' + (j * settings.seatWidth).toString() + 'px">' +
                                         '<a title="' + seatNo + '"name="' + settings.typeTicket + '">' + seatNo + '</a>' +
                                         '</li>');
-
                                 }
                             }
                             $('#place').html(str.join(''));
@@ -341,13 +332,11 @@
                         $('.' + settings.seatCss).click(function () {
                             if ($(this).hasClass(settings.selectedSeatCss)) {
                                 $('#staticBackdrop').modal('show')
-
                             } else {
                                 $(this).toggleClass(settings.selectingSeatCss);
                             }
                             $('#list').empty();
                         });
-
                     }
                 });
                 $('#orderSeat').click(function (event2) {
@@ -383,7 +372,6 @@
                         qualifi: 9,
                         typeSeat: 5
                     }
-
                     var init = function (reservedSeat) {
                         let str = [],
                             seatNo, className;
@@ -408,7 +396,6 @@
                                 settings.typeTicket = '4'
                                 str.push('<li class="infomation-seat"><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">SMOKING CLASSES</span></div></li>')
                             }
-
                             for (j = 0; j < settings.cols; j++) {
                                 seatNo = (i + 1 + String.fromCharCode(65 + j));
                                 className = settings.seatCss + ' ' + settings.rowCssPrefix + i.toString() + ' ' + settings.colCssPrefix + j.toString() + ' ' + settings.typeTicket;
@@ -419,7 +406,6 @@
                                     'style="top:' + (i * settings.seatHeight).toString() + 'px;left:' + (j * settings.seatWidth).toString() + 'px">' +
                                     '<a title="' + seatNo + '"name="' + settings.typeTicket + '">' + seatNo + '</a>' +
                                     '</li>');
-
                             }
                         }
                         $('#place').html(str.join(''));
@@ -428,13 +414,11 @@
                     $('.' + settings.seatCss).click(function () {
                         if ($(this).hasClass(settings.selectedSeatCss)) {
                             $('#staticBackdrop').modal('show')
-
                         } else {
                             $(this).toggleClass(settings.selectingSeatCss);
                         }
                         $('#list').empty();
                     });
-
                 }
             });
         })
@@ -446,19 +430,16 @@
                 classItem = $(this).attr('name')
                 str.push(item)
             });
-
             let querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val();
             $('#valueSeat').val(querystring)
             $('#ModalPopUpDeparture').modal('hide')
             let sel2 = $('#valueSeat').val();
             $('#valuePucharse2').val(sel2);
-
             if (seatType == enumFlightType.departure) {
                 $('#orderSeats').val(str.toString());
             } else {
                 $('#orderSeatsReturn').val(str.toString());
             }
-
             console.log($('#orderSeats').val());
             if ($('#orderSeats').val() != "") {
                 $('#departSeat').text($('#orderSeats').val());
