@@ -658,7 +658,6 @@
     <Content Include="Content\img\team\img3.jpg" />
     <Content Include="Content\selecting-seat.css" />
     <Content Include="Content\flight-choice.css" />
-    <Content Include="Content\ticket-detail.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
