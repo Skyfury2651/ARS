@@ -172,13 +172,13 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="form-group">
                             <label>Depart</label>
-                            <div id="filterDate2">
+                            <div id="filterDate">
                                 <!-- Datepicker as text field -->
                                 <div class="input-group" data-date-format="mm/dd/yyyy">
-                                    <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="DepartureDate">
-                                    <div class="input-group-addon">
+                                    <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="DepartureDate" id="departureDate">
+                                    @*<div class="input-group-addon">
                                         <span class="fa fa-calendar"></span>
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                         </div>
@@ -186,13 +186,13 @@
                     <div class="col-lg-6 col-md-6" id="returnClalendar">
                         <div class="form-group">
                             <label>Return</label>
-                            <div id="filterDate2">
+                            <div >
                                 <!-- Datepicker as text field -->
                                 <div class="input-group" data-date-format="mm/dd/yyyy">
-                                    <input type="date" class="form-control" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="returnDate" id="returnDate">
-                                    <div class="input-group-addon">
+                                    <input type="date" class="form-control" max="maxDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="" name="returnDate" id="returnDate">
+                                    @*<div class="input-group-addon">
                                         <span class="fa fa-calendar"></span>
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                         </div>
@@ -854,8 +854,15 @@
             } else {
                 $('#returnClalendar').removeClass('hideDropdown')
                 $('#returnClalendar').addClass('showDropdown')
+                $("#filterDate").on('click', function () {
+                    $("#departureDate").change(function () {
+                        var date = $("#departureDate").val();
+                        $("#returnDate").attr('min', date)
+                    })
+                })
             }
         })
+       
     });
 </script>
 

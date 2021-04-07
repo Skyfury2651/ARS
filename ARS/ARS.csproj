@@ -229,6 +229,8 @@
     <Content Include="Content\custom\fullwidth.css" />
     <Content Include="Content\custom\ie7\ie7.css" />
     <Content Include="Content\custom\ie7\ie7.js" />
+    <Content Include="Content\custom\js\plugin-set.js" />
+    <Content Include="Content\custom\js\sticky.js" />
     <Content Include="Content\custom\on3step-style.css" />
     <Content Include="Content\custom\owl.carousel.css" />
     <Content Include="Content\custom\owl.theme.css" />
@@ -701,8 +703,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -735,6 +735,8 @@
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Ticket\TicketList.cshtml" />
     <Content Include="Views\MailTemplate.html" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

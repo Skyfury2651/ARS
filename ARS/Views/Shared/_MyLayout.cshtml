@@ -7,10 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/custom/css")
-  
+
 
     <script src="https://kit.fontawesome.com/aa85bc9bff.js" crossorigin="anonymous"></script>
-
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- font themify CSS -->
+    <link rel="stylesheet" href="~/Content/custom/themify-icons.css">
+    <link rel="stylesheet" href="~/Content/custom/rev-settings.css" type="text/css">
+    <!-- on3step CSS -->
+    <link href="~/Content/custom/animated-on3step.css" rel="stylesheet">
+    <link href="~/Content/custom/owl.carousel.css" rel="stylesheet">
+    <link href="~/Content/custom/owl.theme.css" rel="stylesheet">
+    <link href="~/Content/custom/on3step-style.css" rel="stylesheet">
+    <link href="~/Content/custom/queries-on3step.css" media="all" rel="stylesheet">
 
 </head>
 <body>
@@ -92,56 +102,60 @@
                             <nav id="menu-center">
                                 <ul>
                                     <li>
-                                        <a class="actived" href="#">Home <i class="fa fa-angle-down"></i></a>
-                                        <ul>
-                                            <li><a href="index.html">Main Index</a></li>
-                                            <li><a href="index-1.html">Slider fullscreen</a></li>
-                                            <li><a href="index-2.html">Index New</a></li>
-                                            <li><a href="intro/index.html">Intro</a></li>
-                                        </ul>
+                                        @*<a class="actived" href="#">Home <i class="fa fa-angle-down"></i></a>*@
+                                        @Html.ActionLink("Home", "Index", "Home", null, new { @class = "actived" })
+                                        @*<ul>
+                <li><a href="index.html">Main Index</a></li>
+                <li><a href="index-1.html">Slider fullscreen</a></li>
+                <li><a href="index-2.html">Index New</a></li>
+                <li><a href="intro/index.html">Intro</a></li>
+            </ul>*@
                                     </li>
                                     <li>
-                                        <a href="#">About <i class="fa fa-angle-down"></i></a>
-                                        <ul>
-                                            <li><a href="about.html">About Us - 1</a></li>
-                                            <li><a href="about-2.html">About Us - 2</a></li>
-                                            <li><a href="about-3.html">All Ellement</a></li>
-                                        </ul>
+                                        @Html.ActionLink("List Ticket", "TicketList", "Ticket", null, new { @class = "actived1" })
+
+                                    </li>
+                                    @*<li>
+            <a href="#">Gallery <i class="fa fa-angle-down"></i></a> <ul>
+                <li><a href="works.html">Gallery Column</a></li>
+                <li><a href="works-carousel.html">Gallery Carousel</a></li>
+                <li>
+                    <a href="#">Projects Detail <i class="fa fa-angle-right"></i></a> <ul>
+                        <li><a href="projects-detail.html">Project Detail 1</a></li>
+                        <li><a href="projects-detail-2.html">Project Detail 2</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Destination <i class="fa fa-angle-down"></i></a>
+            <ul>
+                <li><a href="destination.html">Destination</a></li>
+                <li><a href="destination-404.html">Destination 404</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Services <i class="fa fa-angle-down"></i></a>
+            <ul>
+                <li><a href="ecommerce.html">Shop Page</a></li>
+                <li><a href="service-1.html">Service 1</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Blog <i class="fa fa-angle-down"></i></a>
+            <ul>
+                <li><a href="blog.html">Blog Single</a></li>
+                <li><a href="blog-post.html">Blog Post</a></li>
+            </ul>
+        </li>*@
+                                    <li>
+                                        @Html.ActionLink("About Us", "About", "Home")
+
                                     </li>
                                     <li>
-                                        <a href="#">Gallery <i class="fa fa-angle-down"></i></a> <ul>
-                                            <li><a href="works.html">Gallery Column</a></li>
-                                            <li><a href="works-carousel.html">Gallery Carousel</a></li>
-                                            <li>
-                                                <a href="#">Projects Detail <i class="fa fa-angle-right"></i></a> <ul>
-                                                    <li><a href="projects-detail.html">Project Detail 1</a></li>
-                                                    <li><a href="projects-detail-2.html">Project Detail 2</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                        @Html.ActionLink("Contact", "Contact", "Home")
+
                                     </li>
-                                    <li>
-                                        <a href="#">Destination <i class="fa fa-angle-down"></i></a>
-                                        <ul>
-                                            <li><a href="destination.html">Destination</a></li>
-                                            <li><a href="destination-404.html">Destination 404</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#">Services <i class="fa fa-angle-down"></i></a>
-                                        <ul>
-                                            <li><a href="ecommerce.html">Shop Page</a></li>
-                                            <li><a href="service-1.html">Service 1</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a href="#">Blog <i class="fa fa-angle-down"></i></a>
-                                        <ul>
-                                            <li><a href="blog.html">Blog Single</a></li>
-                                            <li><a href="blog-post.html">Blog Post</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="contact.html">Contact</a></li>
                                 </ul>
                             </nav>
                         </div>

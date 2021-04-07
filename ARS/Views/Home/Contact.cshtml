@@ -1,17 +1,72 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_MyLayout.cshtml";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<!-- subheader -->
+<section id="subheader">
+    <div class="container-fluid m-5-hor">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="big-heading">
+                    Contact Us
+                </h1>
+                <p>Varius blandit sit amet</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- subheader end -->
+<!-- map -->
+<section aria-label="map" class="no-bottom">
+    <div class="container-fluid m-5-hor">
+        <div class="row">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.0968414913837!2d105.78049781482063!3d21.02881079315278!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ab4cd0c66f05%3A0xea31563511af2e54!2zOCBUw7RuIFRo4bqldCBUaHV54bq_dCwgTeG7uSDEkMOsbmgsIEPhuqd1IEdp4bqleSwgSMOgIE7hu5lpLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1617783473966!5m2!1svi!2s" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+    </div>
+</section>
+<!-- map end -->
+<!-- section contact -->
+<section aria-label="contact" class="whitepage">
+    <div class="container-fluid m-5-hor">
+        <div class="row">
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+            <div class="col-md-8">
+                <form id="form-contact1">
+                    <div class="form-group user-name">
+                        <input type="text" class="form-control" required="" id="name-contact-1" placeholder="Your Name">
+                    </div>
+
+                    <div class="form-group user-email">
+                        <input type="email" class="form-control" required="" id="email-contact" placeholder="Your Email">
+                    </div>
+
+                    <div class="form-group user-message">
+                        <textarea class="form-control" required="" id="message-contact" placeholder="Your Message"></textarea>
+                        <div class="success" id="mail_success">Thank you. Your message has been sent</div>
+                        <div class="error" id="mail_failed">Error, email not sent</div>
+                    </div>
+                    <button type="submit" id="send-contact-1" class="btn-contact">Send Now</button>
+                </form>
+            </div>
+
+            <!-- address -->
+            <div class="col-md-3 col-md-offset-1">
+                <h3 class="heading-cont">Contact Information</h3>
+                <address class="cont-1">
+                    <span>
+                        129 Park street, New York 10903
+                    </span>
+                    <span><strong>PHONE:</strong> (+6221) 000 888 999</span>
+                    <span><strong>EMAIL:</strong><a href="mailto:companyname@gmail.com"> youremail@gmail.com</a></span>
+                    <span><strong>WEB:</strong><a href="#"> www.yourdomain.com</a></span>
+                </address>
+            </div>
+            <!-- address end -->
+
+
+        </div>
+    </div>
+</section>
+
