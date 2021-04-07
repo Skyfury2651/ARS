@@ -18,13 +18,20 @@
                 <tbody>
                     <tr>
                         <td scope="row">
-                            <div class="col-md-6" style="display: grid">
+                            <div class="col-md-4" style="display: grid">
                                 <span>Passengers</span>
+                                @*First + Last name user*@
                                 <span><strong>@Model.User.lastName @Model.User.firstName</strong></span>
                             </div>
-                            <div class="col-md-6" style="display: grid">
+                            <div class="col-md-4" style="display: grid">
                                 <span>Reservation number</span>
+                                @*Ma confirm*@
                                 <span><strong>@Model.confirmNumber</strong></span>
+                            </div>
+                            <div class="col-md-4" style="display: grid">
+                                <span>Price paid</span>
+                                @*Tong tien da thanh toan*@ 
+                                <span><strong>@Model.Trasaction.price</strong></span>
                             </div>
                         </td>
                     </tr>
@@ -58,9 +65,13 @@
                                             <span>Duration:</span>
                                         </div>
                                         <div style="width: 50%; display: grid;">
+                                            @*Ma may ba*@
                                             <strong>TG - 111</strong>
+                                            @*Ma san bay*@
                                             <strong>KAI87M</strong>
+                                            @*Trang thai*@
                                             <strong>Confirmed</strong>
+                                            @*Thoi gian chuyen bay*@
                                             <strong>1H 15M</strong>
                                         </div>
                                     </div>
@@ -69,6 +80,7 @@
                                     <div style="display: flex;">
                                         <div style="display: grid; padding: 20px; width: 40%;">
                                             <span style="font-weight: normal;">Depart</span>
+                                            @*Ma thanh pho di*@
                                             <span style="font-size: 20px"><strong>CNX</strong></span>
                                         </div>
                                         <div style="display: grid; padding: 20px;  width: 10%;">
@@ -76,6 +88,7 @@
                                         </div>
                                         <div style="display: grid; padding: 20px; width: 50%;">
                                             <span style="font-weight: normal;">Arrive</span>
+                                            @*Ma thanh pho den*@
                                             <span style="font-size: 20px"><strong>BKK</strong></span>
                                         </div>
                                     </div>
@@ -83,28 +96,35 @@
                                 <td rowspan="2">
                                     <div style="display: grid; padding: 20px;">
                                         <span>Class of service:</span>
+                                        @*Hang ghe*@
                                         <span><strong>Economy</strong></span>
-                                        <span>Plane Code:</span>
-                                        <span><strong>Airbus A330</strong></span>
                                         <span>Seat:</span>
-                                        <span><strong>3C</strong>   </span>
+                                        @*So ghe*@
+                                        <span><strong>3C</strong></span>
+                                        <br />
                                         <span><strong>Check-in required</strong></span>
                                     </div>
                                 </td>
                             </tr>
                             <tr style="display: flex">
                                 <td style="display: grid; width: 50%; padding: 20px; border: unset; border-right: 1px solid #ddd">
+                                    @*Ten san bay*@
                                     <span>Chiang Mai Intl Arpt</span>
+                                    @*Thanh pho*@
                                     <span>Chiang Mai</span>
-                                    <span>Terminal Not Available</span>
+                                    @*Thoi gian xuat phat*@
                                     <span style="font-size: 20px"><strong>15:20</strong></span>
+                                    @*Ngay xuat phat*@
                                     <span>Dec 22, 2019</span>
                                 </td>
                                 <td style="display: grid; width: 50%; padding: 20px; border: unset">
+                                    @*Ten san bay*@
                                     <span>Chiang Mai Intl Arpt</span>
+                                    @*Thanh pho*@
                                     <span>Chiang Mai</span>
-                                    <span>Terminal Not Available</span>
+                                    @*Thoi gian xuat phat*@
                                     <span style="font-size: 20px"><strong>15:20</strong></span>
+                                    @*Ngay xuat phat*@
                                     <span>Dec 22, 2019</span>
                                 </td>
                             </tr>
