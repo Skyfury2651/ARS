@@ -77,7 +77,7 @@
                                         </span>
                                         <div id="Departure">
                                             <button type="button" data-flight="@item.id" class="valueDeparture btn btn-content">Seats</button>
-                                            <input type="text" name="valueDeparture" id="valueDepartureString" hidden/>
+                                            <input type="text" name="valueDeparture" id="valueDepartureString" hidden />
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +141,7 @@
                                             </span>
                                             <div id="Arrival">
                                                 <button type="button" data-flight="@item.id" class="valueArrival btn-content">Seats</button>
-                                                <input type="text" name="valueArrival" id="valueArrivalString" hidden/>
+                                                <input type="text" name="valueArrival" id="valueArrivalString" hidden />
                                             </div>
                                         </div>
                                     </div>
@@ -212,9 +212,9 @@
                                 <div id="list">
 
                                 </div>
-                                <button class="btn btn-success" id="orderSeat" type="button" style="margin-top:10px">Seats</button>
+                                <button class="btn btn-success" id="orderSeat" type="button" style="margin-top:10px">Select</button>
                             </form>
-                            <input type="text" name="valueSeat" id="valueSeat" hidden/>
+                            <input type="text" name="valueSeat" id="valueSeat" hidden />
                         </div>
                     </div>
 
@@ -232,6 +232,7 @@
     <input id="orderSeatsReturn" type="hidden" name="orderSeatReturn" />
     <input id="returnId" type="hidden" name="returnId" />
     <input id="fligthType" type="hidden" name="flightType" />
+    <input id="old-transaction" type="hidden" name="oldTransaction" />
 </form>
 
 <style>
@@ -289,7 +290,6 @@
                             qualifi: 9,
                             typeSeat: 5
                         }
-
                         var init = function (reservedSeat) {
                             var str = [],
                                 seatNo, className;
@@ -314,7 +314,6 @@
                                     settings.typeTicket = '4'
                                     str.push('<li class="infomation-seat"><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">SMOKING CLASSES</span></div></li>')
                                 }
-
                                 for (j = 0; j < settings.cols; j++) {
                                     seatNo = (i + 1 + String.fromCharCode(65 + j));
                                     className = settings.seatCss + ' ' + settings.rowCssPrefix + i.toString() + ' ' + settings.colCssPrefix + j.toString() + ' ' + settings.typeTicket;
@@ -325,7 +324,6 @@
                                         'style="top:' + (i * settings.seatHeight).toString() + 'px;left:' + (j * settings.seatWidth).toString() + 'px">' +
                                         '<a title="' + seatNo + '"name="' + settings.typeTicket + '">' + seatNo + '</a>' +
                                         '</li>');
-
                                 }
                             }
                             $('#place').html(str.join(''));
@@ -334,13 +332,11 @@
                         $('.' + settings.seatCss).click(function () {
                             if ($(this).hasClass(settings.selectedSeatCss)) {
                                 $('#staticBackdrop').modal('show')
-
                             } else {
                                 $(this).toggleClass(settings.selectingSeatCss);
                             }
                             $('#list').empty();
                         });
-
                     }
                 });
                 $('#orderSeat').click(function (event2) {
@@ -376,7 +372,6 @@
                         qualifi: 9,
                         typeSeat: 5
                     }
-
                     var init = function (reservedSeat) {
                         let str = [],
                             seatNo, className;
@@ -401,7 +396,6 @@
                                 settings.typeTicket = '4'
                                 str.push('<li class="infomation-seat"><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">SMOKING CLASSES</span></div></li>')
                             }
-
                             for (j = 0; j < settings.cols; j++) {
                                 seatNo = (i + 1 + String.fromCharCode(65 + j));
                                 className = settings.seatCss + ' ' + settings.rowCssPrefix + i.toString() + ' ' + settings.colCssPrefix + j.toString() + ' ' + settings.typeTicket;
@@ -412,7 +406,6 @@
                                     'style="top:' + (i * settings.seatHeight).toString() + 'px;left:' + (j * settings.seatWidth).toString() + 'px">' +
                                     '<a title="' + seatNo + '"name="' + settings.typeTicket + '">' + seatNo + '</a>' +
                                     '</li>');
-
                             }
                         }
                         $('#place').html(str.join(''));
@@ -421,13 +414,11 @@
                     $('.' + settings.seatCss).click(function () {
                         if ($(this).hasClass(settings.selectedSeatCss)) {
                             $('#staticBackdrop').modal('show')
-
                         } else {
                             $(this).toggleClass(settings.selectingSeatCss);
                         }
                         $('#list').empty();
                     });
-
                 }
             });
         })
@@ -439,19 +430,16 @@
                 classItem = $(this).attr('name')
                 str.push(item)
             });
-
             let querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val();
             $('#valueSeat').val(querystring)
             $('#ModalPopUpDeparture').modal('hide')
             let sel2 = $('#valueSeat').val();
             $('#valuePucharse2').val(sel2);
-
             if (seatType == enumFlightType.departure) {
                 $('#orderSeats').val(str.toString());
             } else {
                 $('#orderSeatsReturn').val(str.toString());
             }
-
             console.log($('#orderSeats').val());
             if ($('#orderSeats').val() != "") {
                 $('#departSeat').text($('#orderSeats').val());
@@ -468,8 +456,19 @@
         });
         $('#purcharseButton').click(function () {
             $('#purchaseForm').attr('action', '/Flight/PaymentWithPaypal/' + $('#idFlight').val());
+            var param_string = window.location.href;
+            var url = new URL(param_string);
+            var oldTransaction = url.searchParams.get('oldTransaction');
+            if (oldTransaction !== "") {
+                $("#old-transaction").val(oldTransaction);
+            }
             $('#purchaseForm').submit();
         })
-
+        $('#reservateButton').click(function () {
+            $('#purchaseForm').attr('action', '/Flight/MakeReservation/' + $('#idFlight').val());
+            var param_string = window.location.href;
+            var url = new URL(param_string);
+            $('#purchaseForm').submit();
+        })
     })
 </script>

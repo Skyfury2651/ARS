@@ -1,0 +1,245 @@
+﻿@model IList<ARS.Models.Ticket>
+
+@{
+    ViewBag.Title = "TicketList";
+    Layout = "~/Views/Shared/_MyLayout.cshtml";
+}
+
+<section aria-label="milestone" class="no-top no-bottom color-page hidden-sm hidden-xs">
+    <div class="container-fluid m-5-hor">
+        <div class="row">
+
+            <div class="col-md-3 onStep" data-animation="fadeInUp" data-time="0">
+                <div class="box-icon" style="margin: 45px auto;">
+                    <span class="icon-choose fa fa-plane"></span>
+                    <div class="text">
+                        <h3><span>300+ DESTINATION</span></h3>
+                        <p>Sed ut perspiciatis</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 onStep" data-animation="fadeInUp" data-time="150">
+                <div class="box-icon" style="margin: 45px auto;">
+                    <span class="icon-choose fa fa-credit-card"></span>
+                    <div class="text">
+                        <h3><span>AFFORDABLE PRICE</span></h3>
+                        <p>Sit voluptatem accusantium</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 onStep" data-animation="fadeInUp" data-time="300">
+                <div class="box-icon" style="margin: 45px auto;">
+                    <span class="icon-choose fa fa-address-book"></span>
+                    <div class="text">
+                        <h3><span>GREAT CUSTOMERS</span></h3>
+                        <p>perspiciatis unde omnis</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 onStep" data-animation="fadeInUp" data-time="450">
+                <div class="box-icon" style="margin: 45px auto;">
+                    <span class="icon-choose fa fa-handshake-o"></span>
+                    <div class="text">
+                        <h3><span>TRUSTED & SAFE</span></h3>
+                        <p>Accusantium natus</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<table class="table">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            FLIGHT CODE
+        </th>
+        <th>
+            TYPE
+        </th>
+        <th>
+            POSITION
+        </th>
+        <th>
+            CLASS
+        </th>
+        <th>
+            STATUS
+        </th>
+        <th>
+            TRANSACTION STATUS
+        </th>
+        <th>ACTION</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id)
+            </td>
+            <td>
+                @item.Seat.Flight.planeCode
+            </td>
+            <td>
+                @if (item.type == 1)
+                {
+                    @Html.Raw("Adult Ticket")
+                }
+                else if (item.type == 2)
+                {
+                    @Html.Raw("Old Ticket")
+                }
+                else
+                {
+                    @Html.Raw("Kid Ticket")
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Seat.position)
+            </td>
+            <td>
+                @if (item.Seat.classType == 1)
+                {
+                    @Html.Raw("Bussiness")
+                }
+                else if (item.Seat.classType == 2)
+                {
+                    @Html.Raw("First Class")
+                }
+                else if (item.Seat.classType == 3)
+                {
+                    @Html.Raw("Club Class")
+                }
+                else if (item.Seat.classType == 4)
+                {
+                    @Html.Raw("Smoking")
+                }
+                else
+                {
+                    @Html.Raw("No Smoke")
+                }
+            </td>
+            <td>
+                @if (item.status == 1)
+                {
+                    @Html.Raw("Active")
+                }
+                else
+                {
+                    @Html.Raw("Disable")
+                }
+            </td>
+            <td>
+                @if (item.Trasaction.status == 0)
+                {
+                    @Html.Raw("Pending")
+                }
+                else if (item.Trasaction.status == 1)
+                {
+                    @Html.Raw("Success")
+                }
+                else if (item.Trasaction.status == 2)
+                {
+                    @Html.Raw("Canceled")
+                }
+            </td>
+            <td>
+                <button data-transaction-id="@item.Trasaction.id" data-ticket-id="@item.id" class="check-ticket">Reschedule</button>
+            </td>
+        </tr>
+    }
+</table>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form  action="/Flight">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Please enter your ticket confirm number</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="ticketId" value="" />
+                    <input type="hidden" id="transactionId" value="" />
+                    <input type="text" id="confirmNumber" value="" />
+                    <!-- Data when confirm data success-->
+                    <div>
+                        <div id="info-flight" class="hide">
+                            Your Depart From : <span id="fromCity"></span> To : <span id="toCity"></span> <span id="flyBack" class="hide">and flight back</span>
+                            <br />
+                            Number of ticket : <span id="numberTicket"></span>
+                        </div>
+                        <br />
+                        <input type="hidden" class="form-control" id="departureDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="true" name="DepartureDate">
+                        <input type="hidden" class="form-control" id="returnDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="true" name="returnDate">
+                        <input type="hidden" class="form-control" id="fromAirportId" name="fromAirportId"></input>
+                        <input type="hidden" class="form-control" id="toAirportId" name="toAirportId"></input>
+                        <input type="hidden" class="form-control" id="numberOfPassager" name="NumberOfPassager" value="" />
+                        <input type="hidden" class="form-control" id="flightType" name="flightType" value="" />
+                        <input type="hidden" class="form-control" id="oldTransaction" name="oldTransaction" value="" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="ticket-check-submit" class="btn btn-primary">Check valid ticket</button>
+                    <button type="submit" id="findNew" class="btn btn-primary hide">Find new flight</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(".check-ticket").on("click", function () {
+            $('#exampleModal').modal('toggle');
+            $('#ticketId').val($(this).data("ticket-id"));
+            $('#transactionId').val($(this).data("transaction-id"));
+        });
+        $("#ticket-check-submit").on("click", function () {
+            let ticket_id = $('#ticketId').val();
+            let transaction_id = $('#transactionId').val();
+            let confirm_number = $('#confirmNumber').val();
+            $.ajax({
+                type: "POST",
+                url: "/Ticket/RescheduleTicketCheck",
+                datatype: "Json",
+                data: { id: ticket_id, confirmNumber: confirm_number },
+                success: function (data) {
+                    console.log(data);
+                    if (data.status == "Success") {
+                        // show pick date
+                        $("#departureDate").attr("type", "date");
+                        $("#returnDate").attr("type", "date");
+                        // fill data old 
+                        $("#fromAirportId").val(data.fromAirportId)
+                        $("#toAirportId").val(data.toAirportId)
+                        $("#numberOfPassager").val(data.NumberOfPassager);
+                        $("#flightType").val(data.flightType);
+                        $("#oldTransaction").val(data.oldTransaction);
+                        // show info flight 
+                        $("#info-flight").toggleClass("hide");
+                        $("#fromCity").text(data.fromCity)
+                        $("#toCity").text(data.toCity)
+                        $("#numberTicket").text(data.NumberOfPassager);
+                        if (data.flightType == 2) {
+                            $("#flyBack").toggleClass("hide");
+                        }
+                        $("#confirmNumber").toggleClass("hide");
+                        $("#ticket-check-submit").toggleClass("hide");
+                        $("#findNew").toggleClass("hide");
+                    }
+                }
+            });
+        });
+    </script>
+}

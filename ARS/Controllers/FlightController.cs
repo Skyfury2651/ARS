@@ -6,6 +6,7 @@ using PayPal.Api;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -112,7 +113,7 @@ namespace ARS.Controllers
                 // start loop Departure
                 foreach (var item in seatList)
                 {
-                    item.status = (int)SeatStatus.Block;
+                    item.status = (int)SeatStatus.Reservation;
                     double price = 0;
                     switch (item.classType)
                     {
@@ -219,116 +220,94 @@ namespace ARS.Controllers
                     transactionIds += "," + (transaction.id).ToString();
                 }
             }
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = userManager.FindById(User.Identity.GetUserId());
+            string body = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate.html")))
+            {
+                body = reader.ReadToEnd();
+            }
+            body = body.Replace("{typeNumber}", "confirm");
+            body = body.Replace("{number}", blockingNumber);
+            body = body.Replace("{UserName}", currentUser.lastName + currentUser.firstName);
+            bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, "Your blocking number is ", body, true);
 
             return View(blockingNumber);
         }
 
-        [Authorize]
-        public ActionResult PaymentWithPaypal(int id, string orderSeat, string orderSeatReturn = null, int returnId = 0, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
+        [CustomAuthorize]
+        public ActionResult PaymentWithPaypal(int id, string orderSeat, int oldTransaction = 0, string orderSeatReturn = null, int returnId = 0, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
         {
-            string currentUserId = User.Identity.GetUserId();
-            Models.Transaction transaction = null;
-            var flight = _db.Flights.Find(id);
-            var seats = orderSeat.Split(',');
-
-            List<Seat> seatList = new List<Seat> { };
-            double totalPrice = 0;
-            for (int i = 0; i < seats.Length; i++)
+            try
             {
-                string position = seats[i];
-                var seat = _db.Seats.Where(x => x.position == position & x.flightId == id).FirstOrDefault();
-
-                if (seat != null)
+                //add transaction
+                string currentUserId = User.Identity.GetUserId();
+                Models.Transaction transaction = null;
+                var flight = _db.Flights.Find(id);
+                var seats = orderSeat.Split(',');
+                if (oldTransaction != 0)
                 {
-                    seatList.Add(seat);
-                }
-            }
-            // check have transaction in request or not
-            if (string.IsNullOrEmpty(transactionIds))
-            {
-                transaction = _db.Transaction.Add(new Models.Transaction
-                {
-                    status = (int)TransactionStatus.PENDING,
-                    createdAt = DateTime.Now,
-                    updatedAt = DateTime.Now,
-                    type = (int)TransactionType.PAYPAL
-                });
-                // start loop Departure
-                foreach (var item in seatList)
-                {
-                    item.status = (int)SeatStatus.Block;
-                    double price = 0;
-                    switch (item.classType)
-                    {
-                        case 1:
-                            price += (flight.price * 90 / 100);
-                            break;
-                        case 2:
-                            price += (flight.price * 90 / 100);
-                            break;
-                        case 3:
-                            price += (flight.price * 90 / 100);
-                            break;
-                        case 4:
-                            price += (flight.price * 90 / 100);
-                            break;
-                        case 5:
-                            price += (flight.price * 90 / 100);
-                            break;
-                        default:
-                            break;
-                    }
-                    totalPrice += price;
-
-                    var ticket = _db.Tickets.Add(new Ticket
-                    {
-                        userId = currentUserId,
-                        seatId = item.id,
-                        transactionId = transaction.id,
-                        flightType = flightType,
-                        type = (int)TicketType.ADULT,
-                        status = (int)TicketStatus.DISABLE
-                    });
-
-                    flight.seatAvaiable = flight.seatAvaiable - 1;
+                    var oldTransactionItem = _db.Transaction.Find(id);
+                    oldTransactionItem.status = (int)TransactionStatus.CANCEL;
                     _db.SaveChanges();
-                }
-                //// end loop seatList Departure
-                if (flightType == 2)
-                {
-                    var seatListReturn = new List<Seat> { };
-                    for (int i = 0; i < seats.Length; i++)
-                    {
-                        var returnSeats = orderSeatReturn.Split(',');
-                        string returnPosition = returnSeats[i];
-                        var seat = _db.Seats.Where(x => x.position == returnPosition & x.flightId == returnId).FirstOrDefault();
+                    var userManager2 = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                    var currentUser2 = userManager2.FindById(User.Identity.GetUserId());
 
-                        if (seat != null)
-                        {
-                            seatListReturn.Add(seat);
-                        }
-                    }
-                    var flightReturn = _db.Flights.Find(returnId);
-                    for (int i = 0; i < seatListReturn.Count; i++)
+                    foreach (var ticket in oldTransactionItem.Tickets)
                     {
-                        seatListReturn[i].status = (int)SeatStatus.Block;
+                        currentUser2.skyMiles = (int)Math.Round(currentUser2.skyMiles - ticket.Seat.Flight.distance);
+                    }
+
+                    foreach (var oldTicket in oldTransactionItem.Tickets)
+                    {
+                        oldTicket.status = (int)TicketStatus.DISABLE;
+                        oldTicket.Seat.status = (int)SeatStatus.Available;
+                        _db.SaveChanges();
+                    }
+                }
+                List<Seat> seatList = new List<Seat> { };
+                double totalPrice = 0;
+                for (int i = 0; i < seats.Length; i++)
+                {
+                    string position = seats[i];
+                    var seat = _db.Seats.Where(x => x.position == position & x.flightId == id).FirstOrDefault();
+
+                    if (seat != null)
+                    {
+                        seatList.Add(seat);
+                    }
+                }
+                // check have transaction in request or not
+                if (string.IsNullOrEmpty(transactionIds))
+                {
+                    transaction = _db.Transaction.Add(new Models.Transaction
+                    {
+                        status = (int)TransactionStatus.PENDING,
+                        createdAt = DateTime.Now,
+                        updatedAt = DateTime.Now,
+                        type = (int)TransactionType.PAYPAL
+                    });
+                    // start loop Departure
+                    foreach (var item in seatList)
+                    {
+                        item.status = (int)SeatStatus.Block;
                         double price = 0;
-                        switch (seatListReturn[i].classType)
+                        switch (item.classType)
                         {
                             case 1:
-                                price += (flightReturn.price * 90 / 100);
+                                price += (flight.price * 90 / 100);
                                 break;
                             case 2:
-                                price += (flightReturn.price * 90 / 100);
+                                price += (flight.price * 90 / 100);
                                 break;
                             case 3:
-                                price += (flightReturn.price * 90 / 100);
+                                price += (flight.price * 90 / 100);
                                 break;
                             case 4:
-                                price += (flightReturn.price * 90 / 100);
+                                price += (flight.price * 90 / 100);
                                 break;
                             case 5:
-                                price += (flightReturn.price * 90 / 100);
+                                price += (flight.price * 90 / 100);
                                 break;
                             default:
                                 break;
@@ -338,111 +317,180 @@ namespace ARS.Controllers
                         var ticket = _db.Tickets.Add(new Ticket
                         {
                             userId = currentUserId,
-                            seatId = seatListReturn[i].id,
+                            seatId = item.id,
                             transactionId = transaction.id,
                             flightType = flightType,
                             type = (int)TicketType.ADULT,
                             status = (int)TicketStatus.DISABLE
                         });
 
-
-                        flightReturn.seatAvaiable = flightReturn.seatAvaiable - 1;
+                        flight.seatAvaiable = flight.seatAvaiable - 1;
                         _db.SaveChanges();
                     }
-                    transaction.price = totalPrice;
-                }
-
-                if (string.IsNullOrEmpty(transactionIds))
-                {
-                    transactionIds += (transaction.id).ToString();
-                }
-                else
-                {
-                    transactionIds += "," + (transaction.id).ToString();
-                }
-            }
-
-            ////getting the apiContext  
-            APIContext apiContext = PaypalConfiguration.GetAPIContext();
-            try
-            {
-                //A resource representing a Payer that funds a payment Payment Method as paypal  
-                //Payer Id will be returned when payment proceeds or click to pay  
-                string payerId = Request.Params["PayerID"];
-                if (string.IsNullOrEmpty(payerId))
-                {
-                    //this section will be executed first because PayerID doesn't exist  
-                    //it is returned by the create function call of the payment class  
-                    // Creating a payment  
-                    //here we are generating guid for storing the paymentID received in session  
-                    //which will be used in the payment execution  
-                    var guid = Convert.ToString((new Random()).Next(100000));
-                    //CreatePayment function gives us the payment approval url  
-                    //on which payer is redirected for paypal account payment  
-                    // baseURL is the url on which paypal sendsback the data.  
-                    string baseURI = Request.Url.Scheme + "://" + Request.Url.Authority + "/Flight/PaymentWithPayPal/" + id + "?orderSeat=" + orderSeat + "&flightType=" + flightType + "&type=" + type + "&transactionIds=" + transactionIds + "&";
-                    var createdPayment = this.CreatePayment(apiContext, baseURI + "guid=" + guid, flight.planeCode, totalPrice, seatList.Count);
-                    //get links returned from paypal in response to Create function call  
-                    var links = createdPayment.links.GetEnumerator();
-                    string paypalRedirectUrl = null;
-                    while (links.MoveNext())
+                    //// end loop seatList Departure
+                    if (flightType == 2)
                     {
-                        Links lnk = links.Current;
-                        if (lnk.rel.ToLower().Trim().Equals("approval_url"))
+                        var seatListReturn = new List<Seat> { };
+                        for (int i = 0; i < seats.Length; i++)
                         {
-                            //saving the payapalredirect URL to which user will be redirected for payment  
-                            paypalRedirectUrl = lnk.href;
+                            var returnSeats = orderSeatReturn.Split(',');
+                            string returnPosition = returnSeats[i];
+                            var seat = _db.Seats.Where(x => x.position == returnPosition & x.flightId == returnId).FirstOrDefault();
+
+                            if (seat != null)
+                            {
+                                seatListReturn.Add(seat);
+                            }
+                        }
+                        var flightReturn = _db.Flights.Find(returnId);
+                        for (int i = 0; i < seatListReturn.Count; i++)
+                        {
+                            seatListReturn[i].status = (int)SeatStatus.Block;
+                            double price = 0;
+                            switch (seatListReturn[i].classType)
+                            {
+                                case 1:
+                                    price += (flightReturn.price * 90 / 100);
+                                    break;
+                                case 2:
+                                    price += (flightReturn.price * 90 / 100);
+                                    break;
+                                case 3:
+                                    price += (flightReturn.price * 90 / 100);
+                                    break;
+                                case 4:
+                                    price += (flightReturn.price * 90 / 100);
+                                    break;
+                                case 5:
+                                    price += (flightReturn.price * 90 / 100);
+                                    break;
+                                default:
+                                    break;
+                            }
+                            totalPrice += price;
+
+                            var ticket = _db.Tickets.Add(new Ticket
+                            {
+                                userId = currentUserId,
+                                seatId = seatListReturn[i].id,
+                                transactionId = transaction.id,
+                                flightType = flightType,
+                                type = (int)TicketType.ADULT,
+                                status = (int)TicketStatus.DISABLE
+                            });
+
+
+                            flightReturn.seatAvaiable = flightReturn.seatAvaiable - 1;
+                            _db.SaveChanges();
+                        }
+                        transaction.price = totalPrice;
+                    }
+
+                    if (string.IsNullOrEmpty(transactionIds))
+                    {
+                        transactionIds += (transaction.id).ToString();
+                    }
+                    else
+                    {
+                        transactionIds += "," + (transaction.id).ToString();
+                    }
+                    //add transaction
+                }
+                ////getting the apiContext  
+                APIContext apiContext = PaypalConfiguration.GetAPIContext();
+                try
+                {
+                    //A resource representing a Payer that funds a payment Payment Method as paypal  
+                    //Payer Id will be returned when payment proceeds or click to pay  
+                    string payerId = Request.Params["PayerID"];
+                    if (string.IsNullOrEmpty(payerId))
+                    {
+                        //this section will be executed first because PayerID doesn't exist  
+                        //it is returned by the create function call of the payment class  
+                        // Creating a payment  
+                        //here we are generating guid for storing the paymentID received in session  
+                        //which will be used in the payment execution  
+                        var guid = Convert.ToString((new Random()).Next(100000));
+                        //CreatePayment function gives us the payment approval url  
+                        //on which payer is redirected for paypal account payment  
+                        // baseURL is the url on which paypal sendsback the data.  
+                        string baseURI = Request.Url.Scheme + "://" + Request.Url.Authority + "/Flight/PaymentWithPayPal/" + id + "?orderSeat=" + orderSeat + "&flightType=" + flightType + "&type=" + type + "&transactionIds=" + transactionIds + "&";
+                        var createdPayment = this.CreatePayment(apiContext, baseURI + "guid=" + guid, flight.planeCode, totalPrice, seatList.Count);
+                        //get links returned from paypal in response to Create function call  
+                        var links = createdPayment.links.GetEnumerator();
+                        string paypalRedirectUrl = null;
+                        while (links.MoveNext())
+                        {
+                            Links lnk = links.Current;
+                            if (lnk.rel.ToLower().Trim().Equals("approval_url"))
+                            {
+                                //saving the payapalredirect URL to which user will be redirected for payment  
+                                paypalRedirectUrl = lnk.href;
+                            }
+                        }
+                        // saving the paymentID in the key guid  
+                        Session.Add(guid, createdPayment.id);
+                        var sessionPaymentId = Session[guid];
+
+                        return Redirect(paypalRedirectUrl);
+                    }
+                    else
+                    {
+                        // This function exectues after receving all parameters for the payment  
+                        var guid = Request.Params["guid"];
+                        var executedPayment = ExecutePayment(apiContext, payerId, Session[guid] as string);
+                        //System.Diagnostics.Debug.WriteLine(ExecutePayment.state.ToLower());
+                        //If executed payment failed then we will show payment failure message to user  
+                        if (executedPayment.state.ToLower() != "approved")
+                        {
+                            return null;
+                            //return View("FailureView");
                         }
                     }
-                    // saving the paymentID in the key guid  
-                    Session.Add(guid, createdPayment.id);
-                    var sessionPaymentId = Session[guid];
-
-                    return Redirect(paypalRedirectUrl);
                 }
-                else
+                catch (PayPal.PaymentsException ex)
                 {
-                    // This function exectues after receving all parameters for the payment  
-                    var guid = Request.Params["guid"];
-                    var executedPayment = ExecutePayment(apiContext, payerId, Session[guid] as string);
-                    //System.Diagnostics.Debug.WriteLine(ExecutePayment.state.ToLower());
-                    //If executed payment failed then we will show payment failure message to user  
-                    if (executedPayment.state.ToLower() != "approved")
+                    Console.WriteLine(ex.Message);
+                }
+                ApplicationDbContext context = new ApplicationDbContext();
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                var currentUser = userManager.FindById(User.Identity.GetUserId());
+                var transactionIdList = transactionIds.Split(',').Select(Int32.Parse).ToList();
+                var confirmNumber = Helper.RandomString(5);
+                foreach (var item in transactionIdList)
+                {
+                    var transactionItem = _db.Transaction.Find(item);
+                    transactionItem.status = (int)TransactionStatus.SUCCESS;
+                    transactionItem.updatedAt = DateTime.Now;
+                    foreach (var ticket in transactionItem.Tickets)
                     {
-                        return null;
-                        //return View("FailureView");
+                        ticket.status = (int)TicketStatus.ACTIVE;
+                        ticket.confirmNumber = confirmNumber;
+                        ticket.Seat.status = (int)SeatStatus.Buyed;
+                        currentUser.skyMiles = (int)Math.Round(currentUser.skyMiles + ticket.Seat.Flight.distance);
+                        userManager.Update(currentUser);
                     }
+
+                    _db.SaveChanges();
                 }
-            }
-            catch (PayPal.PaymentsException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            ApplicationDbContext context = new ApplicationDbContext();
-            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var currentUser = userManager.FindById(User.Identity.GetUserId());
-            var transactionIdList = transactionIds.Split(',').Select(Int32.Parse).ToList();
-            var confirmNumber = Helper.RandomString(5);
-            foreach (var item in transactionIdList)
-            {
-                var transactionItem = _db.Transaction.Find(item);
-                transactionItem.status = (int)TransactionStatus.SUCCESS;
-                transactionItem.updatedAt = DateTime.Now;
-                foreach (var ticket in transactionItem.Tickets)
+                //sending Email
+                string body = string.Empty;
+                using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate.html")))
                 {
-                    ticket.status = (int)TicketStatus.ACTIVE;
-                    ticket.confirmNumber = confirmNumber;
-                    ticket.Seat.status = (int)SeatStatus.Buyed;
-                    currentUser.skyMiles = (int)Math.Round(currentUser.skyMiles + ticket.Seat.Flight.distance);
-                    userManager.Update(currentUser);
+                    body = reader.ReadToEnd();
                 }
+                body = body.Replace("{typeNumber}", "confirm");
+                body = body.Replace("{number}", confirmNumber);
+                body = body.Replace("{UserName}", currentUser.lastName + currentUser.firstName);
+                bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, "Your confirm number", body, true);
 
-                _db.SaveChanges();
+                //on successful payment, show success page to user.  
+                return RedirectToAction("PurchasedTicket", new { confirmNumber = confirmNumber, transactionIds = transactionIds });
             }
-            
-
-            //on successful payment, show success page to user.  
-            return RedirectToAction("PurchasedTicket", new { confirmNumber = confirmNumber, transactionIds = transactionIds });
+            catch (Exception)
+            {
+                throw;
+            }
         }
         private PayPal.Api.Payment payment;
         private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)
@@ -517,8 +565,6 @@ namespace ARS.Controllers
             // Create a payment using a APIContext  
             return this.payment.Create(apiContext);
         }
-
-
     }
     public class FlightPlaceModel
     {

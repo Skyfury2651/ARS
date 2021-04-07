@@ -51,9 +51,11 @@ namespace ARS.Controllers
             }
         }
 
-        
+
         // GET: /Manage/Index
+#pragma warning disable CS0657 // Not a valid attribute location for this declaration
         [assembly: OwinStartup(typeof(ARS.Startup))]
+#pragma warning restore CS0657 // Not a valid attribute location for this declaration
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -27,6 +28,9 @@ namespace ARS.Models
     }
     public enum TicketStatus
     {
-        DISABLE = 0, ACTIVE = 1,
+        [Display(Description = "Disable")]
+        DISABLE = 0,
+        [Display(Description = "Active")]
+        ACTIVE = 1,
     }
 }
