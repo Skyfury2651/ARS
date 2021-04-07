@@ -136,12 +136,6 @@ namespace ARS.Controllers
 
             return RedirectToAction("PaymentWithPaypal", "Flight", new { id = flightId, orderSeat = orderSeat, orderSeatReturn = orderSeatReturn, returnId = returnId, flightType = flightType, type = type });
         }
-
-        public ActionResult ViewTicketStatus(int id)
-        {
-            var ticket = _db.Tickets.Find(id);
-            return View(ticket);
-        }
         public ActionResult TicketDetail(int id)
         {
             var ticket = _db.Tickets.Find(id);

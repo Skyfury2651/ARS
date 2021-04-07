@@ -38,7 +38,7 @@ namespace ARS.Models
                 status = true;
                 return status;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return status;
             }

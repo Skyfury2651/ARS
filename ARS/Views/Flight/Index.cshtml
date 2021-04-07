@@ -47,9 +47,16 @@
                     <h4> No available flight during this time </h4>
                 }
                 <ul class="search-result">
+<<<<<<< HEAD
                     @foreach (var item in Model.departureFlights)
                     {
                         <li class="">
+=======
+                    <li class="header-li"><h3><strong>Departure Flights</strong></h3></li>
+                    @foreach (var item in Model.departureFlights)
+                    {
+                        <li class="horizontal-line">
+>>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                             <div class="row flight-details">
                                 <div class="col-md-4 flight-infos">
                                     <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
@@ -70,6 +77,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="flight-infos">
+<<<<<<< HEAD
                                         @*@if (item.haveStop)
                                             {
                                                 <div class="tooltip1">
@@ -88,13 +96,37 @@
                                                     @item.ToAirport.CityAirports.First().Airport.code
                                                 </span>
                                             }*@
+=======
+                                        @if (item.haveStop)
+                                        {
+                                            <div class="tooltip1">
+                                                Stop: @item.Stops.Count()
+                                                <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
+                                            </div>
+                                            <span>
+                                                First route: @item.FromAirport.CityAirports.First().Airport.code
+                                                <span aria-hidden="true" class="ti-control-play"></span>
+
+                                                @item.Stops.First().City.CityAirports.First().Airport.code
+                                            </span>
+                                            <span>
+                                                Second route: @item.Stops.First().City.CityAirports.First().Airport.code
+                                                <span aria-hidden="true" class="ti-control-play"></span>
+                                                @item.ToAirport.CityAirports.First().Airport.code
+                                            </span>
+                                        }
+>>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                                         <span class="flight-number">Plane code: @item.planeCode</span>
                                         <span class="flight-duration">
                                             Duration: @item.flyTime hours
                                         </span>
                                         <div id="Departure">
                                             <button type="button" data-flight="@item.id" class="valueDeparture btn btn-content">Seats</button>
+<<<<<<< HEAD
                                             <input type="text" name="valueDeparture" id="valueDepartureString" hidden="true" />
+=======
+                                            <input type="text" name="valueDeparture" id="valueDepartureString" hidden />
+>>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                                         </div>
                                     </div>
                                 </div>
@@ -110,6 +142,10 @@
             {
                 <div class="col-md-6">
                     <ul class="search-result">
+<<<<<<< HEAD
+=======
+                        <li class="header-li"><h3><strong>Return Flights</strong></h3></li>
+>>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                         @foreach (var item in Model.returnFlights)
                         {
                             <li class="">
@@ -156,8 +192,13 @@
                                                 Duration: @item.flyTime hours
                                             </span>
                                             <div id="Arrival">
+<<<<<<< HEAD
                                                 <button type="button" data-flight="@item.id" class="valueArrival btn-content">Select</button>
                                                 <input type="text" name="valueArrival" id="valueArrivalString" hidden="true" />
+=======
+                                                <button type="button" data-flight="@item.id" class="valueArrival btn-content">Seats</button>
+                                                <input type="text" name="valueArrival" id="valueArrivalString" hidden />
+>>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                                             </div>
                                         </div>
                                     </div>
@@ -230,7 +271,11 @@
                                 </div>
                                 <button class="btn btn-success" id="orderSeat" type="button" style="margin-top:10px">Select</button>
                             </form>
+<<<<<<< HEAD
                             <input type="text" name="valueSeat" id="valueSeat" hidden="true" />
+=======
+                            <input type="text" name="valueSeat" id="valueSeat" hidden />
+>>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                         </div>
                     </div>
 
@@ -248,7 +293,7 @@
     <input id="orderSeatsReturn" type="hidden" name="orderSeatReturn" />
     <input id="returnId" type="hidden" name="returnId" />
     <input id="fligthType" type="hidden" name="flightType" />
-    <input id="old-transaction" type="hidden" name="oldTransaction" />  
+    <input id="old-transaction" type="hidden" name="oldTransaction" />
 </form>
 
 <style>
@@ -306,7 +351,6 @@
                             qualifi: 9,
                             typeSeat: 5
                         }
-
                         var init = function (reservedSeat) {
                             var str = [],
                                 seatNo, className;
@@ -331,7 +375,6 @@
                                     settings.typeTicket = '4'
                                     str.push('<li class="infomation-seat"><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">SMOKING CLASSES</span></div></li>')
                                 }
-
                                 for (j = 0; j < settings.cols; j++) {
                                     seatNo = (i + 1 + String.fromCharCode(65 + j));
                                     className = settings.seatCss + ' ' + settings.rowCssPrefix + i.toString() + ' ' + settings.colCssPrefix + j.toString() + ' ' + settings.typeTicket;
@@ -342,7 +385,6 @@
                                         'style="top:' + (i * settings.seatHeight).toString() + 'px;left:' + (j * settings.seatWidth).toString() + 'px">' +
                                         '<a title="' + seatNo + '"name="' + settings.typeTicket + '">' + seatNo + '</a>' +
                                         '</li>');
-
                                 }
                             }
                             $('#place').html(str.join(''));
@@ -351,13 +393,11 @@
                         $('.' + settings.seatCss).click(function () {
                             if ($(this).hasClass(settings.selectedSeatCss)) {
                                 $('#staticBackdrop').modal('show')
-
                             } else {
                                 $(this).toggleClass(settings.selectingSeatCss);
                             }
                             $('#list').empty();
                         });
-
                     }
                 });
                 $('#orderSeat').click(function (event2) {
@@ -393,7 +433,6 @@
                         qualifi: 9,
                         typeSeat: 5
                     }
-
                     var init = function (reservedSeat) {
                         let str = [],
                             seatNo, className;
@@ -418,7 +457,6 @@
                                 settings.typeTicket = '4'
                                 str.push('<li class="infomation-seat"><div class="exit exit--back fuselage"><span style= "position: relative;vertical-align: -webkit-baseline-middle;top: 10px;">SMOKING CLASSES</span></div></li>')
                             }
-
                             for (j = 0; j < settings.cols; j++) {
                                 seatNo = (i + 1 + String.fromCharCode(65 + j));
                                 className = settings.seatCss + ' ' + settings.rowCssPrefix + i.toString() + ' ' + settings.colCssPrefix + j.toString() + ' ' + settings.typeTicket;
@@ -429,7 +467,6 @@
                                     'style="top:' + (i * settings.seatHeight).toString() + 'px;left:' + (j * settings.seatWidth).toString() + 'px">' +
                                     '<a title="' + seatNo + '"name="' + settings.typeTicket + '">' + seatNo + '</a>' +
                                     '</li>');
-
                             }
                         }
                         $('#place').html(str.join(''));
@@ -438,13 +475,11 @@
                     $('.' + settings.seatCss).click(function () {
                         if ($(this).hasClass(settings.selectedSeatCss)) {
                             $('#staticBackdrop').modal('show')
-
                         } else {
                             $(this).toggleClass(settings.selectingSeatCss);
                         }
                         $('#list').empty();
                     });
-
                 }
             });
         })
@@ -456,19 +491,16 @@
                 classItem = $(this).attr('name')
                 str.push(item)
             });
-
             let querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val();
             $('#valueSeat').val(querystring)
             $('#ModalPopUpDeparture').modal('hide')
             let sel2 = $('#valueSeat').val();
             $('#valuePucharse2').val(sel2);
-
             if (seatType == enumFlightType.departure) {
                 $('#orderSeats').val(str.toString());
             } else {
                 $('#orderSeatsReturn').val(str.toString());
             }
-
             console.log($('#orderSeats').val());
             if ($('#orderSeats').val() != "") {
                 $('#departSeat').text($('#orderSeats').val());
