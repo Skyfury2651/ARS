@@ -84,7 +84,7 @@ namespace ARS.Controllers
         }
 
         [CustomAuthorize]
-        public ActionResult TicketList()
+        public ActionResult TicketsList()
         {
             var userId = User.Identity.GetUserId();
             var tickets = _db.Tickets.Where(x => x.userId == userId).ToList();

@@ -5,58 +5,34 @@
     Layout = "~/Views/Shared/_MyLayout.cshtml";
 }
 
-<link href="~/Content/ticket-view.css" rel="stylesheet" />
+<link href="~/Content/flight-choice.css" rel="stylesheet" />
 
 <div class="body container background">
-    <h2>@ViewBag.Title</h2>
-
-    <p class="text-success">@ViewBag.StatusMessage</p>
     <div class="container">
-        <div class="row">
+        <div class="row header-info">
+            <h4><strong>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name, @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</strong></h4>
+            <h5><strong>Depart on @Model.departureFlights.First().departureDate.ToString("D") and return on @Model.departureFlights.First().departureDate.ToString("D")</strong></h5>
             <div class="col-md-6">
-                @if (@Model.departureFlights.Count != 0)
-                {
-                    <h4>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name, @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</h4>
-                    <h5>Depart on @Model.departureFlights.First().departureDate.ToString("D") and return on @Model.departureFlights.First().departureDate.ToString("D")</h5>
-                }
-            </div>
-            <div class="col-md-6">
-                <div>
-                    <div id="departInfo" class="hide">
-                        Your Depart Seat is : <span id="departSeat"></span> Flight : <span id="departFlight"></span>
-                    </div>
-                    <br />
-                    <div id="returnInfo" class="hide">
-                        Your Return Seat is : <span id="returnSeat"></span> Flight : <span id="returnFlight"></span>
-                    </div>
+                <div id="departInfo" class="hide">
+                    Your Depart Seat is : <span id="departSeat"></span> Flight : <span id="departFlight"></span>
                 </div>
-                <div style="float:right;padding:0 10%;">
-                    @if (@Model.departureFlights.Count != 0)
-                    {
-                        <button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
-                        <button class="btn btn-primary" id="reservateButton" type="submit" style="margin-top:10px">Reservate</button>
-                    }
-                    </div>
+                <div id="returnInfo" class="hide">
+                    Your Return Seat is : <span id="returnSeat"></span> Flight : <span id="returnFlight"></span>
+                </div>
+            </div>
+            <div class="col-md-6 btn-action">
+                <button class="btn btn-content" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
+                <button class="btn btn-content" id="reservateButton" type="submit" style="margin-top:10px">Reservate</button>
             </div>
         </div>
         <hr />
         <div class="flight-results-container">
             <div class="col-md-6">
-                @if (@Model.departureFlights.Count == 0)
-                {
-                    <h4> No available flight during this time </h4>
-                }
                 <ul class="search-result">
-<<<<<<< HEAD
-                    @foreach (var item in Model.departureFlights)
-                    {
-                        <li class="">
-=======
                     <li class="header-li"><h3><strong>Departure Flights</strong></h3></li>
                     @foreach (var item in Model.departureFlights)
                     {
                         <li class="horizontal-line">
->>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                             <div class="row flight-details">
                                 <div class="col-md-4 flight-infos">
                                     <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
@@ -77,27 +53,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="flight-infos">
-<<<<<<< HEAD
                                         @*@if (item.haveStop)
-                                            {
-                                                <div class="tooltip1">
-                                                    Stop: @item.Stops.Count()
-                                                    <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
-                                                </div>
-                                                <span>
-                                                    First route: @item.FromAirport.CityAirports.First().Airport.code
-                                                    <span aria-hidden="true" class="ti-control-play"></span>
-
-                                                    @item.Stops.First().City.CityAirports.First().Airport.code
-                                                </span>
-                                                <span>
-                                                    Second route: @item.Stops.First().City.CityAirports.First().Airport.code
-                                                    <span aria-hidden="true" class="ti-control-play"></span>
-                                                    @item.ToAirport.CityAirports.First().Airport.code
-                                                </span>
-                                            }*@
-=======
-                                        @if (item.haveStop)
                                         {
                                             <div class="tooltip1">
                                                 Stop: @item.Stops.Count()
@@ -114,19 +70,14 @@
                                                 <span aria-hidden="true" class="ti-control-play"></span>
                                                 @item.ToAirport.CityAirports.First().Airport.code
                                             </span>
-                                        }
->>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
+                                        }*@
                                         <span class="flight-number">Plane code: @item.planeCode</span>
                                         <span class="flight-duration">
                                             Duration: @item.flyTime hours
                                         </span>
                                         <div id="Departure">
                                             <button type="button" data-flight="@item.id" class="valueDeparture btn btn-content">Seats</button>
-<<<<<<< HEAD
-                                            <input type="text" name="valueDeparture" id="valueDepartureString" hidden="true" />
-=======
                                             <input type="text" name="valueDeparture" id="valueDepartureString" hidden />
->>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                                         </div>
                                     </div>
                                 </div>
@@ -142,13 +93,10 @@
             {
                 <div class="col-md-6">
                     <ul class="search-result">
-<<<<<<< HEAD
-=======
                         <li class="header-li"><h3><strong>Return Flights</strong></h3></li>
->>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                         @foreach (var item in Model.returnFlights)
                         {
-                            <li class="">
+                            <li class="horizontal-line">
                                 <div class="row flight-details">
                                     <div class="col-md-4 flight-infos">
                                         <span class="airport-code">@item.FromAirport.CityAirports.First().Airport.code</span>
@@ -192,13 +140,8 @@
                                                 Duration: @item.flyTime hours
                                             </span>
                                             <div id="Arrival">
-<<<<<<< HEAD
-                                                <button type="button" data-flight="@item.id" class="valueArrival btn-content">Select</button>
-                                                <input type="text" name="valueArrival" id="valueArrivalString" hidden="true" />
-=======
                                                 <button type="button" data-flight="@item.id" class="valueArrival btn-content">Seats</button>
                                                 <input type="text" name="valueArrival" id="valueArrivalString" hidden />
->>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                                             </div>
                                         </div>
                                     </div>
@@ -271,11 +214,7 @@
                                 </div>
                                 <button class="btn btn-success" id="orderSeat" type="button" style="margin-top:10px">Select</button>
                             </form>
-<<<<<<< HEAD
-                            <input type="text" name="valueSeat" id="valueSeat" hidden="true" />
-=======
                             <input type="text" name="valueSeat" id="valueSeat" hidden />
->>>>>>> 5593eabb7a0977feceb97584512b194e734dc8bc
                         </div>
                     </div>
 

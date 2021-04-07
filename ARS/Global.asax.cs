@@ -23,8 +23,8 @@ namespace ARS
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //sendMailDaily();
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
-            RecurringJob.AddOrUpdate(
-                () => ScheduleSeatAsync(), Cron.Minutely);
+            //RecurringJob.AddOrUpdate(
+            //    () => ScheduleSeatAsync(), Cron.Minutely);
             RecurringJob.AddOrUpdate(
                 () => ScheduleTransaction(), Cron.Daily);
             RecurringJob.AddOrUpdate(

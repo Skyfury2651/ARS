@@ -393,6 +393,8 @@ namespace ARS.Controllers
                             _db.SaveChanges();
                         }
                         transaction.price = totalPrice;
+
+                        _db.SaveChanges();
                     }
 
                     if (string.IsNullOrEmpty(transactionIds))
@@ -494,7 +496,7 @@ namespace ARS.Controllers
                 bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, "Your confirm number", body, true);
 
                 //on successful payment, show success page to user.  
-                return RedirectToAction("PurchasedTicket", new { confirmNumber = confirmNumber, transactionIds = transactionIds });
+                return RedirectToAction("TicketDetail", new { confirmNumber = confirmNumber, transactionIds = transactionIds });
             }
             catch (Exception)
             {
