@@ -14,8 +14,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h4>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name, @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</h4>
-                <h5>Depart on @Model.departureFlights.First().departureDate.ToString("D") and return on @Model.departureFlights.First().departureDate.ToString("D")</h5>
+                @if (@Model.departureFlights.Count != 0)
+                {
+                    <h4>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name, @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</h4>
+                    <h5>Depart on @Model.departureFlights.First().departureDate.ToString("D") and return on @Model.departureFlights.First().departureDate.ToString("D")</h5>
+                }
             </div>
             <div class="col-md-6">
                 <div>
@@ -28,14 +31,21 @@
                     </div>
                 </div>
                 <div style="float:right;padding:0 10%;">
-                    <button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
-                    <button class="btn btn-primary" id="reservateButton" type="submit" style="margin-top:10px">Reservate</button>
-                </div>
+                    @if (@Model.departureFlights.Count != 0)
+                    {
+                        <button class="btn btn-primary" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
+                        <button class="btn btn-primary" id="reservateButton" type="submit" style="margin-top:10px">Reservate</button>
+                    }
+                    </div>
             </div>
         </div>
         <hr />
         <div class="flight-results-container">
             <div class="col-md-6">
+                @if (@Model.departureFlights.Count == 0)
+                {
+                    <h4> No available flight during this time </h4>
+                }
                 <ul class="search-result">
                     @foreach (var item in Model.departureFlights)
                     {

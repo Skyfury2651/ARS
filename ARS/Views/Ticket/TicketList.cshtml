@@ -160,7 +160,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form  action="/Flight">
+            <form action="/Flight">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Please enter your ticket confirm number</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -220,13 +220,13 @@
                         // show pick date
                         $("#departureDate").attr("type", "date");
                         $("#returnDate").attr("type", "date");
-                        // fill data old 
+                        // fill data old
                         $("#fromAirportId").val(data.fromAirportId)
                         $("#toAirportId").val(data.toAirportId)
                         $("#numberOfPassager").val(data.NumberOfPassager);
                         $("#flightType").val(data.flightType);
                         $("#oldTransaction").val(data.oldTransaction);
-                        // show info flight 
+                        // show info flight
                         $("#info-flight").toggleClass("hide");
                         $("#fromCity").text(data.fromCity)
                         $("#toCity").text(data.toCity)
@@ -241,5 +241,16 @@
                 }
             });
         });
+
+        $('#exampleModal').on('hide.bs.modal', function () {
+            $("#departureDate").attr("type", "date");
+            $("#returnDate").attr("type", "date");
+            // show info flight
+            $("#info-flight").toggleClass("hide");
+            $("#flyBack").toggleClass("hide");
+            $("#confirmNumber").toggleClass("hide");
+            $("#ticket-check-submit").toggleClass("hide");
+            $("#findNew").toggleClass("hide");
+        })
     </script>
 }

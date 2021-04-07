@@ -76,10 +76,18 @@ namespace ARS.Controllers
                 position = x.position,
                 status = x.status
             }).ToList();
+            DateTime date1 = new DateTime(2009, 8, 1, 0, 0, 0);
+            DateTime date2 = new DateTime(2009, 8, 1, 12, 0, 0);
+            int result = DateTime.Compare(DateTime.Now.AddDays(14), flight.departureDate);
+            string relationship;
+            var allowReservation = false ;
+            if (result < 0)
+            {
+                relationship = "is earlier than";
+                allowReservation = true;
+            }
 
-            //flightModel.bookedSeat = bookedSeats;
-
-            return Json(bookedSeats, JsonRequestBehavior.AllowGet);
+            return Json(new { bookedSeats , allowReservation }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult MakeReservation(int id, string orderSeat, string orderSeatReturn = null, int returnId = 0, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
         {
@@ -256,6 +264,7 @@ namespace ARS.Controllers
                     foreach (var ticket in oldTransactionItem.Tickets)
                     {
                         currentUser2.skyMiles = (int)Math.Round(currentUser2.skyMiles - ticket.Seat.Flight.distance);
+                        userManager2.Update(currentUser2);
                     }
 
                     foreach (var oldTicket in oldTransactionItem.Tickets)
