@@ -53,7 +53,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="flight-infos">
-                                        @*@if (item.haveStop)
+                                        @if (item.haveStop)
                                             {
                                                 <div class="tooltip1">
                                                     Stop: @item.Stops.Count()
@@ -70,7 +70,7 @@
                                                     <span aria-hidden="true" class="ti-control-play"></span>
                                                     @item.ToAirport.CityAirports.First().Airport.code
                                                 </span>
-                                            }*@
+                                            }
                                         <span class="flight-number">Plane code: @item.planeCode</span>
                                         <span class="flight-duration">
                                             Duration: @item.flyTime hours
