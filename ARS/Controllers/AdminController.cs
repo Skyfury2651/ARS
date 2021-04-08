@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -113,6 +114,21 @@ namespace ARS.Controllers
             db.Transaction.Remove(transaction);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult DataChart()
+        {
+            return View();
+        }
+
+        public JsonResult DataChart1(DateTime start, DateTime end)
+        {
+            var newEnd = end.AddDays(1);
+            var data = db.Transaction.Where(x => x.createdAt >= start && x.createdAt < newEnd).Select(z => new { 
+            price = z.price,
+            date = z.createdAt
+            }).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

@@ -154,7 +154,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="ModalPopUpDeparture" role="dialog">
+    <div class="modal fade" id="ModalPopUpDeparture" data-backdrop="false" role="dialog">
         <div class="modal-dialog err-pop" style="">
             <div class="modal-content">
                 <div class="modal-header">
@@ -189,30 +189,12 @@
                                     </ul>
                                 </div>
 
-                                <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="staticBackdropLabel">Alert</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p id="content">This seat is already reserved</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div id="list">
 
                                 </div>
-                                <button class="btn btn-success" id="orderSeat" type="button" style="margin-top:10px">Select</button>
+                                <button class="btn btn-success" id="orderSeat" type="button" data-dismiss="modal" style="margin-top:10px">Select</button>
                             </form>
                             <input type="text" name="valueSeat" id="valueSeat" hidden />
                         </div>
@@ -223,7 +205,25 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="staticBackdrop"  data-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="staticBackdropLabel">Alert</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="content">This seat is already reserved</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="closeModal">Close</button>
 
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <form action="/" method="post" id="purchaseForm">
@@ -331,12 +331,17 @@
                         init(bookedSeats);
                         $('.' + settings.seatCss).click(function () {
                             if ($(this).hasClass(settings.selectedSeatCss)) {
-                                $('#staticBackdrop').modal('show')
+                                $('#staticBackdrop').modal('show');
+                                $('#closeModal').click(function () {
+                                    document.getElementById('staticBackdrop').style.display = "none";
+                                    document.getElementById('staticBackdrop').style.opacity = "0";
+                                })
                             } else {
                                 $(this).toggleClass(settings.selectingSeatCss);
                             }
                             $('#list').empty();
                         });
+
                     }
                 });
                 $('#orderSeat').click(function (event2) {
@@ -414,11 +419,16 @@
                     $('.' + settings.seatCss).click(function () {
                         if ($(this).hasClass(settings.selectedSeatCss)) {
                             $('#staticBackdrop').modal('show')
+                            $('#closeModal').click(function () {
+                                document.getElementById('staticBackdrop').style.display = "none";
+                                document.getElementById('staticBackdrop').style.opacity = "0";
+                            })
                         } else {
                             $(this).toggleClass(settings.selectingSeatCss);
                         }
                         $('#list').empty();
                     });
+
                 }
             });
         })
@@ -432,7 +442,8 @@
             });
             let querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val();
             $('#valueSeat').val(querystring)
-            $('#ModalPopUpDeparture').modal('hide')
+            $('#ModalPopUpDeparture').modal('hide');
+            $('.modal-backdrop').remove();
             let sel2 = $('#valueSeat').val();
             $('#valuePucharse2').val(sel2);
             if (seatType == enumFlightType.departure) {

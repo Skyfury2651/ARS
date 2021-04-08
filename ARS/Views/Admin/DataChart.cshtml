@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewBag.Title = "DataChart";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/fixedheader/3.1.8/js/dataTables.fixedHeader.min.js" crossorigin="anonymous"></script>
+<div id="reportrange" style="margin-bottom:20px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 30%">
+    <i class="fa fa-calendar"></i>&nbsp;
+    <span></span> <i class="fa fa-caret-down"></i>
+</div>
+<div id="curve_chart" style="width: 100%; height: 500px"></div>
+@section scripts {
+    <script>
+        function ToJavaScriptDate(value) {
+            var pattern = /Date\(([^)]+)\)/;
+            var results = pattern.exec(value);
+            var dt = new Date(parseFloat(results[1]));
+            return dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(function () {
+
+                var start = moment().subtract(29, 'days');
+                var end = moment();
+
+                function cb(start, end) {
+                    $('#reportrange span').html(start.format('YYYY MMMM, D') + ' - ' + end.format('YYYY MMMM, D'));
+                }
+
+                $('#reportrange').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    ranges: {
+                        'Today': [moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, cb);
+
+                cb(start, end);
+            });
+
+            google.charts.load('current', { 'packages': ['line'] });
+            google.charts.setOnLoadCallback(drawChart);
+            function drawChart() {
+                var data = new google.visualization.DataTable();
+                data.addColumn('date', 'Date');
+                data.addColumn('number', 'Price');
+
+                var options = {
+                    chart: {
+                        title: 'Revenue chart over time',
+                        subtitle: 'Currency(VND)'
+                    },
+                    height: 500,
+                    hAxis: {
+                        format: 'YYYY-MM-DD'
+                    }
+                };
+
+                var chart = new google.charts.Line(document.getElementById('curve_chart'));
+                ajaxCall();
+                setInterval(ajaxCall,1000)
+                function ajaxCall() {
+                    $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
+                        var startDate = picker.startDate.format('YYYY-MM-DD');
+                        var endDate = picker.endDate.format('YYYY-MM-DD')
+                        $.ajax({
+                            type: "GET",
+                            url: "/Admin/DataChart1",
+                            datatype: "Json",
+                            data: { start: startDate, end: endDate },
+                            success: function (dataChart) {
+                                for (var i = 0; i < dataChart.length; i++) {
+                                    var newArray =[]
+                                    var newobj = {
+                                        date: ToJavaScriptDate(dataChart[i].date),
+                                        price: dataChart[i].price
+                                    }
+                                    newArray.push(Object.values(newobj));
+                                    console.log(newArray)
+                                }
+                                data.addRows(newArray)
+
+                            }
+                        })
+
+                        chart.draw(data, options);
+                    });
+                }
+            }
+
+
+        });
+
+    </script>
+}
+
+
