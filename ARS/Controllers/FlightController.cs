@@ -79,14 +79,14 @@ namespace ARS.Controllers
 
             int result = DateTime.Compare(DateTime.Now.AddDays(14), flight.departureDate);
             string relationship;
-            var allowReservation = false ;
+            var allowReservation = false;
             if (result < 0)
             {
                 relationship = "is earlier than";
                 allowReservation = true;
             }
 
-            return Json(new { bookedSeats , allowReservation }, JsonRequestBehavior.AllowGet);
+            return Json(new { bookedSeats, allowReservation }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult MakeReservation(int id, string orderSeat, string orderSeatReturn = null, int returnId = 0, int flightType = 1, int type = 1, string transactionIds = null, string Cancel = null)
         {
@@ -238,7 +238,7 @@ namespace ARS.Controllers
             body = body.Replace("{number}", blockingNumber);
             body = body.Replace("{UserName}", currentUser.lastName + currentUser.firstName);
             bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, "Your blocking number is ", body, true);
-            
+
             return View(blockingNumber);
         }
 
@@ -482,17 +482,10 @@ namespace ARS.Controllers
                     }
 
                     _db.SaveChanges();
+
+                    sendTicketMail(currentUser, transactionItem.Tickets, "confirm", confirmNumber, transactionItem.price.ToString());
                 }
                 //sending Email
-                string body = string.Empty;
-                using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate.html")))
-                {
-                    body = reader.ReadToEnd();
-                }
-                body = body.Replace("{typeNumber}", "confirm");
-                body = body.Replace("{number}", confirmNumber);
-                body = body.Replace("{UserName}", currentUser.lastName + currentUser.firstName);
-                bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, "Your confirm number", body, true);
 
                 //on successful payment, show success page to user.  
                 return RedirectToAction("TicketDetail", new { confirmNumber = confirmNumber, transactionIds = transactionIds });
@@ -502,6 +495,101 @@ namespace ARS.Controllers
                 throw;
             }
         }
+        public void sendTicketMail(ApplicationUser currentUser, List<Ticket> tickets, string numberType, string number, string totalPrice, string subject = "Mail from ARS")
+        {
+            string mail = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/TicketDetail.html")))
+            {
+                mail = reader.ReadToEnd();
+            }
+
+            string header = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/HeaderMail.html")))
+            {
+                header = reader.ReadToEnd();
+            }
+            header = header.Replace("{userFullName}", currentUser.lastName + " " + currentUser.firstName);
+            header = header.Replace("{numberType}", numberType);
+            header = header.Replace("{number}", number);
+            header = header.Replace("{totalPrice}", totalPrice);
+
+            string ticketsContent = string.Empty;
+            foreach (var item in tickets)
+            {
+                string ticketBody = string.Empty;
+                using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/TicketBody.html")))
+                {
+                    ticketBody = reader.ReadToEnd();
+                }
+                var departureAirportName = item.Seat.Flight.FromAirport.CityAirports.First().Airport.name;
+                ticketBody = ticketBody.Replace("{departureAirportName}", departureAirportName);
+
+                var departureTime = item.Seat.Flight.departureDate.ToString("D");
+                ticketBody = ticketBody.Replace("{departureTime}", departureTime);
+
+                var planeCode = item.Seat.Flight.planeCode;
+                ticketBody = ticketBody.Replace("{planeCode}", planeCode);
+
+                var departureAirportCode = item.Seat.Flight.ToAirport.CityAirports.First().Airport.code;
+                ticketBody = ticketBody.Replace("{departureAirportCode}", departureAirportCode);
+
+                var duration = item.Seat.Flight.flyTime;
+                ticketBody = ticketBody.Replace("{duration}", duration.ToString());
+
+                var fromAirportCode = item.Seat.Flight.FromAirport.CityAirports.First().Airport.code;
+                ticketBody = ticketBody.Replace("{fromAirportCode}", fromAirportCode);
+
+                var toAirportCode = item.Seat.Flight.ToAirport.CityAirports.First().Airport.code;
+                ticketBody = ticketBody.Replace("{toAirportCode}", toAirportCode);
+
+                var classService = "Non - Smoking";
+                if (item.Seat.classType == 1)
+                {
+                    classService = "Bussiness";
+                }
+                else if (item.Seat.classType == 2)
+                {
+                    classService = "First Class ";
+                }
+                else if (item.Seat.classType == 3)
+                {
+                    classService = "Club Class ";
+                }
+                else if (item.Seat.classType == 4)
+                {
+                    classService = "Smoking";
+                }
+                ticketBody = ticketBody.Replace("{classService}", classService);
+
+                var seatPosition = item.Seat.position;
+                ticketBody = ticketBody.Replace("{seatPosition}", "10000");
+
+                var departureCityName = item.Seat.Flight.FromAirport.CityAirports.First().City.name;
+                ticketBody = ticketBody.Replace("{departureCityName}", departureCityName);
+
+                var departureDate = item.Seat.Flight.departureDate.ToString("D");
+                ticketBody = ticketBody.Replace("{departureDate}", departureDate);
+
+                var arrivalAirportName = item.Seat.Flight.ToAirport.CityAirports.First().Airport.name;
+                ticketBody = ticketBody.Replace("{arrivalAirportName}", arrivalAirportName);
+
+                var arrivalCityName = item.Seat.Flight.ToAirport.CityAirports.First().City.name;
+                ticketBody = ticketBody.Replace("{arrivalCityName}", "10000");
+
+                var arrivalTime = item.Seat.Flight.arrivalDate.ToString("t");
+                ticketBody = ticketBody.Replace("{arrivalTime}", "10000");
+
+                var arrivalDate = item.Seat.Flight.arrivalDate.ToString("D");
+                ticketBody = ticketBody.Replace("{arrivalDate}", "10000");
+                ticketsContent = ticketsContent + ticketBody;
+            }
+
+            mail = mail.Replace("{Heading}", header);
+            mail = mail.Replace("{tickets}", ticketsContent);
+            string body = string.Empty;
+            bool IsSendEmail = SendEmail.EmailSend("skyfury2651@gmail.com", subject, mail, true);
+        }
+
         private PayPal.Api.Payment payment;
         private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)
         {

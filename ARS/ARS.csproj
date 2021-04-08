@@ -693,6 +693,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Views\MailDelay.html" />
+    <Content Include="Views\MailTemplate\HeaderMail.html" />
+    <Content Include="Views\MailTemplate\TicketBody.html" />
     <Content Include="Views\SendMail.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -740,6 +742,7 @@
     <Content Include="Views\Ticket\TicketsList.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\MailTemplate\TicketDetail.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
