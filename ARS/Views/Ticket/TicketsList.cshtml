@@ -4,6 +4,11 @@
     ViewBag.Title = "TicketList";
     Layout = "~/Views/Shared/_MyLayout.cshtml";
 }
+<style>
+    .btn-content {
+        margin-top: unset !important;
+    }
+</style>
 
 <section aria-label="milestone" class="no-top no-bottom color-page hidden-sm hidden-xs">
     <div class="container-fluid m-5-hor">
@@ -52,197 +57,211 @@
         </div>
     </div>
 </section>
-<table class="table">
-    <tr>
-        <th>
-            NO
-        </th>
-        @*<th>
-            ID
-        </th>*@
-        <th>
-            FLIGHT CODE
-        </th>
-        <th>
-            TYPE
-        </th>
-        <th>
-            POSITION
-        </th>
-        <th>
-            CLASS
-        </th>
-        <th>
-            STATUS
-        </th>
-        <th>
-            TRANSACTION STATUS
-        </th>
-        <th>ACTION</th>
-    </tr>
-    @{int i = 1; }
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>
+                NO
+            </th>
+            @*<th>
+                    ID
+                </th>*@
+            <th>
+                FLIGHT CODE
+            </th>
+            <th>
+                TYPE
+            </th>
+            <th>
+                POSITION
+            </th>
+            <th>
+                CLASS
+            </th>
+            <th>
+                STATUS
+            </th>
+            <th>
+                TRANSACTION STATUS
+            </th>
+            <th>
+                ACTION
+            </th>
+        </tr>
+        @{int i = 1; }
 
-    @foreach (var item in Model)
-    {
-<tr>
-    <td>
-        @i
-    </td>@{ i++; }
-    @*<td>
-        @Html.DisplayFor(modelItem => item.id)
-    </td>*@
-    <td>
-        @item.Seat.Flight.planeCode
-    </td>
-    <td>
-        @if (item.type == 1)
+        @foreach (var item in Model)
         {
-            @Html.Raw("Adult Ticket")
+            <tr>
+                <td>
+                    @i
+                </td>
+                @{ i++; }
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.id)
+                    </td>*@
+                <td>
+                    @item.Seat.Flight.planeCode
+                </td>
+                <td>
+                    @if (item.type == 1)
+                    {
+                        @Html.Raw("Adult Ticket")
+                    }
+                    else if (item.type == 2)
+                    {
+                        @Html.Raw("Old Ticket")
+                    }
+                    else
+                    {
+                        @Html.Raw("Kid Ticket")
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Seat.position)
+                </td>
+                <td>
+                    @if (item.Seat.classType == 1)
+                    {
+                        @Html.Raw("Bussiness")
+                    }
+                    else if (item.Seat.classType == 2)
+                    {
+                        @Html.Raw("First Class")
+                    }
+                    else if (item.Seat.classType == 3)
+                    {
+                        @Html.Raw("Club Class")
+                    }
+                    else if (item.Seat.classType == 4)
+                    {
+                        @Html.Raw("Smoking")
+                    }
+                    else
+                    {
+                        @Html.Raw("No Smoke")
+                    }
+                </td>
+                <td>
+                    @if (item.status == 1)
+                    {
+                        @Html.Raw("Active")
+                    }
+                    else
+                    {
+                        @Html.Raw("Disable")
+                    }
+                </td>
+                <td>
+                    @if (item.Trasaction.status == 0)
+                    {
+                        @Html.Raw("Pending")
+                    }
+                    else if (item.Trasaction.status == 1)
+                    {
+                        @Html.Raw("Success")
+                    }
+                    else if (item.Trasaction.status == 2)
+                    {
+                        @Html.Raw("Canceled")
+                    }
+                </td>
+                <td>
+                    <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-content cancel-ticket">Detail</button>
+                    @if (item.confirmNumber != null)
+                    {
+                        <button data-transaction-id="@item.Trasaction.id" data-ticket-id="@item.id" class="btn btn-content check-ticket">Reschedule</button>
+                        <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-content cancel-ticket">Cancel</button>
+                    }
+                    else if (item.blockingNumber != null)
+                    {
+                        <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-content cancel-ticket">Pay</button>
+                        <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-content cancel-ticket">Cancel</button>
+                    }
+                </td>
+            </tr>
         }
-        else if (item.type == 2)
-        {
-            @Html.Raw("Old Ticket")
-        }
-        else
-        {
-            @Html.Raw("Kid Ticket")
-        }
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Seat.position)
-    </td>
-    <td>
-        @if (item.Seat.classType == 1)
-        {
-            @Html.Raw("Bussiness")
-        }
-        else if (item.Seat.classType == 2)
-        {
-            @Html.Raw("First Class")
-        }
-        else if (item.Seat.classType == 3)
-        {
-            @Html.Raw("Club Class")
-        }
-        else if (item.Seat.classType == 4)
-        {
-            @Html.Raw("Smoking")
-        }
-        else
-        {
-            @Html.Raw("No Smoke")
-        }
-    </td>
-    <td>
-        @if (item.status == 1)
-        {
-            @Html.Raw("Active")
-        }
-        else
-        {
-            @Html.Raw("Disable")
-        }
-    </td>
-    <td>
-        @if (item.Trasaction.status == 0)
-        {
-            @Html.Raw("Pending")
-        }
-        else if (item.Trasaction.status == 1)
-        {
-            @Html.Raw("Success")
-        }
-        else if (item.Trasaction.status == 2)
-        {
-            @Html.Raw("Canceled")
-        }
-    </td>
-    <td>
-        <button data-transaction-id="@item.Trasaction.id" data-ticket-id="@item.id" class="btn btn-primary check-ticket">Reschedule</button>
-        <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-primary cancel-ticket">Cancel</button>
-    </td>
-</tr>
-    }
-</table>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form action="/Flight">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Please enter your ticket confirm number</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="ticketId" value="" />
-                    <input type="hidden" id="transactionId" value="" />
-                    <input type="text" id="confirmNumber" value="" />
-                    <!-- Data when confirm data success-->
-                    <div>
-                        <div id="info-flight" class="hide">
-                            Your Depart From : <span id="fromCity"></span> To : <span id="toCity"></span> <span id="flyBack" class="hide">and flight back</span>
-                            <br />
-                            Number of ticket : <span id="numberTicket"></span>
-                        </div>
-                        <br />
-                        <input type="hidden" class="form-control" id="departureDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="true" name="DepartureDate">
-                        <input type="hidden" class="form-control" id="returnDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="true" name="returnDate">
-                        <input type="hidden" class="form-control" id="fromAirportId" name="fromAirportId"></input>
-                        <input type="hidden" class="form-control" id="toAirportId" name="toAirportId"></input>
-                        <input type="hidden" class="form-control" id="numberOfPassager" name="NumberOfPassager" value="" />
-                        <input type="hidden" class="form-control" id="flightType" name="flightType" value="" />
-                        <input type="hidden" class="form-control" id="oldTransaction" name="oldTransaction" value="" />
+    </table>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="/Flight">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Please enter your ticket confirm number</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" id="ticket-check-submit" class="btn btn-primary">Check valid ticket</button>
-                    <button type="submit" id="findNew" class="btn btn-primary hide">Find new flight</button>
-                </div>
-            </form>
+                    <div class="modal-body">
+                        <input type="hidden" id="ticketId" value="" />
+                        <input type="hidden" id="transactionId" value="" />
+                        <input type="text" id="confirmNumber" value="" />
+                        <!-- Data when confirm data success-->
+                        <div>
+                            <div id="info-flight" class="hide">
+                                Your Depart From : <span id="fromCity"></span> To : <span id="toCity"></span> <span id="flyBack" class="hide">and flight back</span>
+                                <br />
+                                Number of ticket : <span id="numberTicket"></span>
+                            </div>
+                            <br />
+                            <input type="hidden" class="form-control" id="departureDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required name="DepartureDate">
+                            <input type="hidden" class="form-control" id="returnDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required name="returnDate">
+                            <input type="hidden" class="form-control" id="fromAirportId" name="fromAirportId"/>
+                            <input type="hidden" class="form-control" id="toAirportId" name="toAirportId"/>
+                            <input type="hidden" class="form-control" id="numberOfPassager" name="NumberOfPassager" value="" />
+                            <input type="hidden" class="form-control" id="flightType" name="flightType" value="" />
+                            <input type="hidden" class="form-control" id="oldTransaction" name="oldTransaction" value="" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" id="ticket-check-submit" class="btn btn-primary">Check valid ticket</button>
+                        <button type="submit" id="findNew" class="btn btn-primary hide">Find new flight</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModallLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form action="/Flight">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="cancelModallLabel">Please enter your ticket cancel number</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <label>Ticket Code</label>
-                    <input type="hidden" id="ticketIdCancel" value="" />
-                    <input type="hidden" id="ticketType" value="" />
-                    <input type="hidden" id="blockingNumber" value="" />
-                    <input type="text" class="form-control" id="confirmCancelNumber" value="" />
-                    <!-- Data when confirm data success-->
-                    @*<div>
-            <div id="info-flight" class="hide">
-                Your Depart From : <span id="fromCity"></span> To : <span id="toCity"></span> <span id="flyBack" class="hide">and flight back</span>
-                <br />
-                Number of ticket : <span id="numberTicket"></span>
+    <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModallLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="/Flight">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelModallLabel">Please enter your ticket cancel number</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label>Ticket Code</label>
+                        <input type="hidden" id="ticketIdCancel" value="" />
+                        <input type="hidden" id="ticketType" value="" />
+                        <input type="hidden" id="blockingNumber" value="" />
+                        <input type="text" class="form-control" id="confirmCancelNumber" value="" />
+                        <!-- Data when confirm data success-->
+                        @*<div>
+                                <div id="info-flight" class="hide">
+                                    Your Depart From : <span id="fromCity"></span> To : <span id="toCity"></span> <span id="flyBack" class="hide">and flight back</span>
+                                    <br />
+                                    Number of ticket : <span id="numberTicket"></span>
+                                </div>
+                                <br />
+                                <input type="hidden" class="form-control" id="departureDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="true" name="DepartureDate">
+                                <input type="hidden" class="form-control" id="returnDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="true" name="returnDate">
+                                <input type="hidden" class="form-control" id="fromAirportId" name="fromAirportId"></input>
+                                <input type="hidden" class="form-control" id="toAirportId" name="toAirportId"></input>
+                                <input type="hidden" class="form-control" id="numberOfPassager" name="NumberOfPassager" value="" />
+                                <input type="hidden" class="form-control" id="flightType" name="flightType" value="" />
+                                <input type="hidden" class="form-control" id="oldTransaction" name="oldTransaction" value="" />
+                            </div>*@
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" id="ticket-cancel-submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
-            <br />
-            <input type="hidden" class="form-control" id="departureDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="true" name="DepartureDate">
-            <input type="hidden" class="form-control" id="returnDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="true" name="returnDate">
-            <input type="hidden" class="form-control" id="fromAirportId" name="fromAirportId"></input>
-            <input type="hidden" class="form-control" id="toAirportId" name="toAirportId"></input>
-            <input type="hidden" class="form-control" id="numberOfPassager" name="NumberOfPassager" value="" />
-            <input type="hidden" class="form-control" id="flightType" name="flightType" value="" />
-            <input type="hidden" class="form-control" id="oldTransaction" name="oldTransaction" value="" />
-        </div>*@
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" id="ticket-cancel-submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
@@ -302,7 +321,7 @@
             $("#findNew").toggleClass("hide");
         });
 
-        $('.cancel-ticket').on('click',function () {
+        $('.cancel-ticket').on('click', function () {
             $('#cancelModal').modal('show');
             $('#ticketIdCancel').val($(this).data("ticket-id"));
             $('#blockingNumber').val($(this).data("blocking-id"));
