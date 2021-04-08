@@ -1,4 +1,4 @@
-﻿@model ARS.Models.Ticket
+﻿@model ARS.Controllers.ActionTicket
 
 @{
     ViewBag.Title = "Your Online Ticket-Itinerary";
@@ -18,13 +18,20 @@
                 <tbody>
                     <tr>
                         <td scope="row">
-                            <div class="col-md-6" style="display: grid">
+                            <div class="col-md-4" style="display: grid">
                                 <span>Passengers</span>
-                                <span><strong>@Model.User.lastName @Model.User.firstName</strong></span>
+                                @*First + Last name user*@
+                                <span><strong>@Model.Tickets.First().User.lastName @Model.Tickets.First().User.firstName</strong></span>
                             </div>
-                            <div class="col-md-6" style="display: grid">
+                            <div class="col-md-4" style="display: grid">
                                 <span>Reservation number</span>
-                                <span><strong>@Model.confirmNumber</strong></span>
+                                @*Ma confirm*@
+                                <span><strong>@Model.Tickets.First().confirmNumber</strong></span>
+                            </div>
+                            <div class="col-md-4" style="display: grid">
+                                <span>Price paid</span>
+                                @*Tong tien da thanh toan*@
+                                <span><strong>@Model.Transaction.price</strong></span>
                             </div>
                         </td>
                     </tr>
@@ -33,84 +40,118 @@
 
 
             <ul style="list-style: none; padding-inline-start: unset;">
-                @*@foreach (var items in Model.flightType) { }*@
-                <li>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <td scope="col" colspan="4" style="height: 30px; padding-bottom: 10px !important; background-color: #ddd">
-                                    <i class="fas fa-plane" style="display: inline-block; position: absolute; transform: rotate( -60deg ); border: 1px solid black; border-radius: 60px; box-shadow: 0px 0px 2px; padding: 0.3em;"></i>
-                                    <span style="padding-left: 30px; text-transform: uppercase; font-size: 17px;"><strong>flight - dec 22,2021</strong></span>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td rowspan="2">
-                                    <div style="padding-bottom: 20px; text-align: center; padding-top: 20px;">
-                                        <span>Thai Airways Intl Public Co Ltd (TG)</span>
-                                    </div>
-                                    <div style="display: flex; padding: 0 20px 10px 20px;">
-                                        <div style="width: 50%; display: grid;">
-                                            <span>Flight number:</span>
-                                            <span>Airline code:</span>
-                                            <span>Status:</span>
-                                            <span>Duration:</span>
+                @foreach (var items in Model.Tickets)
+                {
+                    <li>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <td scope="col" colspan="4" style="height: 30px; background-color: #ddd">
+                                        <i class="fas fa-plane" style="display: inline-block; position: absolute; transform: rotate( -60deg ); border: 1px solid black; border-radius: 60px; box-shadow: 0px 0px 2px; padding: 0.3em;"></i>
+                                        @*Ten san bay - Ngay khoi hanh*@
+                                        <span style="padding-left: 30px; text-transform: uppercase; font-size: 17px;"><strong>flight - @items.Seat.Flight.FromAirport.CityAirports.First().Airport.name - @items.Seat.Flight.departureDate.ToString("D")</strong></span>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td rowspan="2">
+                                        <div style="padding-bottom: 20px; text-align: center; padding-top: 20px;">
+                                            <span>@items.Seat.Flight.FromAirport.CityAirports.First().Airport.name</span>
                                         </div>
-                                        <div style="width: 50%; display: grid;">
-                                            <strong>TG - 111</strong>
-                                            <strong>KAI87M</strong>
-                                            <strong>Confirmed</strong>
-                                            <strong>1H 15M</strong>
+                                        <div style="display: flex; padding: 0 20px 10px 20px;">
+                                            <div style="width: 50%; display: grid;">
+                                                <span>Flight number:</span>
+                                                <span>Airline code:</span>
+                                                <span>Status:</span>
+                                                <span>Duration:</span>
+                                            </div>
+                                            <div style="width: 50%; display: grid;">
+                                                @*Ma may ba*@
+                                                <strong>@items.Seat.Flight.planeCode</strong>
+                                                @*Ma san bay*@
+                                                <strong>@items.Seat.Flight.FromAirport.CityAirports.First().Airport.code</strong>
+                                                <strong>Confirmed</strong>
+                                                @*Thoi gian chuyen bay*@
+                                                <strong>@items.Seat.Flight.flyTime</strong>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td colspan="2">
-                                    <div style="display: flex;">
-                                        <div style="display: grid; padding: 20px; width: 40%;">
-                                            <span style="font-weight: normal;">Depart</span>
-                                            <span style="font-size: 20px"><strong>CNX</strong></span>
+                                    </td>
+                                    <td colspan="2">
+                                        <div style="display: flex;">
+                                            <div style="display: grid; padding: 20px; width: 40%;">
+                                                <span style="font-weight: normal;">Depart</span>
+                                                @*Ma san bay di*@
+                                                <span style="font-size: 20px"><strong>@items.Seat.Flight.FromAirport.CityAirports.First().Airport.code</strong></span>
+                                            </div>
+                                            <div style="display: grid; padding: 20px;  width: 10%;">
+                                                <span aria-hidden="true" class="ti-control-play" style="margin-top: 3px;" />
+                                            </div>
+                                            <div style="display: grid; padding: 20px; width: 50%;">
+                                                <span style="font-weight: normal;">Arrive</span>
+                                                @*Ma san bay den*@
+                                                <span style="font-size: 20px"><strong>@items.Seat.Flight.ToAirport.CityAirports.First().Airport.code</strong></span>
+                                            </div>
                                         </div>
-                                        <div style="display: grid; padding: 20px;  width: 10%;">
-                                            <span aria-hidden="true" class="ti-control-play" style="margin-top: 3px;" />
+                                    </td>
+                                    <td rowspan="2">
+                                        <div style="display: grid; padding: 20px;">
+                                            <span>Class of service:</span>
+                                            @*Hang ghe*@
+                                            @if (items.Seat.classType == 1)
+                                            {
+                                                <span><strong>Bussiness</strong></span>
+                                            }
+                                            else if (items.Seat.classType == 2)
+                                            {
+                                                <span><strong>First Class</strong></span>
+                                            }
+                                            else if (items.Seat.classType == 3)
+                                            {
+                                                <span><strong>Club Class</strong></span>
+                                            }
+                                            else if (items.Seat.classType == 4)
+                                            {
+                                                <span><strong>Smoking</strong></span>
+                                            }
+                                            else
+                                            {
+                                                <span><strong>Non-Smoking</strong></span>
+                                            }
+                                            <span>Seat:</span>
+                                            @*So ghe*@
+                                            <span><strong>@items.Seat.position</strong></span>
+                                            <br />
+                                            <span><strong>Check-in required</strong></span>
                                         </div>
-                                        <div style="display: grid; padding: 20px; width: 50%;">
-                                            <span style="font-weight: normal;">Arrive</span>
-                                            <span style="font-size: 20px"><strong>BKK</strong></span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td rowspan="2">
-                                    <div style="display: grid; padding: 20px;">
-                                        <span>Class of service:</span>
-                                        <span><strong>Economy</strong></span>
-                                        <span>Plane Code:</span>
-                                        <span><strong>Airbus A330</strong></span>
-                                        <span>Seat:</span>
-                                        <span><strong>3C</strong>   </span>
-                                        <span><strong>Check-in required</strong></span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr style="display: flex">
-                                <td style="display: grid; width: 50%; padding: 20px; border: unset; border-right: 1px solid #ddd">
-                                    <span>Chiang Mai Intl Arpt</span>
-                                    <span>Chiang Mai</span>
-                                    <span>Terminal Not Available</span>
-                                    <span style="font-size: 20px"><strong>15:20</strong></span>
-                                    <span>Dec 22, 2019</span>
-                                </td>
-                                <td style="display: grid; width: 50%; padding: 20px; border: unset">
-                                    <span>Chiang Mai Intl Arpt</span>
-                                    <span>Chiang Mai</span>
-                                    <span>Terminal Not Available</span>
-                                    <span style="font-size: 20px"><strong>15:20</strong></span>
-                                    <span>Dec 22, 2019</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </li>
+                                    </td>
+                                </tr>
+                                <tr style="display: flex">
+                                    <td style="display: grid; width: 50%; padding: 20px; border: unset; border-right: 1px solid #ddd">
+                                        @*Ten san bay*@
+                                        <span>@items.Seat.Flight.FromAirport.CityAirports.First().Airport.name</span>
+                                        @*Thanh pho*@
+                                        <span>@items.Seat.Flight.FromAirport.CityAirports.First().City.name</span>
+                                        @*Thoi gian xuat phat*@
+                                        <span style="font-size: 20px"><strong>@items.Seat.Flight.departureDate.ToString("t")</strong></span>
+                                        @*Ngay xuat phat*@
+                                        <span>@items.Seat.Flight.departureDate.ToString("D")</span>
+                                    </td>
+                                    <td style="display: grid; width: 50%; padding: 20px; border: unset">
+                                        @*Ten san bay*@
+                                        <span>@items.Seat.Flight.ToAirport.CityAirports.First().Airport.name</span>
+                                        @*Thanh pho*@
+                                        <span>@items.Seat.Flight.ToAirport.CityAirports.First().City.name</span>
+                                        @*Thoi gian xuat phat*@
+                                        <span style="font-size: 20px"><strong>@items.Seat.Flight.arrivalDate.ToString("t")</strong></span>
+                                        @*Ngay xuat phat*@
+                                        <span>@items.Seat.Flight.arrivalDate.ToString("D")</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </li>
+                }
             </ul>
         </div>
     </div>
