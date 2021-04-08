@@ -46,7 +46,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <td scope="col" colspan="4" style="height: 30px; padding-bottom: 10px !important; background-color: #ddd">
+                                    <td scope="col" colspan="4" style="height: 30px; background-color: #ddd">
                                         <i class="fas fa-plane" style="display: inline-block; position: absolute; transform: rotate( -60deg ); border: 1px solid black; border-radius: 60px; box-shadow: 0px 0px 2px; padding: 0.3em;"></i>
                                         @*Ten san bay - Ngay khoi hanh*@
                                         <span style="padding-left: 30px; text-transform: uppercase; font-size: 17px;"><strong>flight - @items.Seat.Flight.FromAirport.CityAirports.First().Airport.name - @items.Seat.Flight.departureDate.ToString("D")</strong></span>
@@ -70,7 +70,7 @@
                                                 @*Ma may ba*@
                                                 <strong>@items.Seat.Flight.planeCode</strong>
                                                 @*Ma san bay*@
-                                                <strong>@items.Seat.Flight.ToAirport.CityAirports.First().Airport.code</strong>
+                                                <strong>@items.Seat.Flight.FromAirport.CityAirports.First().Airport.code</strong>
                                                 <strong>Confirmed</strong>
                                                 @*Thoi gian chuyen bay*@
                                                 <strong>@items.Seat.Flight.flyTime</strong>
@@ -82,7 +82,7 @@
                                             <div style="display: grid; padding: 20px; width: 40%;">
                                                 <span style="font-weight: normal;">Depart</span>
                                                 @*Ma san bay di*@
-                                                <span style="font-size: 20px"><strong>@items.Seat.Flight.ToAirport.CityAirports.First().Airport.code</strong></span>
+                                                <span style="font-size: 20px"><strong>@items.Seat.Flight.FromAirport.CityAirports.First().Airport.code</strong></span>
                                             </div>
                                             <div style="display: grid; padding: 20px;  width: 10%;">
                                                 <span aria-hidden="true" class="ti-control-play" style="margin-top: 3px;" />
@@ -90,7 +90,7 @@
                                             <div style="display: grid; padding: 20px; width: 50%;">
                                                 <span style="font-weight: normal;">Arrive</span>
                                                 @*Ma san bay den*@
-                                                <span style="font-size: 20px"><strong>@items.Seat.Flight.FromAirport.CityAirports.First().Airport.code</strong></span>
+                                                <span style="font-size: 20px"><strong>@items.Seat.Flight.ToAirport.CityAirports.First().Airport.code</strong></span>
                                             </div>
                                         </div>
                                     </td>
@@ -129,9 +129,9 @@
                                 <tr style="display: flex">
                                     <td style="display: grid; width: 50%; padding: 20px; border: unset; border-right: 1px solid #ddd">
                                         @*Ten san bay*@
-                                        <span>@items.Seat.Flight.ToAirport.CityAirports.First().Airport.name</span>
+                                        <span>@items.Seat.Flight.FromAirport.CityAirports.First().Airport.name</span>
                                         @*Thanh pho*@
-                                        <span>@items.Seat.Flight.ToAirport.CityAirports.First().City.name</span>
+                                        <span>@items.Seat.Flight.FromAirport.CityAirports.First().City.name</span>
                                         @*Thoi gian xuat phat*@
                                         <span style="font-size: 20px"><strong>@items.Seat.Flight.departureDate.ToString("t")</strong></span>
                                         @*Ngay xuat phat*@
@@ -139,13 +139,13 @@
                                     </td>
                                     <td style="display: grid; width: 50%; padding: 20px; border: unset">
                                         @*Ten san bay*@
-                                        <span>@items.Seat.Flight.FromAirport.CityAirports.First().Airport.name</span>
+                                        <span>@items.Seat.Flight.ToAirport.CityAirports.First().Airport.name</span>
                                         @*Thanh pho*@
-                                    <span>@items.Seat.Flight.ToAirport.CityAirports.First().City.name</span>
+                                        <span>@items.Seat.Flight.ToAirport.CityAirports.First().City.name</span>
                                         @*Thoi gian xuat phat*@
                                         <span style="font-size: 20px"><strong>@items.Seat.Flight.arrivalDate.ToString("t")</strong></span>
                                         @*Ngay xuat phat*@
-                                    <span>@items.Seat.Flight.arrivalDate.ToString("D")</span>
+                                        <span>@items.Seat.Flight.arrivalDate.ToString("D")</span>
                                     </td>
                                 </tr>
                             </tbody>

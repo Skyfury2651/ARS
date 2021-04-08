@@ -743,6 +743,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\MailTemplate\TicketDetail.html" />
+    <Content Include="Views\Ticket\TicketDetailForMail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
