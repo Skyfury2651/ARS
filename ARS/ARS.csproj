@@ -693,9 +693,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Views\MailDelay.html" />
+    <Content Include="Views\MailTemplate\HeaderMail2.html" />
     <Content Include="Views\MailTemplate\HeaderMail.html" />
+    <Content Include="Views\MailTemplate\TicketBody2.html" />
     <Content Include="Views\MailTemplate\TicketBody.html" />
+    <Content Include="Views\MailTemplate\Ticket2.html" />
     <Content Include="Views\SendMail.html" />
+    <Content Include="Views\Ticket\Ticket.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

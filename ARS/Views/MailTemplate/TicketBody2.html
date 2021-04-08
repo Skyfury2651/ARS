@@ -1,0 +1,89 @@
+﻿
+<table style="border: 1px solid #ddd; width: 100%; max-width: 100%; margin-bottom: 20px; border-collapse: collapse; margin: 0 0 1.5em; border-spacing: 0; text-indent: initial;">
+    <thead style="display: table-header-group; vertical-align: middle; border-color: inherit;">
+        <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+            <th scope="col" colspan="4" style="background-color: #ddd; font-size: 17px; border-top: 0; border-bottom-width: 2px; border: 1px solid #ddd; vertical-align: bottom;">
+                <!--Ten san bay - Ngay khoi hanh-->
+                <span style="padding-left: 30px; text-transform: uppercase; font-size: 17px;"><strong>flight - {departureAirportName} - {departureTime}</strong></span>
+            </th>
+        </tr>
+    </thead>
+    <tbody style="display: table-row-group; vertical-align: middle; border-color: inherit;">
+        <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+            <td rowspan="2" style="border: 1px solid #ddd; padding: 8px; line-height: 1.42857143; vertical-align: top; display: table-cell;">
+                <div style="padding-bottom: 20px; text-align: center; padding-top: 20px;">
+                    <!--Ten san bay-->
+                    <span>{departureAirportName}</span>
+                </div>
+                <div style="display: flex; padding: 0 20px 10px 20px;">
+                    <div style="width: 50%; display: grid;">
+                        <span>Flight number:</span>
+                        <span>Airline code:</span>
+                        <span>Status:</span>
+                        <span>Duration:</span>
+                    </div>
+                    <div style="width: 50%; display: grid;">
+                        <!--Ma may bay-->
+                        <strong>{planeCode}</strong>
+                        <!--Ma san bay-->
+                        <strong>{departureAirportCode}</strong>
+                        <strong>Confirmed</strong>
+                        <!--Thoi gian chuyen bay-->
+                        <strong>{duration}</strong>
+                    </div>
+                </div>
+            </td>
+            <td colspan="2" style="border: 1px solid #ddd; padding: 8px; line-height: 1.42857143; vertical-align: top; display: table-cell;">
+                <div style="display: flex;">
+                    <div style="display: grid; padding: 20px; width: 40%;">
+                        <span style="font-weight: normal;">Depart</span>
+                        <!--Ma san bay di-->
+                        <span style="font-size: 20px"><strong>{fromAirportCode}</strong></span>
+                    </div>
+                    <div style="display: grid; padding: 20px;  width: 10%;">
+
+                    </div>
+                    <div style="display: grid; padding: 20px; width: 50%;">
+                        <span style="font-weight: normal;">Arrive</span>
+                        <!--Ma san bay den-->
+                        <span style="font-size: 20px"><strong>{toAirportCode}</strong></span>
+                    </div>
+                </div>
+            </td>
+            <td rowspan="2" style="border: 1px solid #ddd; padding: 8px; line-height: 1.42857143; vertical-align: top; display: table-cell;">
+                <div style="display: grid; padding: 20px;">
+                    <span>Class of service:</span>
+                    <!--Hang ghe-->
+                    <span><strong>{classService}</strong></span>
+                    <span>Seat:</span>
+                    <!--So ghe-->
+                    <span><strong>{seatPosition}</strong></span>
+                    <br />
+                    <span><strong>Check-in required</strong></span>
+                </div>
+            </td>
+        </tr>
+        <tr style="display: flex !important; display: table-row; vertical-align: inherit; border-color: inherit;">
+            <td style="display: grid !important; width: 50%; padding: 20px !important; border-right: 1px solid #ddd; line-height: 1.42857143; vertical-align: top; display: table-cell;">
+                <!--Ten san bay-->
+                <span>{departureAirportName}</span>
+                <!--Thanh pho-->
+                <span>{departureCityName}</span>
+                <!--Thoi gian xuat phat-->
+                <span style="font-size: 20px"><strong>{departureTime}</strong></span>
+                <!--Ngay xuat phat-->
+                <span>{departureDate}</span>
+            </td>
+            <td style="display: grid !important; width: 50%; padding: 20px !important; border: unset !important; line-height: 1.42857143; vertical-align: top; display: table-cell;">
+                <!--Ten san bay-->
+                <span>{arrivalAirportName}</span>
+                <!--Thanh pho-->
+                <span>{arrivalCityName}</span>
+                <!--Thoi gian xuat phat-->
+                <span style="font-size: 20px"><strong>{arrivalTime}</strong></span>
+                <!--Ngay xuat phat-->
+                <span>{arrivalDate}</span>
+            </td>
+        </tr>
+    </tbody>
+</table>

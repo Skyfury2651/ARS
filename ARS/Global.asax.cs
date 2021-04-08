@@ -23,8 +23,8 @@ namespace ARS
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //sendMailDaily();
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
-            //RecurringJob.AddOrUpdate(
-            //    () => ScheduleSeatAsync(), Cron.Minutely);
+            RecurringJob.AddOrUpdate(
+                () => ScheduleSeatAsync(), Cron.Minutely);
             RecurringJob.AddOrUpdate(
                 () => ScheduleTransaction(), Cron.Daily);
             RecurringJob.AddOrUpdate(
@@ -35,7 +35,7 @@ namespace ARS
             ApplicationDbContext _db = new ApplicationDbContext();
             var ExpiredTransactionList = await _db.Transaction.SqlQuery("SELECT TOP (1000) [id] ,[price],[type],[createdAt],[updatedAt],[status], DATEADD(MINUTE, 15, [updatedAt]) as expiredAt"
             + " FROM [aspnet-ARS-20210315112621].[dbo].[Transactions]"
-                + " WHERE GETDATE() < DATEADD(MINUTE, 15, [updatedAt]) AND status = 0").ToListAsync();
+                + " WHERE GETDATE() > DATEADD(SECOND, 30, [updatedAt]) AND status = 0").ToListAsync();
             foreach (var item in ExpiredTransactionList)
             {
                 foreach (var ticket in item.Tickets)

@@ -498,13 +498,13 @@ namespace ARS.Controllers
         public void sendTicketMail(ApplicationUser currentUser, List<Ticket> tickets, string numberType, string number, string totalPrice, string subject = "Mail from ARS")
         {
             string mail = string.Empty;
-            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/TicketDetail.html")))
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/Ticket2.html")))
             {
                 mail = reader.ReadToEnd();
             }
 
             string header = string.Empty;
-            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/HeaderMail.html")))
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/HeaderMail2.html")))
             {
                 header = reader.ReadToEnd();
             }
@@ -517,7 +517,7 @@ namespace ARS.Controllers
             foreach (var item in tickets)
             {
                 string ticketBody = string.Empty;
-                using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/TicketBody.html")))
+                using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/TicketBody2.html")))
                 {
                     ticketBody = reader.ReadToEnd();
                 }
@@ -587,7 +587,7 @@ namespace ARS.Controllers
             mail = mail.Replace("{Heading}", header);
             mail = mail.Replace("{tickets}", ticketsContent);
             string body = string.Empty;
-            bool IsSendEmail = SendEmail.EmailSend("skyfury2651@gmail.com", subject, mail, true);
+            bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, subject, mail, true);
         }
 
         private PayPal.Api.Payment payment;

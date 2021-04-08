@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Your Online Ticket-Itinerary</title>
+</head>
+<body style="box-sizing: border-box;">
+    <div style="font-family: 'Poppins', sans-serif; font-size: 13px; line-height: 1.9em; font-style: normal; font-weight: normal; letter-spacing: .6px; color: #4e4e4e; background: #fff; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-text-size-adjust: 100%; -moz-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ">
+        <div style="padding-right: 15px; padding-left: 15px; margin-right: auto; margin-left: auto;">
+            <h2>Your Online Ticket-Itinerary</h2>
+            <div style="margin-right: -15px; margin-left: -15px;">
+                <table style="border: 1px solid #ddd; width: 100%; max-width: 100%; margin-bottom: 20px; border-collapse: collapse; margin: 0 0 1.5em; border-spacing: 0; text-indent: initial;">
+                    <thead style="display: table-header-group; vertical-align: middle; border-color: inherit;">
+                        <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+                            <th scope="col" style="background-color: #ddd; font-size: 17px; border-top: 0; border-bottom-width: 2px; border: 1px solid #ddd; vertical-align: bottom;">Traverler</th>
+                        </tr>
+                    </thead>
+                    <tbody style="display: table-row-group; vertical-align: middle; border-color: inherit;">
+                        <tr style="display: table-row; vertical-align: inherit; border-color: inherit;">
+                            {Heading}
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <!--@foreach (var items in Model.Tickets)
+                {-->
+                {tickets}
+                <!--  }-->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
