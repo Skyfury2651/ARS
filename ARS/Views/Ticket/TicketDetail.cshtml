@@ -24,14 +24,14 @@
                                 <span><strong>@Model.Tickets.First().User.lastName @Model.Tickets.First().User.firstName</strong></span>
                             </div>
                             <div class="col-md-4" style="display: grid">
-                                <span>Reservation number</span>
+                                <span>Confirm number</span>
                                 @*Ma confirm*@
                                 <span><strong>@Model.Tickets.First().confirmNumber</strong></span>
                             </div>
                             <div class="col-md-4" style="display: grid">
                                 <span>Price paid</span>
                                 @*Tong tien da thanh toan*@
-                                <span><strong>@Model.Transaction.price</strong></span>
+                                <span><strong>@Model.Transaction.price $</strong></span>
                             </div>
                         </td>
                     </tr>

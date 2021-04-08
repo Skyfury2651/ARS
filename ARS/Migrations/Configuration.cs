@@ -26,7 +26,7 @@ namespace ARS.Migrations
         {
             int seatId = 1;
             int seatStatus = 2;
-            for (int k = 1; k < 4; k++)
+            for (int k = 1; k < 6; k++)
             {
                 //int notAvailable = 0;
                 for (int i = 1; i < 5; i++)
@@ -286,7 +286,7 @@ namespace ARS.Migrations
                 stopOrder = 1
             }, new Models.Stop
             {
-                id = 1,
+                id = 2,
                 flightId = 3,
                 cityId = 8,
                 stopOrder = 1

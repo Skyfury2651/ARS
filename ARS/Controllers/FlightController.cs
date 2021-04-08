@@ -462,6 +462,7 @@ namespace ARS.Controllers
                 {
                     Console.WriteLine(ex.Message);
                 }
+                var actionTicket = new ActionTicket();
                 ApplicationDbContext context = new ApplicationDbContext();
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
                 var currentUser = userManager.FindById(User.Identity.GetUserId());
@@ -469,26 +470,36 @@ namespace ARS.Controllers
                 var confirmNumber = Helper.RandomString(5);
                 foreach (var item in transactionIdList)
                 {
+
+                    List<Ticket> tickets = new List<Ticket> { };
                     var transactionItem = _db.Transaction.Find(item);
-                    transactionItem.status = (int)TransactionStatus.SUCCESS;
-                    transactionItem.updatedAt = DateTime.Now;
-                    foreach (var ticket in transactionItem.Tickets)
+                    if (transactionItem.Tickets.Count != 0)
                     {
-                        ticket.status = (int)TicketStatus.ACTIVE;
-                        ticket.confirmNumber = confirmNumber;
-                        ticket.Seat.status = (int)SeatStatus.Buyed;
-                        currentUser.skyMiles = (int)Math.Round(currentUser.skyMiles + ticket.Seat.Flight.distance);
-                        userManager.Update(currentUser);
+                        actionTicket.Transaction = transactionItem;
+                        transactionItem.status = (int)TransactionStatus.SUCCESS;
+                        transactionItem.updatedAt = DateTime.Now;
+                        foreach (var ticket in transactionItem.Tickets)
+                        {
+                            ticket.status = (int)TicketStatus.ACTIVE;
+                            ticket.confirmNumber = confirmNumber;
+                            ticket.Seat.status = (int)SeatStatus.Buyed;
+                            currentUser.skyMiles = (int)Math.Round(currentUser.skyMiles + ticket.Seat.Flight.distance);
+                            userManager.Update(currentUser);
+                            tickets.Add(ticket);
+                        }
+
+                        _db.SaveChanges();
+                        sendTicketMail(currentUser, transactionItem.Tickets, "confirm", confirmNumber, transactionItem.price.ToString());
                     }
 
-                    _db.SaveChanges();
+                    actionTicket.Tickets = tickets;
 
-                    sendTicketMail(currentUser, transactionItem.Tickets, "confirm", confirmNumber, transactionItem.price.ToString());
+
                 }
                 //sending Email
 
                 //on successful payment, show success page to user.  
-                return RedirectToAction("TicketDetail", new { confirmNumber = confirmNumber, transactionIds = transactionIds });
+                return View("~/Views/Ticket/TicketDetail.cshtml", actionTicket);
             }
             catch (Exception)
             {
