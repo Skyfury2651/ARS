@@ -131,6 +131,7 @@ namespace ARS.Controllers
             return View(users);
         }
 
+
         public ActionResult UpdateUser(string id , ApplicationUser user)
         {
             ApplicationDbContext context = new ApplicationDbContext();
