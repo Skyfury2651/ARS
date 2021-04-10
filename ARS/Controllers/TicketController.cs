@@ -102,13 +102,15 @@ namespace ARS.Controllers
         {
             var ticket = _db.Tickets.Find(id);
             var numberSeat = ticket.Trasaction.Tickets.Count();
-            var fromCity = ticket.Trasaction.Tickets.First().Seat.Flight.FromAirport.CityAirports.First().City.name;
-            var toCity = ticket.Trasaction.Tickets.First().Seat.Flight.ToAirport.CityAirports.First().City.name;
+            var firstTicket = _db.Tickets.Find(ticket.Trasaction.Tickets.Min(x => x.id));
 
-            var fromAirportId = ticket.Trasaction.Tickets.First().Seat.Flight.fromAirportId;
-            var toAirportId = ticket.Trasaction.Tickets.First().Seat.Flight.toAirportId;
-            var toAirport = ticket.Trasaction.Tickets.First().Seat.Flight.ToAirport;
-            var fromAirport = ticket.Trasaction.Tickets.First().Seat.Flight.ToAirport;
+            var fromCity = firstTicket.Seat.Flight.FromAirport.CityAirports.First().City.name;
+            var toCity = firstTicket.Seat.Flight.ToAirport.CityAirports.First().City.name;
+
+            var fromAirportId = firstTicket.Seat.Flight.fromAirportId;
+            var toAirportId = firstTicket.Seat.Flight.toAirportId;
+            var toAirport = firstTicket.Seat.Flight.ToAirport;
+            var fromAirport = firstTicket.Seat.Flight.ToAirport;
             var oldTransaction = ticket.transactionId;
             if (ticket.flightType == 2)
             {

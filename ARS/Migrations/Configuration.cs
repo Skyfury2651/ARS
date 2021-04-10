@@ -16,7 +16,6 @@ namespace ARS.Migrations
         {
             this.seedCity(context);
             this.seedCityAirport(context);
-            this.seedFlightCase1(context);
             this.seedFlightsCase2(context);
             this.seedSeat(context);
             this.seedStops(context);
@@ -26,7 +25,7 @@ namespace ARS.Migrations
         {
             int seatId = 1;
             int seatStatus = 2;
-            for (int k = 1; k < 6; k++)
+            for (int k = 1; k < 8; k++)
             {
                 //int notAvailable = 0;
                 for (int i = 1; i < 5; i++)
@@ -80,31 +79,6 @@ namespace ARS.Migrations
                     }
                 }
             }
-        }
-        public void seedFlightCase1(ARS.Models.ApplicationDbContext context)
-        {
-            context.Flights.AddOrUpdate(x => x.id, new Models.Flight
-            {
-                id = 1,
-                planeCode = "NE-23",
-                status = 1,
-                haveStop = false,
-                distance = 1000,
-                departureDate = DateTime.Now.AddDays(15),
-                arrivalDate = DateTime.Now.AddDays(16),
-                fromAirportId = 558,
-                toAirportId = 555,
-                flyTime = 10,
-                price = 100000,
-                seatAvaiable = 60,
-            });
-            //context.Seats.AddOrUpdate(x => x.id, new Models.Seat
-            //{
-            //    id = 1,
-            //    flightId = 1,
-            //    status = 1,
-            //    classType = (int) ARS.Models.SeatType.Bussiness,
-            //});
         }
         public void seedCity(ARS.Models.ApplicationDbContext context)
         {
@@ -211,69 +185,112 @@ namespace ARS.Migrations
         }
         public void seedFlightsCase2(ARS.Models.ApplicationDbContext context)
         {
-            context.Flights.AddOrUpdate(x => x.id, new Models.Flight
-            {
-                id = 2,
-                status = 1,
-                haveStop = true,
-                fromAirportId = 558,
-                toAirportId = 16,
-                distance = 5003,
-                departureDate = DateTime.ParseExact("10/04/2021", "dd/MM/yyyy", null),
-                arrivalDate = DateTime.ParseExact("11/04/2021", "dd/MM/yyyy", null),
-                flyTime = 11,
-                price = 100,
-                planeCode = "HK-01",
-                seatAvaiable = 100,
-            },
-
-            new Models.Flight
-            {
-                id = 3,
-                status = 1,
-                haveStop = true,
-                fromAirportId = 16,
-                toAirportId = 558,
-                distance = 5003,
-                departureDate = DateTime.ParseExact("20/04/2021", "dd/MM/yyyy", null),
-                arrivalDate = DateTime.ParseExact("21/04/2021", "dd/MM/yyyy", null),
-                flyTime = 11,
-                price = 150,
-                planeCode = "HK-02",
-                seatAvaiable = 100,
-            },
-
-            new Models.Flight
-            {
-                id = 4,
-                status = 1,
-                haveStop = false,
-                fromAirportId = 558,
-                toAirportId = 16,
-                distance = 5003,
-                departureDate = DateTime.ParseExact("10/04/2021", "dd/MM/yyyy", null),
-                arrivalDate = DateTime.ParseExact("11/04/2021", "dd/MM/yyyy", null),
-                flyTime = 11,
-                price = 90,
-                planeCode = "HK-03",
-                seatAvaiable = 100,
-            },
-
-            new Models.Flight
-            {
-                id = 5,
-                status = 1,
-                haveStop = false,
-                fromAirportId = 16,
-                toAirportId = 558,
-                distance = 5003,
-                departureDate = DateTime.ParseExact("20/04/2021", "dd/MM/yyyy", null),
-                arrivalDate = DateTime.ParseExact("21/04/2021", "dd/MM/yyyy", null),
-                flyTime = 11,
-                price = 90,
-                planeCode = "HK-04",
-                seatAvaiable = 100,
-            }
+            context.Flights.AddOrUpdate(x => x.id,
+                new Models.Flight
+                {
+                    id = 1,
+                    planeCode = "NE-23",
+                    status = 1,
+                    haveStop = false,
+                    distance = 1000,
+                    departureDate = DateTime.ParseExact("10/04/2021", "dd/MM/yyyy", null),
+                    arrivalDate = DateTime.ParseExact("11/04/2021", "dd/MM/yyyy", null),
+                    fromAirportId = 558,
+                    toAirportId = 555,
+                    flyTime = 10,
+                    price = 100000,
+                    seatAvaiable = 60,
+                },
+                new Models.Flight
+                {
+                    id = 2,
+                    status = 1,
+                    haveStop = true,
+                    fromAirportId = 558,
+                    toAirportId = 16,
+                    distance = 5003,
+                    departureDate = DateTime.ParseExact("10/04/2021", "dd/MM/yyyy", null),
+                    arrivalDate = DateTime.ParseExact("11/04/2021", "dd/MM/yyyy", null),
+                    flyTime = 11,
+                    price = 100,
+                    planeCode = "HK-01",
+                    seatAvaiable = 100,
+                },
+                new Models.Flight
+                {
+                    id = 3,
+                    status = 1,
+                    haveStop = true,
+                    fromAirportId = 16,
+                    toAirportId = 558,
+                    distance = 5003,
+                    departureDate = DateTime.ParseExact("20/04/2021", "dd/MM/yyyy", null),
+                    arrivalDate = DateTime.ParseExact("21/04/2021", "dd/MM/yyyy", null),
+                    flyTime = 11,
+                    price = 150,
+                    planeCode = "HK-02",
+                    seatAvaiable = 100,
+                },
+                 new Models.Flight
+                 {
+                     id = 4,
+                     status = 1,
+                     haveStop = false,
+                     fromAirportId = 558,
+                     toAirportId = 16,
+                     distance = 5003,
+                     departureDate = DateTime.ParseExact("10/04/2021", "dd/MM/yyyy", null),
+                     arrivalDate = DateTime.ParseExact("11/04/2021", "dd/MM/yyyy", null),
+                     flyTime = 11,
+                     price = 90,
+                     planeCode = "HK-03",
+                     seatAvaiable = 100,
+                 },
+                new Models.Flight
+                {
+                    id = 5,
+                    status = 1,
+                    haveStop = false,
+                    fromAirportId = 16,
+                    toAirportId = 558,
+                    distance = 5003,
+                    departureDate = DateTime.ParseExact("20/04/2021", "dd/MM/yyyy", null),
+                    arrivalDate = DateTime.ParseExact("21/04/2021", "dd/MM/yyyy", null),
+                    flyTime = 11,
+                    price = 90,
+                    planeCode = "HK-04",
+                    seatAvaiable = 100,
+                },
+                new Models.Flight
+                {
+                    id = 6,
+                    planeCode = "NE-23-1",
+                    status = 1,
+                    haveStop = false,
+                    distance = 1000,
+                    departureDate = DateTime.ParseExact("20/04/2021", "dd/MM/yyyy", null),
+                    arrivalDate = DateTime.ParseExact("22/04/2021", "dd/MM/yyyy", null),
+                    fromAirportId = 558,
+                    toAirportId = 555,
+                    flyTime = 10,
+                    price = 100000,
+                    seatAvaiable = 60,
+                },
+                new Models.Flight
+                {
+                    id = 7,
+                    planeCode = "NE-23-2",
+                    status = 1,
+                    haveStop = false,
+                    distance = 1000,
+                    departureDate = DateTime.ParseExact("15/06/2021", "dd/MM/yyyy", null),
+                    arrivalDate = DateTime.ParseExact("16/06/2021", "dd/MM/yyyy", null),
+                    fromAirportId = 558,
+                    toAirportId = 555,
+                    flyTime = 10,
+                    price = 100000,
+                    seatAvaiable = 60,
+                }
             );
         }
         public void seedStops(ARS.Models.ApplicationDbContext context)

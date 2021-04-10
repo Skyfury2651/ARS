@@ -8,6 +8,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ARS.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ARS.Controllers
 {
@@ -119,6 +121,32 @@ namespace ARS.Controllers
         public ActionResult DataChart()
         {
             return View();
+        }
+
+        public ActionResult Users()
+        {
+            var UsersContext = new ApplicationDbContext();
+            var users = UsersContext.Users.ToList();
+
+            return View(users);
+        }
+
+        public ActionResult UpdateUser(string id , ApplicationUser user)
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = userManager.FindById(id);
+            currentUser.lastName = user.lastName;
+            currentUser.firstName = user.firstName;
+            currentUser.address = user.address;
+            currentUser.userIdentityCode = user.userIdentityCode;   
+            currentUser.Email = user.Email;
+            currentUser.PhoneNumber = user.PhoneNumber;
+            currentUser.preferedCreditCardNumber = user.preferedCreditCardNumber;
+            userManager.Update(currentUser);
+            context.SaveChanges();
+
+            return Json(new {success = true });
         }
 
         public JsonResult DataChart1(DateTime start, DateTime end)

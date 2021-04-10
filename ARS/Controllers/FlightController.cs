@@ -38,7 +38,6 @@ namespace ARS.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            //_db.Flights.Where(x => x.departureDate in);
             var AddDepartureDate = flight.DepartureDate.AddDays(3);
             var MinusDepartureDate = flight.DepartureDate.AddDays(-3);
             var dataDeparture = _db.Flights.Where(p => p.departureDate < AddDepartureDate)

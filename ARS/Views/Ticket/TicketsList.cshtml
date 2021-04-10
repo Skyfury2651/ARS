@@ -168,16 +168,19 @@
                 </td>
                 <td>
                     <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-content cancel-ticket">Detail</button>
-                    @if (item.confirmNumber != null)
+                    @if (item.Trasaction.status == 1 && item.status == 1)
                     {
                         <button data-transaction-id="@item.Trasaction.id" data-ticket-id="@item.id" class="btn btn-content check-ticket">Reschedule</button>
-                        <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-content cancel-ticket">Cancel</button>
                     }
-                    else if (item.blockingNumber != null)
+                    @if (item.Trasaction.status == 0 && item.status == 0 && item.Seat.status == 3)
                     {
                         <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-content cancel-ticket">Pay</button>
+                    }
+                    @if ((item.Trasaction.status == 1 || item.Trasaction.status == 0) && item.status == 1)
+                    {
                         <button data-ticket-type="@item.type" data-ticket-id="@item.id" data-blocking-id="@item.blockingNumber" class="btn btn-content cancel-ticket">Cancel</button>
                     }
+
                 </td>
             </tr>
         }
@@ -239,22 +242,6 @@
                         <input type="hidden" id="ticketType" value="" />
                         <input type="hidden" id="blockingNumber" value="" />
                         <input type="text" class="form-control" id="confirmCancelNumber" value="" />
-                        <!-- Data when confirm data success-->
-                        @*<div>
-                                <div id="info-flight" class="hide">
-                                    Your Depart From : <span id="fromCity"></span> To : <span id="toCity"></span> <span id="flyBack" class="hide">and flight back</span>
-                                    <br />
-                                    Number of ticket : <span id="numberTicket"></span>
-                                </div>
-                                <br />
-                                <input type="hidden" class="form-control" id="departureDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="true" name="DepartureDate">
-                                <input type="hidden" class="form-control" id="returnDate" placeholder="mm/dd/yyyy" asp-for="DateTime" required="true" name="returnDate">
-                                <input type="hidden" class="form-control" id="fromAirportId" name="fromAirportId"></input>
-                                <input type="hidden" class="form-control" id="toAirportId" name="toAirportId"></input>
-                                <input type="hidden" class="form-control" id="numberOfPassager" name="NumberOfPassager" value="" />
-                                <input type="hidden" class="form-control" id="flightType" name="flightType" value="" />
-                                <input type="hidden" class="form-control" id="oldTransaction" name="oldTransaction" value="" />
-                            </div>*@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -283,7 +270,6 @@
                 datatype: "Json",
                 data: { id: ticket_id, confirmNumber: confirm_number },
                 success: function (data) {
-                    console.log(data);
                     if (data.status == "Success") {
                         // show pick date
                         $("#departureDate").attr("type", "date");
@@ -305,6 +291,7 @@
                         $("#confirmNumber").toggleClass("hide");
                         $("#ticket-check-submit").toggleClass("hide");
                         $("#findNew").toggleClass("hide");
+                        $("#confirmNumber").val("");
                     }
                 }
             });
@@ -325,7 +312,7 @@
             $('#cancelModal').modal('show');
             $('#ticketIdCancel').val($(this).data("ticket-id"));
             $('#blockingNumber').val($(this).data("blocking-id"));
-            $('#ticketType').val($(this).data("ticket-type"))
+            $('#ticketType').val($(this).data("ticket-type"));
         })
 
         $('#ticket-cancel-submit').on('click', function () {

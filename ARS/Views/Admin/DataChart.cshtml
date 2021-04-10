@@ -3,17 +3,7 @@
     ViewBag.Title = "DataChart";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-<script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.datatables.net/fixedheader/3.1.8/js/dataTables.fixedHeader.min.js" crossorigin="anonymous"></script>
+
 <div id="reportrange" style="margin-bottom:20px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 30%">
     <i class="fa fa-calendar"></i>&nbsp;
     <span></span> <i class="fa fa-caret-down"></i>
@@ -25,6 +15,16 @@
 
 
 @section scripts {
+    <script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.8/js/dataTables.fixedHeader.min.js" crossorigin="anonymous"></script>
     <script>
         function ToJavaScriptDate(value) {
             var pattern = /Date\(([^)]+)\)/;
@@ -61,7 +61,7 @@
 
                 cb(start, end);
             });
-            
+
 
             function renderChart(data, labels) {
                 var ctx = document.getElementById("myChart").getContext('2d');
@@ -70,25 +70,13 @@
                     data: {
                         labels: labels,
                         datasets: [{
-                            label: 'Date',
+                            label: 'Price',
                             data: data,
                         }]
                     },
                 });
             }
-            //function formatDate(date) {
-            //    var d = new Date(date),
-            //        month = '' + (d.getMonth() + 1),
-            //        day = '' + d.getDate(),
-            //        year = d.getFullYear();
 
-            //    if (month.length < 2)
-            //        month = '0' + month;
-            //    if (day.length < 2)
-            //        day = '0' + day;
-
-            //    return [year, month, day].join('-');
-            //}
             $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
                 var startDate = picker.startDate.format('YYYY-MM-DD');
                 var endDate = picker.endDate.format('YYYY-MM-DD');
