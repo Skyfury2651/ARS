@@ -68,7 +68,7 @@ namespace ARS
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
                 var currentUser = userManager.FindById(userId);
 
-                sendTicketMail(currentUser, fullyTransaction.Tickets, "Cancel", "", fullyTransaction.price.ToString(), "ARS Airline ticket reminder");
+                sendTicketMail(currentUser, fullyTransaction.Tickets, "Cancel", "", fullyTransaction.price.ToString(), "Plesire Airline ticket reminder");
             }
         }
 
@@ -113,10 +113,10 @@ namespace ARS
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
                 var currentUser = userManager.FindById(userId);
 
-                sendTicketMail(currentUser, fullyTransaction.Tickets, "Cancel", cancelNumber, fullyTransaction.price.ToString(), "ARS Airline ticket canceled");
+                sendTicketMail(currentUser, fullyTransaction.Tickets, "Cancel", cancelNumber, fullyTransaction.price.ToString(), "Plesire Airline ticket canceled");
             }
         }
-        public void sendTicketMail(ApplicationUser currentUser, List<Ticket> tickets, string numberType, string number, string totalPrice, string subject = "ARS Airline Ticket Info")
+        public void sendTicketMail(ApplicationUser currentUser, List<Ticket> tickets, string numberType, string number, string totalPrice, string subject = "Plesire Airline Ticket Info")
         {
             string mail = string.Empty;
             using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/Ticket2.html")))

@@ -520,7 +520,7 @@ namespace ARS.Controllers
                 throw;
             }
         }
-        public void sendTicketMail(ApplicationUser currentUser, List<Ticket> tickets, string numberType, string number, string totalPrice, string subject = "ARS Airline Ticket Info")
+        public void sendTicketMail(ApplicationUser currentUser, List<Ticket> tickets, string numberType, string number, string totalPrice, string subject = "Plesire Airline Ticket Info")
         {
             string mail = string.Empty;
             using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/Ticket2.html")))
