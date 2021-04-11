@@ -1,0 +1,73 @@
+﻿<li>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td scope="col" colspan="4" style="height: 30px; padding-bottom: 10px !important; background-color: #ddd">
+                    <i class="fas fa-plane" style="display: inline-block; position: absolute; transform: rotate( -60deg ); border: 1px solid black; border-radius: 60px; box-shadow: 0px 0px 2px; padding: 0.3em;"></i>
+                    <span style="padding-left: 30px; text-transform: uppercase; font-size: 17px;"><strong>flight - {departureAirportName} - {departureTime}</strong></span>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="2">
+                    <div style="padding-bottom: 20px; text-align: center; padding-top: 20px;">
+                        <span>{departureAirportName}</span>
+                    </div>
+                    <div style="display: flex; padding: 0 20px 10px 20px;">
+                        <div style="width: 50%; display: grid;">
+                            <span>Flight number:</span>
+                            <span>Airline code:</span>
+                            <span>Status:</span>
+                            <span>Duration:</span>
+                        </div>
+                        <div style="width: 50%; display: grid;">
+                            <strong>{planeCode}</strong>
+                            <strong>{departureAirportCode}</strong>
+                            <strong>Confirmed</strong>
+                            <strong>{duration}</strong>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="2">
+                    <div style="display: flex;">
+                        <div style="display: grid; padding: 20px; width: 40%;">
+                            <span style="font-weight: normal;">Depart</span>
+                            <span style="font-size: 20px"><strong>{fromAirportCode}</strong></span>
+                        </div>
+                        <div style="display: grid; padding: 20px;  width: 10%;">
+                            <span aria-hidden="true" class="ti-control-play" style="margin-top: 3px;" />
+                        </div>
+                        <div style="display: grid; padding: 20px; width: 50%;">
+                            <span style="font-weight: normal;">Arrive</span>
+                            <span style="font-size: 20px"><strong>{toAirportCode}</strong></span>
+                        </div>
+                    </div>
+                </td>
+                <td rowspan="2">
+                    <div style="display: grid; padding: 20px;">
+                        <span>Class of service:</span>
+                        <span><strong>{classService}</strong></span>
+                        <span>Seat:</span>
+                        <span><strong>{seatPosition}</strong></span>
+                        <br />
+                    </div>
+                </td>
+            </tr>
+            <tr style="display: flex">
+                <td style="display: grid; width: 50%; padding: 20px; border: unset; border-right: 1px solid #ddd">
+                    <span>{departureAirportName}</span>
+                    <span>{departureCityName}</span>
+                    <span style="font-size: 20px"><strong>{departureTime}</strong></span>
+                    <span>{departureDate}</span>
+                </td>
+                <td style="display: grid; width: 50%; padding: 20px; border: unset">
+                    <span>{arrivalAirportName}</span>
+                    <span>{arrivalCityName}</span>
+                    <span style="font-size: 20px"><strong>{arrivalTime}</strong></span>
+                    <span>{arrivalDate}</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</li>

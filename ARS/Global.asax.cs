@@ -21,10 +21,9 @@ namespace ARS
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //sendMailDaily();
             GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
-            //RecurringJob.AddOrUpdate(
-            //    () => ScheduleSeatAsync(), Cron.Minutely);
+            RecurringJob.AddOrUpdate(
+                () => ScheduleSeatAsync(), Cron.Hourly);
             RecurringJob.AddOrUpdate(
                 () => ScheduleTransaction(), Cron.Daily);
             RecurringJob.AddOrUpdate(
@@ -33,19 +32,18 @@ namespace ARS
         public async System.Threading.Tasks.Task ScheduleSeatAsync()
         {
             ApplicationDbContext _db = new ApplicationDbContext();
-            var ExpiredTransactionList = await _db.Transaction.SqlQuery("SELECT TOP (1000) [id] ,[price],[type],[createdAt],[updatedAt],[status], DATEADD(MINUTE, 15, [updatedAt]) as expiredAt"
-            + " FROM [aspnet-ARS-20210315112621].[dbo].[Transactions]"
-                + " WHERE GETDATE() < DATEADD(MINUTE, 15, [updatedAt]) AND status = 0").ToListAsync();
+            var ExpiredTransactionList = await _db.Database.SqlQuery<int>("SELECT Transactions.id FROM Tickets,Transactions,Seats WHERE tickets.transactionId = transactionId AND tickets.seatId = Seats.id AND Seats.status = 0 AND Transactions.status = 0 AND GETDATE() > DATEADD(SECOND, 30, [Transactions].updatedAt) GROUP BY [Transactions].id").ToListAsync();
             foreach (var item in ExpiredTransactionList)
             {
-                foreach (var ticket in item.Tickets)
+                var transaction = _db.Transaction.Find(item);
+                foreach (var ticket in transaction.Tickets)
                 {
                     ticket.Seat.status = (int)SeatStatus.Available;
                     ticket.Seat.Flight.seatAvaiable = ticket.Seat.Flight.seatAvaiable + 1;
                     ticket.status = (int)TicketStatus.DISABLE;
                     ticket.User.skyMiles = (int)Math.Round(ticket.User.skyMiles - ticket.Seat.Flight.distance);
                 }
-                item.status = (int)TransactionStatus.CANCEL;
+                transaction.status = (int)TransactionStatus.CANCEL;
                 await _db.SaveChangesAsync();
             }
         }
@@ -70,17 +68,10 @@ namespace ARS
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
                 var currentUser = userManager.FindById(userId);
 
-                string body = string.Empty;
-                using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate.html")))
-                {
-                    body = reader.ReadToEnd();
-                }
-                //body = body.Replace("{typeNumber}", "confirm");
-                //body = body.Replace("{number}", confirmNumber);
-                //body = body.Replace("{UserName}", currentUser.lastName + currentUser.firstName);
-                bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, "Your confirm number", body, true);
+                sendTicketMail(currentUser, fullyTransaction.Tickets, "Cancel", "", fullyTransaction.price.ToString(), "Plesire Airline ticket reminder");
             }
         }
+
         public async System.Threading.Tasks.Task NotInTimePayment()
         {
             System.Diagnostics.Debug.WriteLine("ScheduleTransaction");
@@ -96,6 +87,7 @@ namespace ARS
 
             foreach (var item in notPaidTransaction)
             {
+                var cancelNumber = Helper.RandomString(5);
                 var fullyTransaction = _db.Transaction.Find(item.id);
                 fullyTransaction.status = (int)TransactionStatus.CANCEL;
                 _db.SaveChanges();
@@ -112,9 +104,112 @@ namespace ARS
                 {
                     oldTicket.status = (int)TicketStatus.DISABLE;
                     oldTicket.Seat.status = (int)SeatStatus.Available;
+                    oldTicket.cancelNumber = cancelNumber;
                     _db.SaveChanges();
                 }
+
+
+                var userId = fullyTransaction.Tickets.First().userId;
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                var currentUser = userManager.FindById(userId);
+
+                sendTicketMail(currentUser, fullyTransaction.Tickets, "Cancel", cancelNumber, fullyTransaction.price.ToString(), "Plesire Airline ticket canceled");
             }
         }
+        public void sendTicketMail(ApplicationUser currentUser, List<Ticket> tickets, string numberType, string number, string totalPrice, string subject = "Plesire Airline Ticket Info")
+        {
+            string mail = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/Ticket2.html")))
+            {
+                mail = reader.ReadToEnd();
+            }
+
+            string header = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/HeaderMail2.html")))
+            {
+                header = reader.ReadToEnd();
+            }
+            header = header.Replace("{userFullName}", currentUser.lastName + " " + currentUser.firstName);
+            header = header.Replace("{numberType}", numberType);
+            header = header.Replace("{number}", number);
+            header = header.Replace("{totalPrice}", totalPrice);
+
+            string ticketsContent = string.Empty;
+            foreach (var item in tickets)
+            {
+                string ticketBody = string.Empty;
+                using (StreamReader reader = new StreamReader(Server.MapPath("~/Views/MailTemplate/TicketBody2.html")))
+                {
+                    ticketBody = reader.ReadToEnd();
+                }
+                var departureAirportName = item.Seat.Flight.FromAirport.CityAirports.First().Airport.name;
+                ticketBody = ticketBody.Replace("{departureAirportName}", departureAirportName);
+
+                var departureTime = item.Seat.Flight.departureDate.ToString("D");
+                ticketBody = ticketBody.Replace("{departureTime}", departureTime);
+
+                var planeCode = item.Seat.Flight.planeCode;
+                ticketBody = ticketBody.Replace("{planeCode}", planeCode);
+
+                var departureAirportCode = item.Seat.Flight.ToAirport.CityAirports.First().Airport.code;
+                ticketBody = ticketBody.Replace("{departureAirportCode}", departureAirportCode);
+
+                var duration = item.Seat.Flight.flyTime;
+                ticketBody = ticketBody.Replace("{duration}", duration.ToString());
+
+                var fromAirportCode = item.Seat.Flight.FromAirport.CityAirports.First().Airport.code;
+                ticketBody = ticketBody.Replace("{fromAirportCode}", fromAirportCode);
+
+                var toAirportCode = item.Seat.Flight.ToAirport.CityAirports.First().Airport.code;
+                ticketBody = ticketBody.Replace("{toAirportCode}", toAirportCode);
+
+                var classService = "Non - Smoking";
+                if (item.Seat.classType == 1)
+                {
+                    classService = "Bussiness";
+                }
+                else if (item.Seat.classType == 2)
+                {
+                    classService = "First Class ";
+                }
+                else if (item.Seat.classType == 3)
+                {
+                    classService = "Club Class ";
+                }
+                else if (item.Seat.classType == 4)
+                {
+                    classService = "Smoking";
+                }
+                ticketBody = ticketBody.Replace("{classService}", classService);
+
+                var seatPosition = item.Seat.position;
+                ticketBody = ticketBody.Replace("{seatPosition}", "10000");
+
+                var departureCityName = item.Seat.Flight.FromAirport.CityAirports.First().City.name;
+                ticketBody = ticketBody.Replace("{departureCityName}", departureCityName);
+
+                var departureDate = item.Seat.Flight.departureDate.ToString("D");
+                ticketBody = ticketBody.Replace("{departureDate}", departureDate);
+
+                var arrivalAirportName = item.Seat.Flight.ToAirport.CityAirports.First().Airport.name;
+                ticketBody = ticketBody.Replace("{arrivalAirportName}", arrivalAirportName);
+
+                var arrivalCityName = item.Seat.Flight.ToAirport.CityAirports.First().City.name;
+                ticketBody = ticketBody.Replace("{arrivalCityName}", "10000");
+
+                var arrivalTime = item.Seat.Flight.arrivalDate.ToString("t");
+                ticketBody = ticketBody.Replace("{arrivalTime}", "10000");
+
+                var arrivalDate = item.Seat.Flight.arrivalDate.ToString("D");
+                ticketBody = ticketBody.Replace("{arrivalDate}", "10000");
+                ticketsContent = ticketsContent + ticketBody;
+            }
+
+            mail = mail.Replace("{Heading}", header);
+            mail = mail.Replace("{tickets}", ticketsContent);
+            string body = string.Empty;
+            bool IsSendEmail = SendEmail.EmailSend(currentUser.Email, subject, mail, true);
+        }
+
     }
 }

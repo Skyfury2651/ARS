@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ARS.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ARS.Controllers
 {
@@ -113,6 +116,100 @@ namespace ARS.Controllers
             db.Transaction.Remove(transaction);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult DataChart()
+        {
+            return View();
+        }
+
+        public ActionResult Users()
+        {
+            var UsersContext = new ApplicationDbContext();
+            var users = UsersContext.Users.ToList();
+
+            return View(users);
+        }
+
+        public ActionResult CreateFlight(Flight flight)
+        {
+            var newFlight = db.Flights.Add(flight);
+            var flightId = newFlight.id;
+            var seatStatus = (int) SeatStatus.Available;
+            for (int i = 1; i < 5; i++)
+            {
+                int classType = (int)Models.SeatType.FirstClass;
+                if (i > 2)
+                {
+                    classType = (int)Models.SeatType.ClubClass;
+                }
+
+                for (int j = 1; j < 7; j++)
+                {
+                    string position = i.ToString() + Convert.ToChar(j + 64);
+                    db.Seats.Add(new Models.Seat
+                    {
+                        status = seatStatus,
+                        classType = classType,
+                        position = position,
+                        flightId = flightId
+                    });
+                }
+            }
+            for (int i = 5; i < 19; i++)
+            {
+
+                int classType = (int)Models.SeatType.NonSmoking;
+                if (i > 7)
+                {
+                    classType = (int)Models.SeatType.Bussiness;
+                }
+                if (i > 13)
+                {
+                    classType = (int)Models.SeatType.Smoking;
+                }
+                for (int j = 1; j < 7; j++)
+                {
+                    string position = i.ToString() + Convert.ToChar(j + 64);
+                    db.Seats.Add(new Models.Seat
+                    {
+                        status = seatStatus,
+                        classType = classType,
+                        position = position,
+                        flightId = flightId
+                    });
+                }
+            }
+
+            return RedirectToAction("ManageFlights");
+        }
+
+        public ActionResult UpdateUser(string id , ApplicationUser user)
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = userManager.FindById(id);
+            currentUser.lastName = user.lastName;
+            currentUser.firstName = user.firstName;
+            currentUser.address = user.address;
+            currentUser.userIdentityCode = user.userIdentityCode;   
+            currentUser.Email = user.Email;
+            currentUser.PhoneNumber = user.PhoneNumber;
+            currentUser.preferedCreditCardNumber = user.preferedCreditCardNumber;
+            userManager.Update(currentUser);
+            context.SaveChanges();
+
+            return Json(new {success = true });
+        }
+
+        public JsonResult DataChart1(DateTime start, DateTime end)
+        {
+            var newEnd = end.AddDays(1);
+            var data = db.Transaction.Where(x => x.createdAt >= start && x.createdAt < newEnd).Select(z => new { 
+            price = z.price,
+            date = z.createdAt
+            }).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

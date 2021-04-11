@@ -6,8 +6,44 @@
 }
 
 <link href="~/Content/flight-choice.css" rel="stylesheet" />
+<style>
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
+            }
+
+            /* Create an active/current tablink class */
+            .tab button.active {
+                background-color: #ccc;
+            }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+    }
+</style>
 
 <div class="body container background">
+
     <div class="container">
         <div class="row header-info">
             <h4><strong>Depart @Model.departureFlights.First().FromAirport.CityAirports.First().City.name, @Model.departureFlights.First().FromAirport.CityAirports.First().City.country to @Model.departureFlights.First().ToAirport.CityAirports.First().City.name, @Model.departureFlights.First().ToAirport.CityAirports.First().City.country</strong></h4>
@@ -24,10 +60,24 @@
                 <button class="btn btn-content" id="purcharseButton" type="submit" style="margin-top:10px">Purcharse</button>
                 <button class="btn btn-content" id="reservateButton" type="submit" style="margin-top:10px">Reservate</button>
             </div>
+            <div class="tab">
+                <button class="tablinks" onclick="openCity(event, 'Departure')">Departure Flight</button>
+                @if (Model.returnFlights != null)
+                {
+                    <button class="tablinks" onclick="openCity(event, 'Return')">Return Flight</button>
+                }
+            </div>
         </div>
         <hr />
+
+
+
         <div class="flight-results-container">
-            <div class="col-md-6">
+            <div id="Paris" class="tabcontent">
+                <h3>Paris</h3>
+                <p>Paris is the capital of France.</p>
+            </div>
+            <div class="col-md-12 tabcontent" id="Departure" style="display:block">
                 <ul class="search-result">
                     <li class="header-li"><h3><strong>Departure Flights</strong></h3></li>
                     @foreach (var item in Model.departureFlights)
@@ -54,23 +104,23 @@
                                 <div class="col-md-12">
                                     <div class="flight-infos">
                                         @if (item.haveStop)
-                                            {
-                                                <div class="tooltip1">
-                                                    Stop: @item.Stops.Count()
-                                                    <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
-                                                </div>
-                                                <span>
-                                                    First route: @item.FromAirport.CityAirports.First().Airport.code
-                                                    <span aria-hidden="true" class="ti-control-play"></span>
+                                        {
+                                            <div class="tooltip1">
+                                                Stop: @item.Stops.Count()
+                                                <span class="tooltiptext">@item.Stops.First().City.CityAirports.First().Airport.code: @item.Stops.First().City.CityAirports.First().Airport.name</span>
+                                            </div>
+                                            <span>
+                                                First route: @item.FromAirport.CityAirports.First().Airport.code
+                                                <span aria-hidden="true" class="ti-control-play"></span>
 
-                                                    @item.Stops.First().City.CityAirports.First().Airport.code
-                                                </span>
-                                                <span>
-                                                    Second route: @item.Stops.First().City.CityAirports.First().Airport.code
-                                                    <span aria-hidden="true" class="ti-control-play"></span>
-                                                    @item.ToAirport.CityAirports.First().Airport.code
-                                                </span>
-                                            }
+                                                @item.Stops.First().City.CityAirports.First().Airport.code
+                                            </span>
+                                            <span>
+                                                Second route: @item.Stops.First().City.CityAirports.First().Airport.code
+                                                <span aria-hidden="true" class="ti-control-play"></span>
+                                                @item.ToAirport.CityAirports.First().Airport.code
+                                            </span>
+                                        }
                                         <span class="flight-number">Plane code: @item.planeCode</span>
                                         <span class="flight-duration">
                                             Duration: @item.flyTime hours
@@ -87,11 +137,9 @@
                 </ul>
             </div>
 
-            <span class="vertical-line"></span>
-
             @if (Model.returnFlights != null)
             {
-                <div class="col-md-6">
+                <div class="col-md-12 tabcontent" id="Return" style="display:none">
                     <ul class="search-result">
                         <li class="header-li"><h3><strong>Return Flights</strong></h3></li>
                         @foreach (var item in Model.returnFlights)
@@ -154,7 +202,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="ModalPopUpDeparture" role="dialog">
+    <div class="modal fade" id="ModalPopUpDeparture" data-backdrop="false" role="dialog">
         <div class="modal-dialog err-pop" style="">
             <div class="modal-content">
                 <div class="modal-header">
@@ -189,30 +237,12 @@
                                     </ul>
                                 </div>
 
-                                <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title" id="staticBackdropLabel">Alert</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p id="content">This seat is already reserved</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div id="list">
 
                                 </div>
-                                <button class="btn btn-success" id="orderSeat" type="button" style="margin-top:10px">Select</button>
+                                <button class="btn btn-success" id="orderSeat" type="button" data-dismiss="modal" style="margin-top:10px">Select</button>
                             </form>
                             <input type="text" name="valueSeat" id="valueSeat" hidden />
                         </div>
@@ -223,7 +253,25 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="staticBackdrop" data-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="staticBackdropLabel">Alert</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="content">This seat is already reserved</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="closeModal">Close</button>
 
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <form action="/" method="post" id="purchaseForm">
@@ -331,12 +379,17 @@
                         init(bookedSeats);
                         $('.' + settings.seatCss).click(function () {
                             if ($(this).hasClass(settings.selectedSeatCss)) {
-                                $('#staticBackdrop').modal('show')
+                                $('#staticBackdrop').modal('show');
+                                $('#closeModal').click(function () {
+                                    document.getElementById('staticBackdrop').style.display = "none";
+                                    document.getElementById('staticBackdrop').style.opacity = "0";
+                                })
                             } else {
                                 $(this).toggleClass(settings.selectingSeatCss);
                             }
                             $('#list').empty();
                         });
+
                     }
                 });
                 $('#orderSeat').click(function (event2) {
@@ -362,7 +415,11 @@
                 datatype: "Json",
                 data: { id: $(this).data("flight") },
                 success: function (data) {
-                    console.log(data)
+                    if (data.allowReservation == false) {
+                        $('#reservateButton').addClass("hide");
+                    } else {
+                        $('#reservateButton').removeClass("hide");
+                    }
                     for (var i = 0; i < data.bookedSeats.length; i++) {
                         var position = data.bookedSeats[i].position;
                         bookedSeats.push(position)
@@ -414,11 +471,16 @@
                     $('.' + settings.seatCss).click(function () {
                         if ($(this).hasClass(settings.selectedSeatCss)) {
                             $('#staticBackdrop').modal('show')
+                            $('#closeModal').click(function () {
+                                document.getElementById('staticBackdrop').style.display = "none";
+                                document.getElementById('staticBackdrop').style.opacity = "0";
+                            })
                         } else {
                             $(this).toggleClass(settings.selectingSeatCss);
                         }
                         $('#list').empty();
                     });
+
                 }
             });
         })
@@ -432,7 +494,8 @@
             });
             let querystring = '&OrderSeatReturn=' + str.join() + '&returnId=' + $("#valueArrival").val();
             $('#valueSeat').val(querystring)
-            $('#ModalPopUpDeparture').modal('hide')
+            $('#ModalPopUpDeparture').modal('hide');
+            $('.modal-backdrop').remove();
             let sel2 = $('#valueSeat').val();
             $('#valuePucharse2').val(sel2);
             if (seatType == enumFlightType.departure) {
@@ -471,4 +534,19 @@
             $('#purchaseForm').submit();
         })
     })
+</script>
+<script>
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
 </script>
