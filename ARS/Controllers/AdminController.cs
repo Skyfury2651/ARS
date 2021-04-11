@@ -18,9 +18,21 @@ namespace ARS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Admin
-        public ActionResult Index()
+        public ActionResult ManageTransactions()
         {
             return View(db.Transaction.ToList());
+        }
+
+        public ActionResult ManageUsers()
+        {
+            var users = db.Users.ToList();
+
+            return View(users);
+        }
+
+        public ActionResult ManageFlights()
+        {
+            return View(db.Flights.ToList());
         }
 
         // GET: Admin/Details/5
