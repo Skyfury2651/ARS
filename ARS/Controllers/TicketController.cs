@@ -14,6 +14,7 @@ namespace ARS.Controllers
     {
         public Models.Transaction Transaction;
         public List<Ticket> Tickets;
+        public Models.ApplicationUser User;
     }
 
 
@@ -33,7 +34,7 @@ namespace ARS.Controllers
         [CustomAuthorize]
         public ActionResult CancelTicket(int id, int type, string confirmNumber = null, string blockingNumber = null)
         {
-            if (confirmNumber != null && blockingNumber != null)
+            if (string.IsNullOrEmpty(confirmNumber) == false || string.IsNullOrEmpty(blockingNumber) == false)
             {
                 var ticket = _db.Tickets.Find(id);
                 var transaction = ticket.Trasaction;
@@ -65,6 +66,12 @@ namespace ARS.Controllers
                 currentUser.skyMiles = (int)Math.Round(currentUser.skyMiles - ticket.Seat.Flight.distance);
                 currentUser.balance += returnPrice;
                 userManager.Update(currentUser);
+                var ticketActive = transaction.Tickets.Where(x => x.status == 1).Count();
+                if (ticketActive == 0)
+                {
+                    transaction.status = (int)TransactionStatus.CANCEL;
+                }
+
                 _db.SaveChanges();
 
                 return Json(new { code = 200 });
@@ -75,8 +82,10 @@ namespace ARS.Controllers
 
         public ActionResult ConfirmTicket(int id, string confirmNumber)
         {
-            var transaction = _db.Transaction.Find(id);
-            if (transaction.Tickets.First().confirmNumber == confirmNumber)
+            var ticket = _db.Tickets.Find(id);
+            var transaction = ticket.Trasaction;
+            
+            if (transaction.Tickets.First().blockingNumber == confirmNumber)
             {
                 string orderSeats = "";
 
@@ -84,7 +93,9 @@ namespace ARS.Controllers
                 {
                     orderSeats += item.Seat.position + ',';
                 }
-                return RedirectToAction("PaymentWithPaypal", "Flight", new { id = id, orderSeats = orderSeats });
+
+                var fullUrl = this.Url.Action("PaymentWithPaypal", "Flight", new { id = transaction.Tickets.First().Seat.flightId, orderSeat = orderSeats }, this.Request.Url.Scheme);
+                return Json(new { fullUrl, code = 201 });
             }
 
             return Json(new { code = 422 });
@@ -94,7 +105,7 @@ namespace ARS.Controllers
         public ActionResult TicketsList()
         {
             var userId = User.Identity.GetUserId();
-            var tickets = _db.Tickets.Where(x => x.userId == userId).ToList();
+            var tickets = _db.Tickets.Where(x => x.userId == userId).OrderByDescending(x => x.id).ToList();
             return View(tickets);
         }
 
@@ -155,6 +166,7 @@ namespace ARS.Controllers
             List<Ticket> tickets = new List<Ticket> { };
             tickets.Add(ticket);
             actionTicket.Tickets = tickets;
+
             return View(actionTicket);
         }
 

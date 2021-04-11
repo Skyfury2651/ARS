@@ -21,12 +21,40 @@
                             <div class="col-md-4" style="display: grid">
                                 <span>Passengers</span>
                                 @*First + Last name user*@
-                                <span><strong>@Model.Tickets.First().User.lastName @Model.Tickets.First().User.firstName</strong></span>
+                                <span>
+                                    <strong>
+                                        @if (Model.Tickets.First().User != null)
+                                        {
+                                            @Model.Tickets.First().User.lastName @Model.Tickets.First().User.firstName
+                                        }
+                                        else
+                                        {
+                                            @Model.User.lastName @Model.User.firstName
+                                        }
+                                    </strong>
+                                </span>
                             </div>
                             <div class="col-md-4" style="display: grid">
-                                <span>Confirm number</span>
+                                @if (@Model.Tickets.First().Seat.status == 3)
+                                {
+                                    <span>Blocking number</span>
+                                }
+                                else
+                                {
+                                    <strong>Confirm number</strong>
+                                }
                                 @*Ma confirm*@
-                                <span><strong>@Model.Tickets.First().confirmNumber</strong></span>
+
+                                <span>
+                                    @if (@Model.Tickets.First().Seat.status == 3)
+                                    {
+                                        <strong>@Model.Tickets.First().blockingNumber</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong>@Model.Tickets.First().confirmNumber</strong>
+                                    }
+                                </span>
                             </div>
                             <div class="col-md-4" style="display: grid">
                                 <span>Price paid</span>
@@ -71,7 +99,15 @@
                                                 <strong>@items.Seat.Flight.planeCode</strong>
                                                 @*Ma san bay*@
                                                 <strong>@items.Seat.Flight.FromAirport.CityAirports.First().Airport.code</strong>
-                                                <strong>Confirmed</strong>
+
+                                                @if (@items.Seat.status == 3)
+                                                {
+                                                    <strong> Pending </strong>
+                                                }
+                                                else
+                                                {
+                                                    <strong> Confirmed </strong> @items.Seat.status
+                                                }
                                                 @*Thoi gian chuyen bay*@
                                                 <strong>@items.Seat.Flight.flyTime</strong>
                                             </div>

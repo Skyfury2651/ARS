@@ -131,6 +131,58 @@ namespace ARS.Controllers
             return View(users);
         }
 
+        public ActionResult CreateFlight(Flight flight)
+        {
+            var newFlight = db.Flights.Add(flight);
+            var flightId = newFlight.id;
+            var seatStatus = (int) SeatStatus.Available;
+            for (int i = 1; i < 5; i++)
+            {
+                int classType = (int)Models.SeatType.FirstClass;
+                if (i > 2)
+                {
+                    classType = (int)Models.SeatType.ClubClass;
+                }
+
+                for (int j = 1; j < 7; j++)
+                {
+                    string position = i.ToString() + Convert.ToChar(j + 64);
+                    db.Seats.Add(new Models.Seat
+                    {
+                        status = seatStatus,
+                        classType = classType,
+                        position = position,
+                        flightId = flightId
+                    });
+                }
+            }
+            for (int i = 5; i < 19; i++)
+            {
+
+                int classType = (int)Models.SeatType.NonSmoking;
+                if (i > 7)
+                {
+                    classType = (int)Models.SeatType.Bussiness;
+                }
+                if (i > 13)
+                {
+                    classType = (int)Models.SeatType.Smoking;
+                }
+                for (int j = 1; j < 7; j++)
+                {
+                    string position = i.ToString() + Convert.ToChar(j + 64);
+                    db.Seats.Add(new Models.Seat
+                    {
+                        status = seatStatus,
+                        classType = classType,
+                        position = position,
+                        flightId = flightId
+                    });
+                }
+            }
+
+            return RedirectToAction("ManageFlights");
+        }
 
         public ActionResult UpdateUser(string id , ApplicationUser user)
         {

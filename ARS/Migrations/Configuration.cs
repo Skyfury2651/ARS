@@ -14,13 +14,13 @@ namespace ARS.Migrations
 
         protected override void Seed(ARS.Models.ApplicationDbContext context)
         {
+            this.seedAirport(context);
             this.seedCity(context);
             this.seedCityAirport(context);
             this.seedFlightsCase2(context);
             this.seedSeat(context);
             this.seedStops(context);
         }
-
         public void seedSeat(ARS.Models.ApplicationDbContext context)
         {
             int seatId = 1;
@@ -198,7 +198,7 @@ namespace ARS.Migrations
                     fromAirportId = 558,
                     toAirportId = 555,
                     flyTime = 10,
-                    price = 100000,
+                    price = 80,
                     seatAvaiable = 60,
                 },
                 new Models.Flight
@@ -307,6 +307,103 @@ namespace ARS.Migrations
                 flightId = 3,
                 cityId = 8,
                 stopOrder = 1
+            }
+            );
+        }
+
+        public void seedAirport(ARS.Models.ApplicationDbContext context)
+        {
+            context.Airports.AddOrUpdate(x => x.id, new Models.Airport
+            {
+                id = 15,
+                code = "IN",
+                iso_country = "IN",
+                municipality = "Kochi",
+                lattitude = 0,
+                longtitude = 0,
+                status = 1,
+                name = "INS Garuda / Willingdon Island Naval Air Station"
+
+            }, new Models.Airport
+            {
+                id = 16,
+                code = "IN",
+                iso_country = "IN",
+                municipality = "Kochi",
+                lattitude = 0,
+                longtitude = 0,
+                status = 1,
+                name = "Cochin International Airport",
+            }, new Models.Airport
+            {
+                id = 17,
+                code = "IN",
+                iso_country = "IN",
+                municipality = "Kochi",
+                lattitude = 0,
+                longtitude = 0,
+                status = 1,
+                name = "Calicut International Airport",
+            }, new Models.Airport
+            {
+                id = 555,
+                code = "VN",
+                iso_country = "VN",
+                municipality = "Da Nang",
+                lattitude = 0,
+                longtitude = 0,
+                status = 1,
+                name = "Nuoc Man (Marble Mountain) Air Facility",
+            }, new Models.Airport
+            {
+                id = 556,
+                code = "VN",
+                iso_country = "VN",
+                municipality = "Da Nang",
+                lattitude = 0,
+                longtitude = 0,
+                status = 1,
+                name = "Red Beach Airfield",
+            }, new Models.Airport
+            {
+                id = 558,
+                code = "VN",
+                iso_country = "VN",
+                municipality = "Nam Tu Liem, Hanoi",
+                lattitude = 0,
+                longtitude = 0,
+                status = 1,
+                name = "Hoa Lac Airport",
+            }, new Models.Airport
+            {
+                id = 559,
+                code = "VN",
+                iso_country = "VN",
+                municipality = "Nam Tu Liem, Hanoi",
+                lattitude = 0,
+                longtitude = 0,
+                status = 1,
+                name = "International Airport NoiBai",
+            }, new Models.Airport
+            {
+                id = 560,
+                code = "VN",
+                iso_country = "VN",
+                municipality = "Nam Tu Liem, Hanoi",
+                lattitude = 0,
+                longtitude = 0,
+                status = 1,
+                name = "Bach Mai Airport",
+            }, new Models.Airport
+            {
+                id = 563,
+                code = "SG",
+                iso_country = "SG",
+                municipality = "Nam Tu Liem, Hanoi",
+                lattitude = 0,
+                longtitude = 0,
+                status = 1,
+                name = "Changi Airport",
             }
             );
         }
