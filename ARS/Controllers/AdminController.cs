@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ARS.Models;
+using Microsoft.AspNet.Identity;
 
 namespace ARS.Controllers
 {
@@ -15,9 +16,28 @@ namespace ARS.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Admin
-        public ActionResult Index()
+        public ActionResult ManageTransactions()
         {
             return View(db.Transaction.ToList());
+        }
+
+        public ActionResult ManageUsers()
+        {
+            var users = db.Users.ToList();
+
+            return View(users);
+        }
+
+        public ActionResult ManageFlights()
+        {
+            return View(db.Flights.ToList());
+        }
+
+        public ActionResult CreateFlight(Flight flight)
+        {
+            var newFlight = db.Flights.Add(flight);
+
+            return RedirectToAction("ManageFlights");
         }
 
         // GET: Admin/Details/5

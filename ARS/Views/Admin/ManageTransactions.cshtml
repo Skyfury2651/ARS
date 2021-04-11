@@ -1,28 +1,19 @@
 ﻿@model IEnumerable<ARS.Models.Transaction>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Transactions List";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-
-<link href="~/Content/admin-view.css" rel="stylesheet" />
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://use.fontawesome.com/eac163b655.js"></script>
 
-<h2>Transactions List</h2>
-
-
-<script type="text/javascript">
-
-
-</script>
-
+<h2>@ViewBag.Title</h2>
 
 <table id="example" class="display">
     <thead>
         <tr>
-            <th scope="col">Id</th>
+            <th scope="col">ID</th>
             <th scope="col">Price</th>
             <th scope="col">Type</th>
             <th scope="col">Status</th>
@@ -34,13 +25,13 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td style="text-align: center">
                     @Html.DisplayFor(modelItem => item.id)
                 </td>
-                <td>
+                <td style="text-align: center">
                     $@Html.DisplayFor(modelItem => item.price)
                 </td>
-                <td>
+                <td style="text-align: center">
                     @if (item.type == 0)
                     {
                         <span>Paypal</span>
@@ -58,7 +49,7 @@
                         <span>Google Pay</span>
                     }
                 </td>
-                <td>
+                <td style="text-align: center">
                     @if (item.type == 0)
                     {
                         <span>Pending</span>
@@ -72,40 +63,119 @@
                         <span>Cancel</span>
                     }
                 </td>
-                <td>
+                <td style="text-align: center">
                     @Convert.ToDateTime(@item.createdAt).ToString("dd/MM/yyyy")
                 </td>
-                <td>
+                <td style="text-align: center">
                     @Convert.ToDateTime(@item.updatedAt).ToString("dd/MM/yyyy")
                 </td>
-                @*<td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.id })
-                    </td>*@
             </tr>
         }
     </tbody>
 
 </table>
-<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; margin-top: 50px">
     <i class="fa fa-calendar"></i>&nbsp;
     <span></span> <i class="fa fa-caret-down"></i>
 </div>
 <div id="curve_chart" style="width: 900px; height: 500px"></div>
+
 @section scripts {
+    <script>
+        $(document).ready(function () {
+            // Setup - add a text input to each footer cell
+            const typesList = {
+                0: 'Select type',
+                1: 'Paypal',
+                2: 'Visa',
+                3: 'Local Banking',
+                4: 'Google Pay'
+            };
+            const statusList = {
+                0: 'Select status',
+                1: 'Pending',
+                2: 'Success',
+                3: 'Cancel'
+            };
+            $('#example thead tr').clone(true).appendTo('#example thead');
+            $('#example thead tr:eq(1) th').each(function (i) {
+                var title = $(this).text();
+                if (title.toLowerCase() == "type") {
+                    var selectOpen = "<select id='type'>";
+                    var selectClose = "</select>";
+                    for (const [key, value] of Object.entries(typesList)) {
+                        var option;
+                        if (key == 0) {
+                            option = `<option value="${key}" disabled selected> ${value}</option>`;
+                        } else {
+                            option = `<option value="${key}"> ${value}</option>`;
+                        }
+                        selectOpen += option;
+                    }
+                    selectOpen = selectOpen + selectClose;
+                    $(this).html(selectOpen);
+                } else if (title.toLowerCase() == "status") {
+                    var selectOpen = "<select id='status'>";
+                    var selectClose = "</select>";
+                    for (const [key, value] of Object.entries(statusList)) {
+                        if (key == 0) {
+                            option = `<option value="${key}" disabled selected> ${value}</option>`;
+                        } else {
+                            var option = `<option value="${key}"> ${value}</option>`;
+                        }
+                        selectOpen += option;
+                    }
+                    selectOpen = selectOpen + selectClose;
+                    $(this).html(selectOpen);
+                } else {
+                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+                }
+
+                $('input', this).on('keyup change', function () {
+                    if (table.column(i).search() !== this.value) {
+                        table
+                            .column(i)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+
+                $('select', this).on('change', function () {
+                    if (table.column(i).search() !== this.value) {
+                        if (this.id == "type") {
+                            table
+                                .column(i)
+                                .search(typesList[this.value])
+                                .draw();
+                        } else {
+                            table
+                                .column(i)
+                                .search(statusList[this.value])
+                                .draw();
+                        }
+                    }
+                });
+            });
+
+
+            var table = $('#example').DataTable({
+                orderCellsTop: true,
+                fixedHeader: true
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
-            chart_data = [{ creatAt: new Date('2021-01-10'),price : Number('2000') },
-                { creatAt: new Date(2021,12,12), price: Number('3000') },
-                { creatAt: new Date('2021-01-12'), price: Number('4000') },
-                { creatAt: new Date('2021-01-13'), price: Number('5000') },
-                { creatAt: new Date('2021-01-14'), price: Number('6000') },
-                { creatAt: new Date('2021-01-15'), price: Number('7000') },
-                { creatAt: new Date('2021-01-16'), price: Number('8000') },
-                { creatAt: new Date('2021-01-17'), price: Number('9000') },
-                { creatAt: new Date('2021-01-18'), price: Number('10000') }]
+            chart_data = [{ creatAt: new Date('2021-01-10'), price: Number('2000') },
+            { creatAt: new Date(2021, 12, 12), price: Number('3000') },
+            { creatAt: new Date('2021-01-12'), price: Number('4000') },
+            { creatAt: new Date('2021-01-13'), price: Number('5000') },
+            { creatAt: new Date('2021-01-14'), price: Number('6000') },
+            { creatAt: new Date('2021-01-15'), price: Number('7000') },
+            { creatAt: new Date('2021-01-16'), price: Number('8000') },
+            { creatAt: new Date('2021-01-17'), price: Number('9000') },
+            { creatAt: new Date('2021-01-18'), price: Number('10000') }]
             $(function () {
 
                 var start = moment().subtract(29, 'days');

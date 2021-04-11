@@ -7,72 +7,102 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.8/css/fixedHeader.dataTables.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="~/Content/admin-view.css" />
 </head>
 <body>
+    <div class="d-flex toggled" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Manager</div>
+            <div class="list-group list-group-flush">
+                <span class="list-group-item list-group-item-action bg-light">
+                    <i class="fas fa-users"></i>
+                    <span class="text-icon">
+                        @Html.ActionLink("Users", "ManageUsers", "Admin", null, new { @class = "page" })
+                    </span>
+                </span>
+                <span class="list-group-item list-group-item-action bg-light">
+                    <i class="fas fa-plane"></i>
+                    <span class="text-icon">
+                        @Html.ActionLink("Flights", "ManageFlights", "Admin", null, new { @class = "page" })
+                    </span>
+                </span>
+                <span class="list-group-item list-group-item-action bg-light">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span class="text-icon">
+                        @Html.ActionLink("Transactions", "ManageTransactions", "Admin", null, new { @class = "page" })
+                    </span>
+                </span>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
 
-    <nav class="navbar navbar-light bg-dark">
-        <span class="navbar-brand mb-0 h1" style="color: white">Admin</span>
-    </nav>
-    <div class="container" style="padding-top: 50px">
-        @RenderBody()
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="btn" id="menu-toggle" style="background-color: #fc9f1c">
+                    <span class="dark-blue-text">
+                        <i class="fas fa-bars fa-1x"></i>
+                    </span>
+                </button>
+
+                <h3 style="margin-left:20px; margin-top: 5px">ADMIN</h3>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        @*<li class="nav-item">
+                                <a class="nav-link" href="#">Link</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Dropdown
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Action</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>*@
+                    </ul>
+                </div>
+            </nav>
+            <div class="container" style="padding-top: 50px">
+                @RenderBody()
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
     </div>
+    <!-- /#wrapper -->
+
     <script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/fixedheader/3.1.8/js/dataTables.fixedHeader.min.js" crossorigin="anonymous"></script>
     <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+    <script>
         $(document).ready(function () {
             // Setup - add a text input to each footer cell
-            const typesList = {
-                0: 'Select type',
-                1: 'Paypal',
-                2: 'Visa',
-                3: 'Local Banking',
-                4: 'Google Pay'
-            };
-            const statusList = {
-                0: 'Select status',
-                1: 'Pending',
-                2: 'Success',
-                3: 'Cancel'
-            };
-            $('#example thead tr').clone(true).appendTo('#example thead');
-            $('#example thead tr:eq(1) th').each(function (i) {
+            $('#example1 thead tr').clone(true).appendTo('#example1 thead');
+            $('#example1 thead tr:eq(1) th').each(function (i) {
                 var title = $(this).text();
-                if (title.toLowerCase() == "type") {
-                    var selectOpen = "<select id='type'>";
-                    var selectClose = "</select>";
-                    for (const [key, value] of Object.entries(typesList)) {
-                        var option;
-                        if (key == 0) {
-                            option = `<option value="${key}" disabled selected> ${value}</option>`;
-                        } else {
-                            option = `<option value="${key}"> ${value}</option>`;
-                        }
-                        selectOpen += option;
-                    }
-                    selectOpen = selectOpen + selectClose;
-                    $(this).html(selectOpen);
-                } else if (title.toLowerCase() == "status") {
-                    var selectOpen = "<select id='status'>";
-                    var selectClose = "</select>";
-                    for (const [key, value] of Object.entries(statusList)) {
-                        if (key == 0) {
-                            option = `<option value="${key}" disabled selected> ${value}</option>`;
-                        } else {
-                            var option = `<option value="${key}"> ${value}</option>`;
-                        }
-                        selectOpen += option;
-                    }
-                    selectOpen = selectOpen + selectClose;
-                    $(this).html(selectOpen);
-                } else {
-                    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-                }
+                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
 
                 $('input', this).on('keyup change', function () {
                     if (table.column(i).search() !== this.value) {
@@ -82,31 +112,14 @@
                             .draw();
                     }
                 });
-
-                $('select', this).on('change', function () {
-                    if (table.column(i).search() !== this.value) {
-                        if (this.id == "type") {
-                            table
-                                .column(i)
-                                .search(typesList[this.value])
-                                .draw();
-                        } else {
-                            table
-                                .column(i)
-                                .search(statusList[this.value])
-                                .draw();
-                        }
-                    }
-                });
             });
 
-
-            var table = $('#example').DataTable({
+            var table = $('#example1').DataTable({
                 orderCellsTop: true,
                 fixedHeader: true
             });
         });
     </script>
-    @RenderSection("scripts", required: true)
+    @RenderSection("scripts", required: false)
 </body>
 </html>
