@@ -14,7 +14,6 @@ namespace ARS.Migrations
 
         protected override void Seed(ARS.Models.ApplicationDbContext context)
         {
-            this.seedAirport(context);
             this.seedCity(context);
             this.seedCityAirport(context);
             this.seedFlightsCase2(context);
@@ -273,7 +272,7 @@ namespace ARS.Migrations
                     fromAirportId = 558,
                     toAirportId = 555,
                     flyTime = 10,
-                    price = 100000,
+                    price = 100,
                     seatAvaiable = 60,
                 },
                 new Models.Flight
@@ -288,7 +287,7 @@ namespace ARS.Migrations
                     fromAirportId = 558,
                     toAirportId = 555,
                     flyTime = 10,
-                    price = 100000,
+                    price = 200,
                     seatAvaiable = 60,
                 }
             );
