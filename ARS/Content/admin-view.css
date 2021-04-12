@@ -2,6 +2,15 @@
     width: 100%;
 }
 
+.nav-link {
+    text-decoration: none;
+}
+
+.myBtn {
+    border: none;
+    background-color: #fc9f1c;
+}
+
 .display {
     width: 100%;
 }
@@ -21,7 +30,7 @@
 
 #sidebar-wrapper {
     min-height: 100vh;
-    margin-left: -10rem;
+    margin-left: -14rem;
     -webkit-transition: margin .25s ease-out;
     -moz-transition: margin .25s ease-out;
     -o-transition: margin .25s ease-out;
@@ -35,7 +44,7 @@
     }
 
     #sidebar-wrapper .list-group {
-        width: 10rem;
+        width: 14rem;
     }
 
 #page-content-wrapper {
@@ -57,6 +66,6 @@
     }
 
     #wrapper.toggled #sidebar-wrapper {
-        margin-left: -10rem;
+        margin-left: -14rem;
     }
 }

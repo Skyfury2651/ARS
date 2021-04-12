@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<link href="~/Content/admin-view.css" rel="stylesheet" />
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://use.fontawesome.com/eac163b655.js"></script>
 
@@ -14,8 +13,8 @@
 <table id="example" class="display">
     <thead>
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Price</th>
+            <th scope="col" style="width: 60px">ID</th>
+            <th scope="col" style="width: 60px">Price</th>
             <th scope="col">Type</th>
             <th scope="col">Status</th>
             <th scope="col">Created Date</th>
@@ -75,32 +74,6 @@
     </tbody>
 
 </table>
-<div id="reportrange" style="margin-bottom:20px; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 30%">
-    <i class="fa fa-calendar"></i>&nbsp;
-    <span></span> <i class="fa fa-caret-down"></i>
-</div>
-<div class="container">
-    <canvas id="myChart"></canvas>
-</div>
-
-@section scripts {
-    <script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/fixedheader/3.1.8/js/dataTables.fixedHeader.min.js" crossorigin="anonymous"></script>
-    <script>
-        function ToJavaScriptDate(value) {
-            var pattern = /Date\(([^)]+)\)/;
-            var results = pattern.exec(value);
-            var dt = new Date(parseFloat(results[1]));
-            return dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
-        }
 <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%; margin-top: 50px">
     <i class="fa fa-calendar"></i>&nbsp;
     <span></span> <i class="fa fa-caret-down"></i>
@@ -157,7 +130,6 @@
                 } else {
                     $(this).html('<input type="text" placeholder="Search ' + title + '" />');
                 }
-
                 $('input', this).on('keyup change', function () {
                     if (table.column(i).search() !== this.value) {
                         table
@@ -166,7 +138,6 @@
                             .draw();
                     }
                 });
-
                 $('select', this).on('change', function () {
                     if (table.column(i).search() !== this.value) {
                         if (this.id == "type") {
@@ -183,8 +154,6 @@
                     }
                 });
             });
-
-
             var table = $('#example').DataTable({
                 orderCellsTop: true,
                 fixedHeader: true
@@ -194,7 +163,6 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-
             chart_data = [{ creatAt: new Date('2021-01-10'), price: Number('2000') },
             { creatAt: new Date(2021, 12, 12), price: Number('3000') },
             { creatAt: new Date('2021-01-12'), price: Number('4000') },
@@ -205,16 +173,12 @@
             { creatAt: new Date('2021-01-17'), price: Number('9000') },
             { creatAt: new Date('2021-01-18'), price: Number('10000') }]
             $(function () {
-
                 var start = moment().subtract(29, 'days');
                 var end = moment();
-                
                 function cb(start, end) {
-                    $('#reportrange span').html(start.format('YYYY MMMM, D') + ' - ' + end.format('YYYY MMMM, D'));
+                    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
                 }
-
                 $('#reportrange').daterangepicker({
-                    "autoApply": true,
                     startDate: start,
                     endDate: end,
                     ranges: {
@@ -226,65 +190,35 @@
                         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                     }
                 }, cb);
-
-                $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
-                    var startDate = picker.startDate.format('YYYY-MM-DD');
-                    var endDate = picker.endDate.format('YYYY-MM-DD');
-                    var data = [];
-                    var labels = [];
-                    $.ajax({
-                        type: "GET",
-                        url: "/Admin/DataChart1",
-                        datatype: "Json",
-                        data: { start: startDate, end: endDate },
-                        success: function (dataChart) {
-                            for (var i = 0; i < dataChart.length; i++) {
-                                labels.push(ToJavaScriptDate(dataChart[i].date));
-                                data.push(dataChart[i].price);
-                            }
-                            renderChart(data, labels);
-                        }
-                    })
-                });
-
-                function renderChart(data, labels) {
-                    var ctx = document.getElementById("myChart").getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Price',
-                                data: data,
-                            }]
-                        },
-                    });
-                }
-
                 cb(start, end);
-                function startChart() {
-                    var startDate = start.format('YYYY-MM-DD');
-                    var endDate = end.format('YYYY-MM-DD');
-                    var data = [];
-                    var labels = [];
-                    $.ajax({
-                        type: "GET",
-                        url: "/Admin/DataChart1",
-                        datatype: "Json",
-                        data: { start: startDate, end: endDate },
-                        success: function (dataChart) {
-                            for (var i = 0; i < dataChart.length; i++) {
-                                labels.push(ToJavaScriptDate(dataChart[i].date));
-                                data.push(dataChart[i].price);
-                            }
-                            renderChart(data, labels);
-                        }
-                    })
-                }
-                startChart();
             });
-            
+            $('#reportrange').on('apply.daterangepicker', function (ev, picker) {
+                console.log(picker.startDate.format('YYYY-MM-DD'));
+                console.log(picker.endDate.format('YYYY-MM-DD'));
+                google.charts.load('current', { 'packages': ['line'] });
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('date', 'Date');
+                    data.addColumn('number', 'Price');
+                    for (var i = 0; i < chart_data.length; i++) {
+                        var result = chart_data.filter(x => x.creatAt <= picker.endDate.format('YYYY-MM-DD') && x.creatAt >= picker.startDate.format('YYYY-MM-DD'));
+                        data.addRow([result.Date, result.price]);
+                    }
+                    var options = {
+                        chart: {
+                            title: 'Revenue chart over time',
+                            subtitle: 'Currency(VND)'
+                        },
+                        height: 500,
+                        hAxis: {
+                            format: 'yyyy/MM/dd'
+                        }
+                    };
+                    var chart = new google.charts.Line(document.getElementById('curve_chart'));
+                    chart.draw(data, options);
+                }
+            });
         });
-        
     </script>
 }
