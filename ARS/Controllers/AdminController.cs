@@ -17,6 +17,10 @@ namespace ARS.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public ActionResult AirportsJson()
+        {
+            return Json(db.Airports.Select(x => new { id = x.id, name = x.name}).ToList(), JsonRequestBehavior.AllowGet);
+        }
         // GET: Admin
         public ActionResult ManageTransactions()
         {
@@ -145,7 +149,20 @@ namespace ARS.Controllers
 
         public ActionResult CreateFlight(Flight flight)
         {
-            var newFlight = db.Flights.Add(flight);
+            var newFlight = db.Flights.Add(new Flight() {
+                planeCode = flight.planeCode,
+                seatAvaiable = 108,
+                status = 1,
+                arrivalDate = flight.arrivalDate,
+                departureDate = flight.departureDate,
+                distance = flight.distance,
+                flyTime = flight.flyTime,
+                price = flight.price,
+                fromAirportId = flight.fromAirportId,
+                toAirportId = flight.toAirportId
+            });
+            var addedFlight = db.Flights.Add(newFlight);
+            db.SaveChanges();
             var flightId = newFlight.id;
             var seatStatus = (int) SeatStatus.Available;
             for (int i = 1; i < 5; i++)
@@ -166,6 +183,7 @@ namespace ARS.Controllers
                         position = position,
                         flightId = flightId
                     });
+                    db.SaveChanges();
                 }
             }
             for (int i = 5; i < 19; i++)
@@ -190,8 +208,10 @@ namespace ARS.Controllers
                         position = position,
                         flightId = flightId
                     });
+                    db.SaveChanges();
                 }
             }
+            db.SaveChanges();
 
             return RedirectToAction("ManageFlights");
         }

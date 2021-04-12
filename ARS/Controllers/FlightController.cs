@@ -61,6 +61,17 @@ namespace ARS.Controllers
             return View(result);
         }
 
+
+        public ActionResult SearchFlight(string planeCode)
+        {
+
+            var result = new FlightSearchListModel();
+            var dataDeparture = _db.Flights.Where(x => x.planeCode == planeCode);
+            result.departureFlights = dataDeparture.ToList();
+
+            return View("Index",result);
+        }
+
         public ActionResult Place(int? id)
         {
             Flight flight = _db.Flights.Find(id);

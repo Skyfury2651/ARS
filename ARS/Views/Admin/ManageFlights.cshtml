@@ -8,7 +8,7 @@
 <h2>@ViewBag.Title</h2>
 
 <style>
-    #myBtn {
+    .myBtn {
         border: none;
         background-color: #fc9f1c;
     }
@@ -52,7 +52,77 @@
             cursor: pointer;
         }
 </style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">New Flight</button>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Flight</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/Admin/CreateFlight" method="post" id="flightForm">
+                    <div class="form-group">
+                        <label for="planeCode">Plane Code:</label>
+                        <input name="planeCode" />
+                    </div>
+                    <div class="form-group">
+                        <label for="departureDate">Departure Date:</label>
+                        <input type="date" name="departureDate" />
+                    </div>
+                    <div class="form-group">
+                        <label for="planCode">Arrival Date:</label>
+                        <input type="date" name="arrivalDate" />
+                    </div>
+                    <div class="form-group">
+                        <label for="flyTime">Fly time estimate:</label>
+                        <input type="number" name="flyTime" />
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price:</label>
+                        <input type="number" name="price" />
+                    </div>
+                    <div class="form-group">
+                        <label for="distance">Distance :</label>
+                        <input type="number" name="distance" />
+                    </div>
+                    <div class="form-group">
+                        <label for="planCode">Plan Status:</label>
+                        <select>
+                            <option value="1">Active</option>
+                            <option value="0">Deactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="planCode">Airport Departure:</label>
+                        <select id="dropdownAirportArrival" name="fromAirportId">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="planCode">Airport Arrival:</label>
+                        <select id="dropdownAirportDeparture" name="toAirportId">
+                        </select>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button  type="button" class="btn btn-default" data-dismiss="modal" id="submitFlight">
+                    Submit
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 <table id="example1" class="display">
     <thead>
         <tr>
@@ -94,11 +164,13 @@
                 <td>
                     @*@Html.ActionLink("Detail", "FlightDetail", new { id = item.id }, new { @style = "color: #fc9f1c" })*@
                     <!-- Trigger/Open The Modal -->
-                    <button id="myBtn" data-id="@item.id" data-planeCode="@item.planeCode" data-from="@item.ToAirport.CityAirports.First().Airport.name"
+                    <button class="myBtn" data-id="@item.id" data-plane-code="@item.planeCode" data-from="@item.ToAirport.CityAirports.First().Airport.name"
                             data-to="@item.ToAirport.CityAirports.First().Airport.name" data-departure-date="@Convert.ToDateTime(@item.departureDate).ToString("dd/MM/yyyy")"
                             data-arrival-date="@Convert.ToDateTime(@item.arrivalDate).ToString("dd/MM/yyyy")" data-flyTime="@item.flyTime h"
                             data-price="@item.price" data-distance="@item.distance" data-haveStop="@item.haveStop" data-seat-available="@item.seatAvaiable"
-                            data-status="@item.status">Detail</button>
+                            data-status="@item.status">
+                        Detail
+                    </button>
 
                     <!-- The Modal -->
                     <div id="myModal" class="modal">
@@ -108,27 +180,27 @@
                             <div class="col-md-12 row">
                                 <div class="col-md-6">
                                     <ul>
-                                        <li><strong>ID: </strong>@item.id</li>
-                                        <li><strong>Plane Code: </strong>@item.planeCode</li>
-                                        <li><strong>From: </strong>@item.FromAirport.CityAirports.First().Airport.name</li>
-                                        <li><strong>To: </strong>@item.ToAirport.CityAirports.First().Airport.name</li>
-                                        <li><strong>Departure date: </strong>@Convert.ToDateTime(@item.departureDate).ToString("dd/MM/yyyy")</li>
-                                        <li><strong>Arrivale date: </strong>@Convert.ToDateTime(@item.arrivalDate).ToString("dd/MM/yyyy")</li>
-                                        <li><strong>Duration: </strong>@item.flyTime h</li>
-                                        <li><strong>Price: </strong>$@item.price</li>
+                                        <li><strong>ID: </strong><span id="id">@item.id</span></li>
+                                        <li><strong>Plane Code: </strong><span id="planCode">@item.planeCode</span></li>
+                                        <li><strong>From: </strong><span id="fromAirport">@item.FromAirport.CityAirports.First().Airport.name</span></li>
+                                        <li><strong>To: </strong><span id="toAirport">@item.ToAirport.CityAirports.First().Airport.name</span></li>
+                                        <li><strong>Departure date: </strong><span id="departureDate">@Convert.ToDateTime(@item.departureDate).ToString("dd/MM/yyyy")</span></li>
+                                        <li><strong>Arrivale date: </strong><span id="arrivalDate">@Convert.ToDateTime(@item.arrivalDate).ToString("dd/MM/yyyy")</span></li>
+                                        <li><strong>Duration: </strong><span id="flyTime">@item.flyTime</span> h</li>
+                                        <li><strong>Price: </strong>$<span id="price">@item.price</span></li>
                                     </ul>
                                 </div>
                                 <div class="col-md-6">
                                     <ul>
-                                        <li><strong>Distance: </strong>@item.distance</li>
-                                        <li><strong>Stop: </strong><span id="have-stop"></span"></li>
+                                        <li><strong>Distance: </strong><span id="distance">@item.distance</span></li>
+                                        <li><strong>Stop: </strong><span id="haveStop"></span"></li>
                                         <li><strong>Status: </strong><span id="status">@item.status</span></li>
                                         <li><strong>Total seats available: </strong><span id="seat-available">@item.seatAvaiable</span></li>
                                         @*<li style="list-style: none; padding-left: 30px"><strong>Bussiness: </strong>@item.seatAvaiableBusiness</li>
-                                        <li style="list-style: none; padding-left: 30px"><strong>First: </strong>@item.seatAvaiableFirst</li>
-                                        <li style="list-style: none; padding-left: 30px"><strong>Club: </strong>@item.seatAvaiableClub</li>
-                                        <li style="list-style: none; padding-left: 30px"><strong>Smoking: </strong>@item.seatAvaiableSmoking</li>
-                                        <li style="list-style: none; padding-left: 30px"><strong>Non-smoking: </strong>@item.seatAvaiableNonSmoking</li>*@
+                                            <li style="list-style: none; padding-left: 30px"><strong>First: </strong>@item.seatAvaiableFirst</li>
+                                            <li style="list-style: none; padding-left: 30px"><strong>Club: </strong>@item.seatAvaiableClub</li>
+                                            <li style="list-style: none; padding-left: 30px"><strong>Smoking: </strong>@item.seatAvaiableSmoking</li>
+                                            <li style="list-style: none; padding-left: 30px"><strong>Non-smoking: </strong>@item.seatAvaiableNonSmoking</li>*@
                                     </ul>
                                 </div>
                             </div>
@@ -148,16 +220,28 @@
         var modal = document.getElementById("myModal");
 
         // Get the button that opens the modal
-        var btn = document.getElementById("myBtn");
+        var btn = document.getElementsByClassName("myBtn");
 
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
 
         // When the user clicks on the button, open the modal
-        btn.onclick = function () {
+        $(".myBtn").on("click", function () {
             modal.style.display = "block";
-
-        }
+            console.log($(this).data("plane-code"));
+            $("#id").text($(this).data("id"));
+            $("#planCode").text($(this).data("plane-code"));
+            $("#fromAirport").text($(this).data("from"));
+            $("#toAirport").text($(this).data("to"));
+            $("#departureDate").text($(this).data("departure-date"));
+            $("#arrivalDate").text($(this).data("arrival-date"));
+            $("#flyTimes").text($(this).data("flytime"));
+            $("#price").text($(this).data("price"));
+            $("#distance").text($(this).data("distance"));
+            $("#stop").text($(this).data("havestop"));
+            $("#status").text($(this).data("status"));
+            $("#totalSeatAvailable").text($(this).data("departure-date"));
+        })
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = function () {
@@ -170,6 +254,25 @@
                 modal.style.display = "none";
             }
         }
+
+        $('#dropdownAirportArrival').empty();
+        $('#dropdownAirportDeparture').empty();
+        $.ajax({
+            type: "POST",
+            url: "/Admin/AirportsJson",
+            datatype: "Json",
+            success: function (data) {
+                $.each(data, function (index, value) {
+                    console.log(value)
+                    $('#dropdownAirportDeparture').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    $('#dropdownAirportArrival').append('<option value="' + value.id + '">' + value.name + '</option>');
+                });
+            }
+        });
+
+        $('#submitFlight').on("click", function () {
+            $('#flightForm').submit();
+        })
     </script>
 }
 

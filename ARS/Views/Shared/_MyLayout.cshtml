@@ -96,11 +96,18 @@
                             <img class="white" alt="logo" src="~/Content/img/logo.png">
                             <img class="black" alt="logo" src="~/Content/img/logo-white.png" style="display: none;">
                         </a>
+                        
                         <!-- logo end -->
                         <!-- mainmenu start -->
                         <div class="white menu-init" id="main-menu">
                             <nav id="menu-center">
                                 <ul>
+                                    <li>
+                                        <form action="/Flight/SearchFlight" method="post">
+                                            <input type="text" name="planeCode" value="" />
+                                            <button>Search</button>
+                                        </form>
+                                    </li>
                                     <li>
                                         @*<a class="actived" href="#">Home <i class="fa fa-angle-down"></i></a>*@
                                         @Html.ActionLink("Home", "Index", "Home", null, new { @class = "actived" })

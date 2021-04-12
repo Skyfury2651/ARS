@@ -751,6 +751,7 @@
     <Content Include="Views\Admin\DataChart.cshtml" />
     <Content Include="Views\Admin\ManageFlights.cshtml" />
     <Content Include="Views\Admin\ManageUsers.cshtml" />
+    <Content Include="Views\Flight\SearchFlight.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
