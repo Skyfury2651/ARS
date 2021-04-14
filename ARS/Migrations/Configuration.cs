@@ -84,7 +84,7 @@ namespace ARS.Migrations
             context.Cities.AddOrUpdate(x => x.id, new Models.City
             {
                 id = 1,
-                name = "DaNang",
+                name = "Da Nang",
                 lattitude = 21.028693,
                 longtitude = 105.841616,
                 country = "Viet Nam",
@@ -92,13 +92,13 @@ namespace ARS.Migrations
             {
                 id = 2,
                 name = "Ha Noi",
-                lattitude = 21.028693,
-                longtitude = 105.841616,
+                lattitude = 129.028693,
+                longtitude = 135.841616,
                 country = "Viet Nam",
             }, new Models.City
             {
                 id = 3,
-                name = "HoChiMinh",
+                name = "Ho Chi Minh",
                 lattitude = 21.028693,
                 longtitude = 105.841616,
                 country = "Viet Nam",
@@ -149,19 +149,7 @@ namespace ARS.Migrations
                 CityId = 2
             }, new Models.CityAirport
             {
-                AirportId = 559,
-                CityId = 2
-            }, new Models.CityAirport
-            {
-                AirportId = 560,
-                CityId = 2
-            }, new Models.CityAirport
-            {
                 AirportId = 555,
-                CityId = 1
-            }, new Models.CityAirport
-            {
-                AirportId = 556,
                 CityId = 1
             }, new Models.CityAirport
             {

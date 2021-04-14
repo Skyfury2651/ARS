@@ -39,6 +39,16 @@ namespace ARS.Controllers
             return View(db.Flights.ToList());
         }
 
+        public ActionResult ManageCities()
+        {
+            return View(db.Cities.ToList());
+        }
+
+        public ActionResult ManageAirports()
+        {
+            return View(db.Airports.ToList());
+        }
+
         // GET: Admin/Details/5
         public ActionResult Details(int? id)
         {
